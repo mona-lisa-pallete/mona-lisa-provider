@@ -1,0 +1,7 @@
+{
+  "eslint.codeAction.showDocumentation": {
+    "eslint.autoFixOnSave": {
+      "enable": true
+    }
+  }
+}
