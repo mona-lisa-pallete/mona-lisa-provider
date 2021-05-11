@@ -1,11 +1,25 @@
 @import './assets/style/public.less';
 
 a.link {
+  height: auto;
   padding: 0;
   line-height: 1.5715;
-  height: auto;
   span {
     line-height: 1;
     border-bottom: 1px solid var(--primary-color, #1890ff);
+  }
+}
+
+.mlayout-publicHeader-Logo {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  vertical-align: middle;
+  > img {
+    height: 21px !important;
+  }
+  > span {
+    height: 21px !important;
+    line-height: 21px;
   }
 }

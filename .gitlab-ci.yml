@@ -1,0 +1,91 @@
+include:
+  - 'http://git.shensz.local/FE/gitlab-ci-templates/raw/master/course-live/config-variables.yml'
+  - 'http://git.shensz.local/FE/gitlab-ci-templates/raw/master/common/default-job.yml'
+  - 'http://git.shensz.local/FE/gitlab-ci-templates/raw/master/common/user-phone-map.yml'
+
+variables:
+  PROD_UAE_APP: 265
+  BUILD_GIT_STRATEGY: clone
+  BUILD_DIR: 'build'
+  NODE_VERSION: 12.13.1
+
+stages:
+  - build
+  - notify
+  - deploy_dev
+
+.DefaultJob:
+  tags:
+    - share-runner
+  dependencies: []
+  variables:
+    GIT_STRATEGY: none
+
+Build:
+  extends: .DefaultJob
+  stage: build
+  only:
+    - prepublish
+    # - /^(feature|hotfix)\/.*/
+    - develop
+    - test
+    - /^v[0-9]+\.[0-9]+\.[0-9]+$/
+    - /^v[0-9]+\.[0-9]+\.[0-9]-beta[0-9]+$/
+    - /^v[0-9]+\.[0-9]+\.[0-9]+-(rc)-[0-9]+$|^v[0-9]+\.[0-9]+\.[0-9]-(beta)-[0-9]+$/
+  variables:
+    GIT_STRATEGY: $BUILD_GIT_STRATEGY
+  # cache:
+  #   key: '$CI_PROJECT_PATH'
+  #   paths:
+  #     - node_modules
+  before_script:
+    - nvm use $NODE_VERSION
+    - yarn install
+  script:
+    - rm -rf build package-lock.json
+    - CI=false npm run build
+    - bash scripts/pack.sh -b $CI_COMMIT_REF_NAME -h $CI_COMMIT_SHA
+    - upload2uae -pkg_path ./pkgs -app_id $PROD_UAE_APP # UAE APP ID
+    - upload2uae -pkg_path ./pkgs -app_id 242
+  # artifacts:
+  #   name: '$CI_PROJECT_PATH-$CI_COMMIT_REF_NAME-$CI_PIPELINE_IID-build'
+  #   paths:
+  #     - ./pkgs
+  #   when: on_success
+  #   expire_in: 1 week
+
+DeployDev:
+  extends: .DefaultJob
+  stage: deploy_dev
+  only:
+    - prepublish
+    # - /^feature\/.*/
+    - /^v[0-9]+\.[0-9]+\.[0-9]+-(rc)-[0-9]+$|^v[0-9]+\.[0-9]+\.[0-9]-(beta)-[0-9]+$/
+    - develop
+    - /^v[0-9]+\.[0-9]+\.[0-9]+$/
+  script:
+    - restart_dev -app_id $PROD_UAE_APP # 重启开发环境
+
+# Deploy:
+#   extends: .DefaultJob
+#   stage: deploy
+#   only:
+#     - prepublish
+#     - /^release-v.*/
+#     - /^grey-v.*/
+#   dependencies:
+#     - Build
+#   script:
+# - IFS=',' read -r -a apps <<< $PROD_UAE_APP; for app in "${apps[@]}"; do upload2uae -pkg_path ./pkgs -app_id $app; if [[ $CI_COMMIT_REF_NAME =~ ^prepublish$ ]]; then sh restart_dev -app_id $app; fi; done
+
+Alarm:
+  extends: .DefaultJob
+  stage: notify
+  allow_failure: true
+  when: on_failure
+  script:
+    - gitlabUser=GITLAB_USER_$GITLAB_USER_NAME
+    - phone=${!gitlabUser}
+    - 'dingMsg="{\"msgtype\": \"markdown\", \"markdown\": {\"title\": \"Gitlab ci pipeline fail\", \"text\": \"### Gitlab CI Pipeline Build Fail\n\n teammates: @$phone\n\n project: $CI_PROJECT_PATH\n\n branch: $CI_COMMIT_REF_NAME\n\n username: $GITLAB_USER_NAME\n\n email: $GITLAB_USER_EMAIL\n\n pipeline: [$CI_PIPELINE_URL]($CI_PIPELINE_URL)\n\n\"}, \"at\": { \"atMobiles\": [$phone], \"isAtAll\": false}}"'
+    - echo $dingMsg
+    - 'curl https://oapi.dingtalk.com/robot/send?access_token=c6f35d05fc3b190d432bcf76edbf09e7cbcdf3c8f122a94d464b5e523313ec02 -H "Content-Type: application/json" -d "$dingMsg"'

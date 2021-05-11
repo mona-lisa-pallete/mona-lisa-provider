@@ -1,7 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const apiList = ['/auth', '/portalapi', '/webotapi', 'portalapi/usercenterapi', '/phome', '/login'];
+const apiList = [
+  '/auth',
+  '/portalapi',
+  '/webotapi',
+  'portalapi/usercenterapi',
+  '/phome',
+  '/login',
+  '/davinciapi',
+  '/pauthapi',
+];
 
 let localProxy = {};
 try {
@@ -26,7 +35,7 @@ try {
   console.log('proxy:', error);
 }
 
-const target = (env => {
+const target = ((env) => {
   const map = {
     dev: 'http://portalhome.uae.shensz.local',
     test: 'http://portal.test.guorou.net',
@@ -35,9 +44,9 @@ const target = (env => {
 
   return map[env] || map.dev;
 })(String(process.env.PROXY_ENV).toLowerCase());
-const devProxy = (paths => {
+const devProxy = ((paths) => {
   const res = {};
-  paths.forEach(p => {
+  paths.forEach((p) => {
     res[p] = {
       target,
       changeOrigin: true,
