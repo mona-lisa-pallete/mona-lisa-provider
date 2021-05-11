@@ -1,4 +1,4 @@
-    app_name="davinci-provider";
+    app_name="davinciprovider";
     branch_name='master';
     commiter_email=$(git show -s --format='%an' $4)
     commiter=${commiter_email#@*}
