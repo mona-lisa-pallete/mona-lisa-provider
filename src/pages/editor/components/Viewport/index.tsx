@@ -5,6 +5,7 @@ import { ActionType } from '../../types';
 import ViewportItem from '../ViewportItem';
 import { ViewportBox } from './index.style';
 import InsetItem from '../InsetItem';
+import DragItem from '../DragItem';
 
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
@@ -54,9 +55,15 @@ const Viewport: React.FC = () => {
                 {i?.child &&
                   i.child.map((childItem: any) => {
                     return (
-                      <div style={{ display: 'inline-block', marginLeft: '10px' }}>
+                      <DragItem
+                        left={childItem?.left}
+                        top={childItem?.top}
+                        style={{
+                          position: 'absolute',
+                        }}
+                      >
                         {childItem.text}
-                      </div>
+                      </DragItem>
                     );
                   })}
               </ViewportItem>

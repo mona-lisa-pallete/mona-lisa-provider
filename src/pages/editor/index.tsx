@@ -6,6 +6,7 @@ import ViewportBox from './components/Viewport/';
 import EditorContext from './context';
 import reducer from './reducer';
 import { Button, Input } from 'antd';
+import { addPage, addPreviewPage } from '@/services/editor';
 
 export const initState = {
   componentList: [],
@@ -16,7 +17,17 @@ const Editor: React.FC = () => {
   const [json, setJson] = useState('');
 
   const submit = () => {
-    console.log(json);
+    addPreviewPage({
+      dsl: JSON.stringify({}),
+      pageId: '1',
+    });
+  };
+
+  const save = () => {
+    addPage({
+      dsl: JSON.stringify({}),
+      pageId: '1',
+    });
   };
 
   return (
@@ -42,6 +53,7 @@ const Editor: React.FC = () => {
             }}
           />
           <Button onClick={submit}>预览</Button>
+          <Button onClick={save}>保存</Button>
         </div>
       </DndProvider>
     </EditorContext.Provider>

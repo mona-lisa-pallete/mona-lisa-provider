@@ -7,3 +7,7 @@ export const ViewportBox = styled.div`
   margin-left: 300px;
   border: 1px solid black;
 `;
+
+export const DragBox = styled.div`
+  position: absolute;
+`;
