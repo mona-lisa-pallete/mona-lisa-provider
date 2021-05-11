@@ -1,6 +1,5 @@
 import React from 'react';
 import ComponentItem from '../ComponentItem';
-import { Test } from './index.style';
 
 const ComponentList: React.FC = () => {
   return (
@@ -12,7 +11,6 @@ const ComponentList: React.FC = () => {
     >
       <ComponentItem name="pic">图片</ComponentItem>
       <ComponentItem name="btn">按钮</ComponentItem>
-      <Test className="fffff">ffffffffffffff</Test>
     </div>
   );
 };

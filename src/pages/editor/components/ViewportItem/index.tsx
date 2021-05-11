@@ -26,7 +26,7 @@ const ViewportItem: React.FC<CardProps> = (props) => {
   //     // Don't replace items with themselves
   //     if (dragIndex === hoverIndex) {
   //       return;
-  //     }
+  //     }e
 
   //     // Determine rectangle on screen
   //     const hoverBoundingRect = ref.current?.getBoundingClientRect();
@@ -80,7 +80,6 @@ const ViewportItem: React.FC<CardProps> = (props) => {
     <div
       style={{
         height: '50px',
-        border: '1px solid red',
       }}
       ref={ref}
     >

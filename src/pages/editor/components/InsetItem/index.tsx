@@ -7,21 +7,23 @@ import { InsetItemProps } from './types';
 
 const InsetItem: React.FC<InsetItemProps> = (props) => {
   const { index, visible } = props;
+  const { state, dispatch } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [hasBoxDropped, setHasBoxDropped] = useState(false);
-  const { state, dispatch } = useContext(EditorContext);
+  const [dragType, setDragType] = useState('');
 
-  const [, drag] = useDrop({
+  const [{ isBoxOverCurrent }, drag] = useDrop({
     accept: 'box',
     collect: (monitor) => ({
       isOver: monitor.isOver(),
-      isOverCurrent: monitor.isOver({ shallow: true }),
+      isBoxOverCurrent: monitor.isOver({ shallow: true }),
     }),
-    drop(item: unknown, monitor) {
+    drop(item: any, monitor) {
       const didDrop = monitor.didDrop();
       if (didDrop) {
         return;
       }
+      setDragType(item?.name);
       setHasBoxDropped(true);
     },
   });
@@ -32,11 +34,12 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
       isOver: monitor.isOver(),
       isOverCurrent: monitor.isOver({ shallow: true }),
     }),
-    drop(item: unknown, monitor) {
+    drop(item: any, monitor) {
       const didDrop = monitor.didDrop();
       if (didDrop) {
         return;
       }
+      setDragType(item?.name);
       setHasDropped(true);
     },
   });
@@ -44,10 +47,10 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
   useEffect(() => {
     if (hasDropped) {
       const list = state.componentList.slice();
-      list.unshift({
+      list.splice(index, 0, {
         child: [
           {
-            text: `${state.componentList.length}`,
+            text: `${dragType}${Math.ceil(Math.random() * 10)}`,
             id: new Date().getTime(),
           },
         ],
@@ -66,19 +69,17 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
       const list = state.componentList.slice();
       if (list[index].child) {
         list[index].child.push({
-          text: `${state.componentList.length}`,
+          text: `${dragType}${Math.ceil(Math.random() * 10)}`,
           id: new Date().getTime(),
         });
       } else {
         list[index].child = [
           {
-            text: `${state.componentList.length}`,
+            text: `${dragType}${Math.ceil(Math.random() * 10)}`,
             id: new Date().getTime(),
           },
         ];
       }
-      console.log(list);
-
       dispatch({
         type: ActionType.InsetBoxComponentAction,
         payload: {
@@ -104,7 +105,14 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
       >
         插入此处
       </InsetItemBox>
-      <div ref={drag}>{props.children}</div>
+      <div
+        ref={drag}
+        style={{
+          border: isBoxOverCurrent ? '1px solid red' : 'none',
+        }}
+      >
+        {props.children}
+      </div>
     </div>
   );
 };

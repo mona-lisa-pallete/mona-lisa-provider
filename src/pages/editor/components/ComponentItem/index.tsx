@@ -16,4 +16,5 @@ const ComponentItem: React.FC<ComponentItemProps> = (props) => {
   );
   return <div ref={drag}>{props.children}</div>;
 };
+
 export default ComponentItem;
