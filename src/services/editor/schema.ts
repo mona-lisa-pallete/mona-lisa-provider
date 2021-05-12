@@ -1,5 +1,5 @@
 export interface IAddPreviewRequest {
-  pageId: string;
+  page: string;
   dsl: string;
 }
 
@@ -8,7 +8,7 @@ export interface IAddPreviewReponse {
 }
 
 export interface IAddPageRequest {
-  pageId: string;
+  page: string;
   dsl: string;
 }
 
