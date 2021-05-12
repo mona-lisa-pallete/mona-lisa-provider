@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@ant-design/pro-form": "^1.23.0",
     "@ant-design/pro-layout": "^5.0.12",
     "@grfe/micro-layout": "0.0.1-beta3",
     "@grfe/utils": "^0.3.25",

@@ -1,18 +1,8 @@
 const Menus: MenusOptions[] = [
   {
-    title: '目录1',
+    title: '落地页项目管理',
     // entry_dev: '//localhost:8100',
-    path: '/',
-    children: [
-      {
-        title: '子菜单1',
-        path: '/sub-item',
-      },
-      {
-        title: '子菜单2',
-        path: '/sub-item2',
-      },
-    ],
+    path: '/project',
   },
 ];
 interface MenusOptions {

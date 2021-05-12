@@ -49,7 +49,7 @@
   resolved "https://registry.nlark.com/@ant-design/icons-svg/download/@ant-design/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
   integrity sha1-SAsCX0sg73/o9H1KSEbk/uhOoGw=
 
-"@ant-design/icons@^4.0.0", "@ant-design/icons@^4.1.0", "@ant-design/icons@^4.2.1", "@ant-design/icons@^4.2.2", "@ant-design/icons@^4.6.2":
+"@ant-design/icons@^4.0.0", "@ant-design/icons@^4.1.0", "@ant-design/icons@^4.2.1", "@ant-design/icons@^4.2.2", "@ant-design/icons@^4.3.0", "@ant-design/icons@^4.6.2":
   version "4.6.2"
   resolved "https://registry.nlark.com/@ant-design/icons/download/@ant-design/icons-4.6.2.tgz#290f2e8cde505ab081fda63e511e82d3c48be982"
   integrity sha1-KQ8ujN5QWrCB/aY+UR6C08SL6YI=
@@ -59,6 +59,38 @@
     "@babel/runtime" "^7.11.2"
     classnames "^2.2.6"
     rc-util "^5.9.4"
+
+"@ant-design/pro-field@1.15.6":
+  version "1.15.6"
+  resolved "https://registry.nlark.com/@ant-design/pro-field/download/@ant-design/pro-field-1.15.6.tgz#6fd6ba9d99b857625563be1f5d75c1c8f8896dbf"
+  integrity sha1-b9a6nZm4V2JVY74fXXXByPiJbb8=
+  dependencies:
+    "@ant-design/icons" "^4.2.1"
+    "@ant-design/pro-provider" "1.4.12"
+    "@ant-design/pro-utils" "1.16.5"
+    classnames "^2.2.6"
+    lodash.tonumber "^4.0.3"
+    moment "^2.27.0"
+    omit.js "^2.0.2"
+    rc-util "^5.4.0"
+    react-color "2.19.3"
+    swr "^0.3.6"
+
+"@ant-design/pro-form@^1.23.0":
+  version "1.23.0"
+  resolved "https://registry.nlark.com/@ant-design/pro-form/download/@ant-design/pro-form-1.23.0.tgz#52e8898d656fc32aaee7fa1836616be03c529660"
+  integrity sha1-UuiJjWVvwyqu5/oYNmFr4DxSlmA=
+  dependencies:
+    "@ant-design/icons" "^4.2.1"
+    "@ant-design/pro-field" "1.15.6"
+    "@ant-design/pro-provider" "1.4.12"
+    "@ant-design/pro-utils" "1.16.5"
+    "@umijs/use-params" "^1.0.2"
+    classnames "^2.2.6"
+    omit.js "^2.0.2"
+    rc-resize-observer "^0.2.3"
+    rc-util "^5.0.6"
+    use-media-antd-query "^1.0.6"
 
 "@ant-design/pro-layout@^4.11.3":
   version "4.11.4"
@@ -110,6 +142,25 @@
     use-media-antd-query "^1.0.1"
     use-merge-value "^1.0.1"
     warning "^4.0.3"
+
+"@ant-design/pro-provider@1.4.12":
+  version "1.4.12"
+  resolved "https://registry.nlark.com/@ant-design/pro-provider/download/@ant-design/pro-provider-1.4.12.tgz?cache=0&sync_timestamp=1619668062578&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40ant-design%2Fpro-provider%2Fdownload%2F%40ant-design%2Fpro-provider-1.4.12.tgz#392aab9253ee805a33c9b3eb3d078bc5bcabfb7d"
+  integrity sha1-OSqrklPugFozybPrPQeLxbyr+30=
+  dependencies:
+    rc-util "^5.0.1"
+
+"@ant-design/pro-utils@1.16.5":
+  version "1.16.5"
+  resolved "https://registry.nlark.com/@ant-design/pro-utils/download/@ant-design/pro-utils-1.16.5.tgz#e09b7ce158495eeb7c778a756cb234703c575380"
+  integrity sha1-4Jt84VhJXut8d4p1bLI0cDxXU4A=
+  dependencies:
+    "@ant-design/icons" "^4.3.0"
+    "@ant-design/pro-provider" "1.4.12"
+    classnames "^2.2.6"
+    fast-deep-equal "^3.1.3"
+    moment "^2.27.0"
+    rc-util "^5.0.6"
 
 "@ant-design/react-slick@~0.27.0":
   version "0.27.14"
@@ -1875,6 +1926,11 @@
   integrity sha1-aNk1+j6uf91asNf5U/MgXYsr/Ck=
   dependencies:
     "@hapi/hoek" "^8.3.0"
+
+"@icons/material@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.npm.taobao.org/@icons/material/download/@icons/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
+  integrity sha1-6QyfcXaLNzbnbX3WeD/Gwq+oi8g=
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -3838,6 +3894,11 @@
     "@umijs/server" "3.4.14"
     "@umijs/utils" "3.4.14"
     webpack-chain "6.5.1"
+
+"@umijs/use-params@^1.0.2":
+  version "1.0.3"
+  resolved "https://registry.npm.taobao.org/@umijs/use-params/download/@umijs/use-params-1.0.3.tgz#d91d6be6846dc8765dfd81c53cee3953b33f1eb2"
+  integrity sha1-2R1r5oRtyHZd/YHFPO45U7M/HrI=
 
 "@umijs/utils@3.2.24":
   version "3.2.24"
@@ -6764,6 +6825,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.nlark.com/depd/download/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+dequal@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npm.taobao.org/dequal/download/dequal-2.0.2.tgz#85ca22025e3a87e65ef75a7a437b35284a7e319d"
+  integrity sha1-hcoiAl46h+Ze91p6Q3s1KEp+MZ0=
 
 des.js@^1.0.0:
   version "1.0.1"
@@ -10899,6 +10965,11 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash-es@^4.17.15:
+  version "4.17.21"
+  resolved "https://registry.npm.taobao.org/lodash-es/download/lodash-es-4.17.21.tgz?cache=0&sync_timestamp=1613836838613&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash-es%2Fdownload%2Flodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha1-Q+YmxG5lkbd1C+srUBFzkMYJ4+4=
+
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.npm.taobao.org/lodash.camelcase/download/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
@@ -10949,6 +11020,11 @@ lodash.toarray@^4.4.0:
   resolved "https://registry.npm.taobao.org/lodash.toarray/download/lodash.toarray-4.4.0.tgz#24c4bfcd6b2fba38bfd0594db1179d8e9b656561"
   integrity sha1-JMS/zWsvuji/0FlNsRedjptlZWE=
 
+lodash.tonumber@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npm.taobao.org/lodash.tonumber/download/lodash.tonumber-4.0.3.tgz#0b96b31b35672793eb7f5a63ee791f1b9e9025d9"
+  integrity sha1-C5azGzVnJ5Prf1pj7nkfG56QJdk=
+
 lodash.truncate@^4.4.2:
   version "4.4.2"
   resolved "https://registry.npm.taobao.org/lodash.truncate/download/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
@@ -10974,7 +11050,7 @@ lodash@4.17.20:
   resolved "https://registry.nlark.com/lodash/download/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha1-tEqbYpe8tpjxxRo1RaKzs2jVnFI=
 
-"lodash@>=3.5 <5", lodash@^4.15.0, lodash@^4.16.5, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.7.0:
+"lodash@>=3.5 <5", lodash@^4.0.1, lodash@^4.15.0, lodash@^4.16.5, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.nlark.com/lodash/download/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha1-Z5WRxWTDv/quhFTPCz3zcMPWkRw=
@@ -11177,6 +11253,11 @@ matchmediaquery@^0.3.0:
   integrity sha1-gkftxH5Jnrt8WPYqn/nM9bgVxtc=
   dependencies:
     css-mediaquery "^0.1.2"
+
+material-colors@^1.2.1:
+  version "1.2.6"
+  resolved "https://registry.npm.taobao.org/material-colors/download/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha1-bRlYhxEmmSzuzHL0vMTY8BCGX0Y=
 
 mathml-tag-names@^2.0.1, mathml-tag-names@^2.1.3:
   version "2.1.3"
@@ -11607,7 +11688,7 @@ mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@^0.5.5, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-moment@^2.24.0, moment@^2.25.3, moment@^2.29.1:
+moment@^2.24.0, moment@^2.25.3, moment@^2.27.0, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.npm.taobao.org/moment/download/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
@@ -14404,6 +14485,19 @@ rc-virtual-list@^3.0.1, rc-virtual-list@^3.0.3, rc-virtual-list@^3.2.0:
     rc-resize-observer "^1.0.0"
     rc-util "^5.0.7"
 
+react-color@2.19.3:
+  version "2.19.3"
+  resolved "https://registry.npm.taobao.org/react-color/download/react-color-2.19.3.tgz#ec6c6b4568312a3c6a18420ab0472e146aa5683d"
+  integrity sha1-7GxrRWgxKjxqGEIKsEcuFGqlaD0=
+  dependencies:
+    "@icons/material" "^0.2.4"
+    lodash "^4.17.15"
+    lodash-es "^4.17.15"
+    material-colors "^1.2.1"
+    prop-types "^15.5.10"
+    reactcss "^1.2.0"
+    tinycolor2 "^1.4.1"
+
 react-copy-to-clipboard@^5.0.1:
   version "5.0.3"
   resolved "https://registry.npm.taobao.org/react-copy-to-clipboard/download/react-copy-to-clipboard-5.0.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-copy-to-clipboard%2Fdownload%2Freact-copy-to-clipboard-5.0.3.tgz#2a0623b1115a1d8c84144e9434d3342b5af41ab4"
@@ -14659,6 +14753,13 @@ react@16.x, react@^16.12.0, react@^16.13.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
+
+reactcss@^1.2.0:
+  version "1.2.3"
+  resolved "https://registry.npm.taobao.org/reactcss/download/reactcss-1.2.3.tgz#c00013875e557b1cf0dfd9a368a1c3dab3b548dd"
+  integrity sha1-wAATh15Vexzw39mjaKHD2rO1SN0=
+  dependencies:
+    lodash "^4.0.1"
 
 read-pkg-up@^2.0.0:
   version "2.0.0"
@@ -16640,6 +16741,13 @@ svgo@^1.0.0, svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+swr@^0.3.6:
+  version "0.3.11"
+  resolved "https://registry.nlark.com/swr/download/swr-0.3.11.tgz#f7f50ed26c06afea4249482cec504768a2272664"
+  integrity sha1-9/UO0mwGr+pCSUgs7FBHaKInJmQ=
+  dependencies:
+    dequal "2.0.2"
+
 symbol-tree@^3.2.2, symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.npm.taobao.org/symbol-tree/download/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
@@ -17491,6 +17599,11 @@ use-media-antd-query@^1.0.1:
   version "1.0.6"
   resolved "https://registry.nlark.com/use-media-antd-query/download/use-media-antd-query-1.0.6.tgz#2395fc52a9bc810fa7360bff43eb84609eee1b2f"
   integrity sha1-I5X8Uqm8gQ+nNgv/Q+uEYJ7uGy8=
+
+use-media-antd-query@^1.0.6:
+  version "1.0.7"
+  resolved "https://registry.nlark.com/use-media-antd-query/download/use-media-antd-query-1.0.7.tgz#4e30b650f52d9924fcb30cf3560ee7384f5bd25b"
+  integrity sha1-TjC2UPUtmST8swzzVg7nOE9b0ls=
 
 use-merge-value@^1.0.1:
   version "1.0.2"
