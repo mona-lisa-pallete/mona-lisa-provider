@@ -3,7 +3,9 @@ export interface IAddPreviewRequest {
   dsl: string;
 }
 
-export interface IAddPreviewReponse {}
+export interface IAddPreviewReponse {
+  url: string;
+}
 
 export interface IAddPageRequest {
   pageId: string;

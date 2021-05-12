@@ -2,7 +2,7 @@ import React, { useReducer, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ComponentList from './components/ComponentList';
-import ViewportBox from './components/Viewport/';
+import ViewportBox from './components/Viewport';
 import EditorContext from './context';
 import reducer from './reducer';
 import { Button, Input } from 'antd';
@@ -16,16 +16,19 @@ const Editor: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const [json, setJson] = useState('');
 
-  const submit = () => {
-    addPreviewPage({
-      dsl: JSON.stringify({}),
+  const submit = async () => {
+    const res = await addPreviewPage({
+      dsl: JSON.stringify(json),
       pageId: '1',
     });
+    if (res?.data?.url) {
+      window.open(res.data.url);
+    }
   };
 
-  const save = () => {
-    addPage({
-      dsl: JSON.stringify({}),
+  const save = async () => {
+    await addPage({
+      dsl: JSON.stringify(json),
       pageId: '1',
     });
   };
