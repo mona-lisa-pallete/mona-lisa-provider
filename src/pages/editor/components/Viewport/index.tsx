@@ -36,6 +36,10 @@ const Viewport: React.FC = () => {
         payload: {
           text: `${new Date().getTime()}`,
           id: new Date().getTime(),
+          style: {
+            left: 0,
+            top: 0,
+          },
         },
       });
     }
@@ -43,6 +47,7 @@ const Viewport: React.FC = () => {
 
   useEffect(() => {
     setHasDropped(false);
+    console.log(state.componentList);
   }, [state.componentList]);
 
   return (
@@ -53,11 +58,12 @@ const Viewport: React.FC = () => {
             <InsetItem visible={isStart} index={index}>
               <ViewportItem id={i.id} index={index}>
                 {i?.child &&
-                  i.child.map((childItem: any) => {
+                  i.child.map((childItem: any, childItemIndex: number) => {
                     return (
                       <DragItem
-                        left={childItem?.left}
-                        top={childItem?.top}
+                        id={childItemIndex}
+                        left={childItem?.style?.left}
+                        top={childItem?.style?.top}
                         style={{
                           position: 'absolute',
                         }}

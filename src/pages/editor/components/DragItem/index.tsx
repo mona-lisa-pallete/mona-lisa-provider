@@ -3,15 +3,24 @@ import { useDrag } from 'react-dnd';
 import { DragItemProps } from './types';
 
 const DragItem: React.FC<DragItemProps> = (props) => {
-  const { left, top, style } = props;
+  const { left, top, style, id } = props;
+
+  console.log(left, top, 'left');
 
   const [, drag] = useDrag(
     () => ({
       type: 'a',
-      item: { left, top },
+      item: { left, top, id },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
-    [left, top],
+    [left, top, id],
   );
+
+  // if (isDragging) {
+  //   return <div ref={drag} />;
+  // }
 
   return (
     <div ref={drag} style={{ ...style, left, top }}>

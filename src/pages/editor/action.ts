@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { ActionType } from './types';
 
 export interface IAddComponentAction {
@@ -5,6 +6,7 @@ export interface IAddComponentAction {
   payload: {
     id: number;
     text: string;
+    style: CSSProperties;
   };
 }
 
@@ -24,6 +26,13 @@ export interface IInsetComponentAction {
 
 export interface IInsetBoxComponentAction {
   type: ActionType.InsetBoxComponentAction;
+  payload: {
+    data: any[];
+  };
+}
+
+export interface IUpdateComponentAction {
+  type: ActionType.UpdateComponent;
   payload: {
     data: any[];
   };

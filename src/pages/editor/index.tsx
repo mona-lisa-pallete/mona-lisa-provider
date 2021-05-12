@@ -18,7 +18,7 @@ const Editor: React.FC = () => {
 
   const submit = async () => {
     const res = await addPreviewPage({
-      dsl: JSON.stringify(json),
+      dsl: json,
       pageId: '1',
     });
     if (res?.data?.url) {
@@ -28,7 +28,7 @@ const Editor: React.FC = () => {
 
   const save = async () => {
     await addPage({
-      dsl: JSON.stringify(json),
+      dsl: json,
       pageId: '1',
     });
   };

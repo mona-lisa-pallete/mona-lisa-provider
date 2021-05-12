@@ -10,6 +10,8 @@ const reducer = (state: IState, action: IAction) => {
       return { componentList: [...action.payload.data] };
     case ActionType.InsetBoxComponentAction:
       return { componentList: [...action.payload.data] };
+    case ActionType.UpdateComponent:
+      return { componentList: [...action.payload.data] };
     default:
       return state;
   }
