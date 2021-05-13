@@ -3,4 +3,5 @@ export default {
   '@btn-border-radius-base': '4px',
   '@border-radius-base': '4px',
   '@height-base': '28px',
+  '@input-height-base': '28px',
 };

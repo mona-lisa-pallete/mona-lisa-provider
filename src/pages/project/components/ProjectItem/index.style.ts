@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Menu } from 'antd';
 
 export const ProjectItem = styled.div`
   width: 268px;
@@ -58,20 +57,4 @@ export const ProjectItemInfoItem = styled.div`
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: rgba(5, 12, 50, 0.45);
-`;
-
-export const MenuBtn = styled(Menu)`
-  width: 94px;
-  .ant-dropdown-menu-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(0, 0, 0, 0.8);
-    font-weight: 400;
-    font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
-  }
-  .menu-item--del {
-    color: #ff6f6f;
-  }
 `;

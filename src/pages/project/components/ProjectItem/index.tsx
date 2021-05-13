@@ -6,25 +6,19 @@ import {
   ProjectItemInfo,
   ProjectItemInfoItem,
   ProjectItemName,
-  MenuBtn,
 } from './index.style';
 import { MoreOutlined } from '@ant-design/icons';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown } from 'antd';
+import { ProjectItemProps } from './types';
 
-const ProjectItem: React.FC = () => {
-  const menu = () => {
-    return (
-      <MenuBtn>
-        <Menu.Item key="edit">删除</Menu.Item>
-      </MenuBtn>
-    );
-  };
+const ProjectItem: React.FC<ProjectItemProps> = (props) => {
+  const { actionRender, onClick } = props;
 
   return (
-    <ProjectItemBox className="project-item-box">
+    <ProjectItemBox onClick={onClick} className="project-item-box">
       <ProjectItemHeader>
         <ProjectItemName>OPPO买手机增课领取页面名称过长的情况</ProjectItemName>
-        <Dropdown overlay={menu()} className="form-manage-item__btn">
+        <Dropdown overlay={actionRender} className="form-manage-item__btn">
           <ProjectItemIcon>
             <MoreOutlined className="more-icon" style={{ fontSize: '19px' }} />
           </ProjectItemIcon>

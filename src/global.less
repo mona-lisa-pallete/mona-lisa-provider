@@ -13,10 +13,10 @@ a.link {
 .mlayout-publicHeader-Logo {
   display: flex;
   align-items: center;
-  height: 60px;
+  height: 100%;
   vertical-align: middle;
   > img {
-    height: 21px !important;
+    height: 18px !important;
   }
   > span {
     height: 21px !important;
@@ -28,4 +28,43 @@ section {
   > .ant-layout-content {
     background-color: #f1f1f1;
   }
+}
+
+.ant-input-affix-wrapper {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.ant-pro-table {
+  .ant-pro-table-search {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .ant-card-body {
+    padding: 0 !important;
+  }
+}
+
+.mlayout-publicHeader {
+  height: 48px !important;
+  > .ant-menu {
+    height: 100% !important;
+  }
+  .ant-menu-submenu {
+    height: 100%;
+    vertical-align: top !important;
+    .ant-menu-submenu-title {
+      height: 100%;
+    }
+  }
+}
+
+.reset-antd {
+  height: 48px !important;
+}
+
+.mlayout-publicHeader-UserInfo {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
