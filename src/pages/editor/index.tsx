@@ -7,9 +7,18 @@ import EditorContext from './context';
 import reducer from './reducer';
 import { Button, Input } from 'antd';
 import { addPage, addPreviewPage } from '@/services/editor';
+// import ComponentClassification from './components/ComponentClassification';
+import { useHideHeader } from './hooks';
+import EditorHeader from './components/EditorHeader';
 
 export const initState = {
   componentList: [],
+};
+
+window.onload = () => {
+  document.querySelector('aside')!.style.display = 'none';
+  (document.querySelector('.reset-antd') as HTMLElement).style.display = 'none';
+  (document.querySelector('.site-layout-background') as HTMLElement).style.margin = '0px';
 };
 
 const Editor: React.FC = () => {
@@ -33,9 +42,13 @@ const Editor: React.FC = () => {
     });
   };
 
+  useHideHeader();
+
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
       <DndProvider backend={HTML5Backend}>
+        <EditorHeader />
+        {/* <ComponentClassification /> */}
         <ComponentList />
         <ViewportBox />
         <div

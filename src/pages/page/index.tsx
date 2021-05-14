@@ -1,7 +1,8 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Image, Tag } from 'antd';
+import { Button, Form, Image, Radio, Select, Tag } from 'antd';
 import React, { useState } from 'react';
 import {
+  CopyForm,
   PageAction,
   PageContainer,
   PageDetail,
@@ -15,6 +16,7 @@ import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
+import ConfirmModal from '@/components/ConfirmModal';
 
 interface PageItem {
   id: number;
@@ -23,6 +25,8 @@ interface PageItem {
 
 const Page: React.FC = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [modelVisible, setModelVisible] = useState(false);
+
   const columns: Array<ProColumns<PageItem>> = [
     {
       dataIndex: 'id',
@@ -135,18 +139,31 @@ const Page: React.FC = () => {
       render() {
         return (
           <>
+            <Button type="link">编辑</Button>
             <Button
+              type="link"
               onClick={() => {
                 setPreviewVisible(true);
               }}
             >
               预览
             </Button>
+            <Button
+              type="link"
+              onClick={() => {
+                setModelVisible(true);
+              }}
+            >
+              复制
+            </Button>
+            <Button type="link">删除</Button>
           </>
         );
       },
     },
   ];
+
+  const copyPage = () => {};
 
   return (
     <PageContainer>
@@ -177,6 +194,26 @@ const Page: React.FC = () => {
         }}
         visible={previewVisible}
       />
+      <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
+        <CopyForm colon layout="vertical">
+          <Form.Item label="页面类型">
+            <Radio.Group>
+              <Radio value={1}>当前项目</Radio>
+              <Radio value={2}>其他项目</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item>
+            <Select />
+          </Form.Item>
+          <Form.Item>
+            <Radio.Group>
+              <Radio value={1}>H5</Radio>
+              <Radio value={2}>小程序</Radio>
+              <Radio value={3}>H5&小程序</Radio>
+            </Radio.Group>
+          </Form.Item>
+        </CopyForm>
+      </ConfirmModal>
     </PageContainer>
   );
 };

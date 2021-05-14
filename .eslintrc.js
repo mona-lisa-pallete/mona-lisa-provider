@@ -9,5 +9,6 @@ module.exports = {
   rules: {
     'import/no-cycle': 'off',
     'prettier/prettier': 'error',
+    'react/prop-types': 0,
   },
 };

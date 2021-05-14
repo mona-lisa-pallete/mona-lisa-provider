@@ -1,15 +1,13 @@
 import React from 'react';
-import { PageHeaderContainer, PageHeaderTitle, TitleIcon } from './index.style';
+import { PageHeaderContainer } from './index.style';
 import { PageHeaderProps } from './types';
+import IconTitle from '../IconTitle/';
 
 const PageHeader: React.FC<PageHeaderProps> = (props) => {
   const { title, children } = props;
   return (
     <PageHeaderContainer>
-      <PageHeaderTitle>
-        <TitleIcon />
-        {title}
-      </PageHeaderTitle>
+      <IconTitle>{title}</IconTitle>
       {children}
     </PageHeaderContainer>
   );

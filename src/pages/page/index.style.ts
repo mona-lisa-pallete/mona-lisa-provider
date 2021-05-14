@@ -1,3 +1,4 @@
+import { Form } from 'antd';
 import styled from 'styled-components';
 
 export const PageContainer = styled.div`
@@ -71,5 +72,11 @@ export const PageTag = styled.div`
   .h5 {
     color: #1980ff;
     border: 1px solid #97c6ff;
+  }
+`;
+
+export const CopyForm = styled(Form)`
+  .ant-form-item {
+    margin-bottom: 16px;
   }
 `;
