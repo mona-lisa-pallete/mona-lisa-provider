@@ -46,7 +46,6 @@ Build:
     - CI=false npm run build
     - bash scripts/pack.sh -b $CI_COMMIT_REF_NAME -h $CI_COMMIT_SHA
     - upload2uae -pkg_path ./pkgs -app_id $PROD_UAE_APP # UAE APP ID
-    - upload2uae -pkg_path ./pkgs -app_id 242
   # artifacts:
   #   name: '$CI_PROJECT_PATH-$CI_COMMIT_REF_NAME-$CI_PIPELINE_IID-build'
   #   paths:
