@@ -4,11 +4,21 @@ export const ComponentClassificationContainer = styled.div`
   display: inline-flex;
   vertical-align: top;
   background-color: #fff;
+  margin-right: 64px;
 `;
 
 export const ComponentClassificationList = styled.div`
   height: calc(100vh - 48px);
   border-right: 1px solid #e8e9ed;
+  .component-classification--active {
+    color: #1980ff;
+    &:after {
+      display: block;
+    }
+    > i {
+      color: #1980ff;
+    }
+  }
 `;
 
 export const ComponentClassificationItem = styled.div`
@@ -49,4 +59,9 @@ export const ComponentClassificationItem = styled.div`
     transform: translateY(-50%);
     content: '';
   }
+`;
+
+export const ComponentTabs = styled.div`
+  width: 200px;
+  height: calc(100vh - 48px);
 `;

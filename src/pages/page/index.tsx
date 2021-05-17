@@ -136,10 +136,13 @@ const Page: React.FC = () => {
       title: '操作',
       valueType: 'option',
       hideInSearch: true,
+      width: 260,
       render() {
         return (
           <>
-            <Button type="link">编辑</Button>
+            <Button type="link" onClick={goToEdit}>
+              编辑
+            </Button>
             <Button
               type="link"
               onClick={() => {
@@ -164,6 +167,10 @@ const Page: React.FC = () => {
   ];
 
   const copyPage = () => {};
+
+  const goToEdit = () => {
+    window.open(`/davinciprovider/editor?pageId=${2}`);
+  };
 
   return (
     <PageContainer>

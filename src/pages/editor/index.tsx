@@ -1,76 +1,42 @@
 import React, { useReducer, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import ComponentList from './components/ComponentList';
 import ViewportBox from './components/Viewport';
 import EditorContext from './context';
 import reducer from './reducer';
-import { Button, Input } from 'antd';
-import { addPage, addPreviewPage } from '@/services/editor';
-// import ComponentClassification from './components/ComponentClassification';
+import ComponentClassification from './components/ComponentClassification';
 import { useHideHeader } from './hooks';
 import EditorHeader from './components/EditorHeader';
+import { ComponentData, ComponentType } from './data';
+import { EditorConfig, EditorMain } from './index.style';
 
 export const initState = {
   componentList: [],
 };
 
-window.onload = () => {
-  document.querySelector('aside')!.style.display = 'none';
-  (document.querySelector('.reset-antd') as HTMLElement).style.display = 'none';
-  (document.querySelector('.site-layout-background') as HTMLElement).style.margin = '0px';
-};
-
 const Editor: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initState);
-  const [json, setJson] = useState('');
-
-  const submit = async () => {
-    const res = await addPreviewPage({
-      dsl: JSON.parse(json),
-      page: '1',
-    });
-    if (res?.data?.url) {
-      window.open(res.data.url);
-    }
-  };
-
-  const save = async () => {
-    await addPage({
-      dsl: JSON.parse(json),
-      page: '1',
-    });
-  };
+  const [componentVal, setComponentVal] = useState(ComponentType.Picture);
 
   useHideHeader();
+
+  const handleComponentVal = (val: ComponentType) => {
+    setComponentVal(val);
+  };
 
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
       <DndProvider backend={HTML5Backend}>
         <EditorHeader />
-        {/* <ComponentClassification /> */}
-        <ComponentList />
-        <ViewportBox />
-        <div
-          style={{
-            width: '300px',
-            height: '400px',
-            verticalAlign: 'top',
-            display: 'inline-block',
-          }}
-        >
-          <Input.TextArea
-            style={{
-              height: '400px',
-            }}
-            value={json}
-            onChange={(e) => {
-              setJson(e.target.value);
-            }}
+        <EditorMain>
+          <ComponentClassification
+            onChange={handleComponentVal}
+            value={componentVal}
+            data={ComponentData}
           />
-          <Button onClick={submit}>预览</Button>
-          <Button onClick={save}>保存</Button>
-        </div>
+          <ViewportBox />
+          <EditorConfig />
+        </EditorMain>
       </DndProvider>
     </EditorContext.Provider>
   );
