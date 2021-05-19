@@ -9,6 +9,10 @@ import { useHideHeader } from './hooks';
 import EditorHeader from './components/EditorHeader';
 import { ComponentData, ComponentType } from './data';
 import { EditorConfig, EditorMain } from './index.style';
+import { Tabs } from 'antd';
+import PageForm from './components/PageForm';
+
+const { TabPane } = Tabs;
 
 export const initState = {
   componentList: [],
@@ -35,7 +39,15 @@ const Editor: React.FC = () => {
             data={ComponentData}
           />
           <ViewportBox />
-          <EditorConfig />
+          <EditorConfig>
+            <Tabs>
+              <TabPane tab="页面设置" key="1">
+                <PageForm />
+              </TabPane>
+              <TabPane tab="组件配置" key="2" />
+              <TabPane tab="页面交互" key="3" />
+            </Tabs>
+          </EditorConfig>
         </EditorMain>
       </DndProvider>
     </EditorContext.Provider>

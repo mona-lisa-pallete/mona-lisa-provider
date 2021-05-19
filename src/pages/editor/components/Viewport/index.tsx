@@ -6,6 +6,8 @@ import ViewportItem from '../ViewportItem';
 import { ViewportBox } from './index.style';
 import InsetItem from '../InsetItem';
 import DragItem from '../DragItem';
+import DvImage from '@/_components/DvImage';
+import DvContainer from '@/_components/DvContainer';
 
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
@@ -51,7 +53,7 @@ const Viewport: React.FC = () => {
   }, [state.componentList]);
 
   return (
-    <ViewportBox ref={drag} style={{ background: isStart ? '#FFAA00' : '#FFFFFF' }}>
+    <ViewportBox ref={drag}>
       {state.componentList.map((i, index) => {
         return (
           <>
@@ -77,6 +79,14 @@ const Viewport: React.FC = () => {
           </>
         );
       })}
+      <DvContainer>
+        <DvImage
+          contentProps={{
+            url:
+              'https://static-zy-com.oss-cn-hangzhou.aliyuncs.com//kbase/portallandingpage/assets/rc-upload-1616675028067-2.jpeg',
+          }}
+        />
+      </DvContainer>
     </ViewportBox>
   );
 };
