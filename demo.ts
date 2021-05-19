@@ -74,20 +74,4 @@ const json: DSL = {
   },
 };
 
-const transform = (data: DSL) => {
-  let str = '';
-  data.content.forEach((i) => {
-    if (i.contentType === 'container') {
-      str += '<div>';
-      const child = i.contentChild.map((childItem) => {
-        return `<img ${JSON.stringify(childItem.contentProp)} />`;
-      });
-      str = `${str + child}</div>`;
-    }
-  });
-  return str;
-};
-
-transform(json);
-
-export { json, transform };
+export { json };

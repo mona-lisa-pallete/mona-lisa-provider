@@ -37,3 +37,10 @@ export interface IUpdateComponentAction {
     data: any[];
   };
 }
+
+export interface ISetSelectedRefAction {
+  type: ActionType.SetSelectedRef;
+  payload: {
+    ref: string;
+  };
+}

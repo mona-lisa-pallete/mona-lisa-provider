@@ -3,11 +3,12 @@ import { useDrop } from 'react-dnd';
 import EditorContext from '../../context';
 import { ActionType } from '../../types';
 import ViewportItem from '../ViewportItem';
-import { ViewportBox } from './index.style';
+import { PhoneHeader, ViewportBox, ViewportContainer } from './index.style';
 import InsetItem from '../InsetItem';
 import DragItem from '../DragItem';
 import DvImage from '@/_components/DvImage';
 import DvContainer from '@/_components/DvContainer';
+import PreviewHeader from '@/assets/img/common/preview-header.png';
 
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
@@ -49,45 +50,56 @@ const Viewport: React.FC = () => {
 
   useEffect(() => {
     setHasDropped(false);
-    console.log(state.componentList);
   }, [state.componentList]);
 
+  const handleSelect = (ref: string) => {
+    dispatch({
+      type: ActionType.SetSelectedRef,
+      payload: {
+        ref,
+      },
+    });
+  };
+
   return (
-    <ViewportBox ref={drag}>
-      {state.componentList.map((i, index) => {
-        return (
-          <>
-            <InsetItem visible={isStart} index={index}>
-              <ViewportItem id={i.id} index={index}>
-                {i?.child &&
-                  i.child.map((childItem: any, childItemIndex: number) => {
-                    return (
-                      <DragItem
-                        id={childItemIndex}
-                        left={childItem?.style?.left}
-                        top={childItem?.style?.top}
-                        style={{
-                          position: 'absolute',
-                        }}
-                      >
-                        {childItem.text}
-                      </DragItem>
-                    );
-                  })}
-              </ViewportItem>
-            </InsetItem>
-          </>
-        );
-      })}
-      <DvContainer>
-        <DvImage
-          contentProps={{
-            url:
-              'https://static-zy-com.oss-cn-hangzhou.aliyuncs.com//kbase/portallandingpage/assets/rc-upload-1616675028067-2.jpeg',
-          }}
-        />
-      </DvContainer>
-    </ViewportBox>
+    <ViewportContainer>
+      <PhoneHeader src={PreviewHeader} />
+      <ViewportBox ref={drag}>
+        {state.dsl.content.map((i, index) => {
+          return (
+            <>
+              {(index + 1) % 2 === 0 && <InsetItem visible={isStart} index={index} />}
+              {i.contentType === 'container' && (
+                <ViewportItem id={i.elementId} index={index}>
+                  <DvContainer>
+                    {i?.contentChild &&
+                      i.contentChild.map((childItem, childItemIndex) => {
+                        return (
+                          <DragItem
+                            id={childItemIndex}
+                            left={childItem?.contentProp?.style?.left}
+                            top={childItem?.contentProp?.style?.top}
+                            style={{
+                              position: 'absolute',
+                            }}
+                            onSelect={() => {
+                              handleSelect(childItem.elementRef!);
+                            }}
+                          >
+                            {childItem.elementRef === 'DvImage' && (
+                              <DvImage contentProps={childItem.contentProp} />
+                            )}
+                          </DragItem>
+                        );
+                      })}
+                  </DvContainer>
+                </ViewportItem>
+              )}
+            </>
+          );
+        })}
+      </ViewportBox>
+    </ViewportContainer>
   );
 };
 

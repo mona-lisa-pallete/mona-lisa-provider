@@ -12,6 +12,8 @@ const reducer = (state: IState, action: IAction) => {
       return { componentList: [...action.payload.data] };
     case ActionType.UpdateComponent:
       return { componentList: [...action.payload.data] };
+    case ActionType.SetSelectedRef:
+      return { ...state, selectedElementRef: action.payload.ref };
     default:
       return state;
   }

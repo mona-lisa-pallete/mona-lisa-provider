@@ -32,7 +32,7 @@ const config = defineConfig({
   },
   theme,
   headScripts: ['//at.alicdn.com/t/font_2260391_11ut8faea2el.js'],
-  styles: ['//at.alicdn.com/t/font_2395081_m0i1tri1xbc.css'],
+  styles: ['//at.alicdn.com/t/font_2395081_pjtg7zzsnmf.css'],
   favicon: 'https://static.guorou.net/portal/logo-simple.svg',
   chainWebpack: (config, { webpack }) => {
     // config.plugin('worker-plugin').use(WorkerPlugin, [{ globalObject: 'this' }]);

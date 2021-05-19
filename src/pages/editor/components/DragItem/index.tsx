@@ -3,7 +3,7 @@ import { useDrag } from 'react-dnd';
 import { DragItemProps } from './types';
 
 const DragItem: React.FC<DragItemProps> = (props) => {
-  const { left, top, style, id } = props;
+  const { left, top, style, id, onSelect } = props;
 
   console.log(left, top, 'left');
 
@@ -23,7 +23,7 @@ const DragItem: React.FC<DragItemProps> = (props) => {
   // }
 
   return (
-    <div ref={drag} style={{ ...style, left, top }}>
+    <div ref={drag} style={{ ...style, left, top }} onClick={onSelect}>
       {props.children}
     </div>
   );

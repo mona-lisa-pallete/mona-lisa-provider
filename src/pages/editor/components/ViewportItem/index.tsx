@@ -41,7 +41,6 @@ const ViewportItem: React.FC<CardProps> = (props) => {
   return (
     <div
       style={{
-        height: '50px',
         position: 'relative',
       }}
       ref={drop}

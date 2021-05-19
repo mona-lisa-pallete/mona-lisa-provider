@@ -1,5 +1,5 @@
 import React from 'react';
-import { initState } from '.';
+import { initState } from './index';
 import { IAction, IState } from './types';
 
 interface EditorContextType {
