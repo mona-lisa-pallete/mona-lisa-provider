@@ -1,4 +1,4 @@
-import { getUploadPolicy } from '@/services/common';
+import { getUploadPolicy } from '../utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
