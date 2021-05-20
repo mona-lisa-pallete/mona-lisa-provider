@@ -1,17 +1,22 @@
 import { Form, Input } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import React from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import './form.less';
 import UploadTool from './UploadTool/';
 
 interface DvImageFormProps {
   data: any;
   onChange: (changedValues: any, allValues: any) => void;
+  actionRender: React.Component | ReactNode;
 }
 
 const DvImageForm: React.FC<DvImageFormProps> = (props) => {
-  const { children, onChange } = props;
+  const { onChange, data, actionRender } = props;
   const [form] = useForm();
+
+  useEffect(() => {
+    form.setFieldsValue(data);
+  }, [data, form]);
 
   return (
     <Form onValuesChange={onChange} form={form} layout="vertical" className="dv-image-form">
@@ -19,7 +24,7 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       <Form.Item name="title" label="组件名称">
         <Input />
       </Form.Item>
-      <Form.Item label="图片素材">
+      <Form.Item name="url" label="图片素材">
         <UploadTool />
       </Form.Item>
       <div className="dv-image-form__sub-title">组件布局</div>
@@ -45,7 +50,7 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
         </Form.Item>
       </Form.Item>
       <div className="dv-image-form__sub-title">交互配置</div>
-      {children}
+      {actionRender}
     </Form>
   );
 };

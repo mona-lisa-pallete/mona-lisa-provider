@@ -11,9 +11,13 @@ const reducer = (state: IState, action: IAction) => {
     case ActionType.InsetBoxComponentAction:
       return { componentList: [...action.payload.data] };
     case ActionType.UpdateComponent:
-      return { componentList: [...action.payload.data] };
+      return { ...state, dsl: action.payload.dsl };
     case ActionType.SetSelectedRef:
-      return { ...state, selectedElementRef: action.payload.ref };
+      return {
+        ...state,
+        selectedElementRef: action.payload.ref,
+        selectedElementId: action.payload.id,
+      };
     default:
       return state;
   }

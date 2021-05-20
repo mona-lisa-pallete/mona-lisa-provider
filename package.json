@@ -37,6 +37,7 @@
     "umi": "3.4.20"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.169",
     "@types/styled-components": "^5.1.9",
     "@umijs/fabric": "^2.3.1",
     "@umijs/test": "^3.2.24",

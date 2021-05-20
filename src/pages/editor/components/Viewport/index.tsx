@@ -52,11 +52,12 @@ const Viewport: React.FC = () => {
     setHasDropped(false);
   }, [state.componentList]);
 
-  const handleSelect = (ref: string) => {
+  const handleSelect = (ref: string, id: string) => {
     dispatch({
       type: ActionType.SetSelectedRef,
       payload: {
         ref,
+        id,
       },
     });
   };
@@ -73,17 +74,20 @@ const Viewport: React.FC = () => {
                 <ViewportItem id={i.elementId} index={index}>
                   <DvContainer>
                     {i?.contentChild &&
-                      i.contentChild.map((childItem, childItemIndex) => {
+                      i.contentChild.map((childItem) => {
                         return (
                           <DragItem
-                            id={childItemIndex}
+                            id={childItem.elementId!}
                             left={childItem?.contentProp?.style?.left}
                             top={childItem?.contentProp?.style?.top}
                             style={{
                               position: 'absolute',
+                              left: childItem?.contentProp?.style?.left,
+                              top: childItem?.contentProp?.style?.top,
                             }}
+                            active={childItem.elementId === state.selectedElementId}
                             onSelect={() => {
-                              handleSelect(childItem.elementRef!);
+                              handleSelect(childItem.elementRef!, childItem.elementId!);
                             }}
                           >
                             {childItem.elementRef === 'DvImage' && (

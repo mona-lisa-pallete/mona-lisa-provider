@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { ActionType } from './types';
+import { ActionType, DSL } from './types';
 
 export interface IAddComponentAction {
   type: ActionType.AddComponent;
@@ -34,7 +34,7 @@ export interface IInsetBoxComponentAction {
 export interface IUpdateComponentAction {
   type: ActionType.UpdateComponent;
   payload: {
-    data: any[];
+    dsl: DSL[];
   };
 }
 
@@ -42,5 +42,6 @@ export interface ISetSelectedRefAction {
   type: ActionType.SetSelectedRef;
   payload: {
     ref: string;
+    id: string;
   };
 }

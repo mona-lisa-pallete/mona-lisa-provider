@@ -1,4 +1,5 @@
 import { getUploadPolicy } from '@/services/common';
+import { PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import React, { useState } from 'react';
@@ -13,6 +14,7 @@ const getFileName = (fileName: string, uid: string) => {
 };
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
+  const { value, onChange } = props;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -35,18 +37,20 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     return Promise.resolve();
   };
 
-  const handleChange = ({ file, fileList }: UploadChangeParam<UploadFile<any>>) => {
-    const files = fileList.map((e) => {
-      return {
-        ...e,
-        url:
-          e.status === 'done'
-            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(e.name, e.uid)}`
-            : '',
-      };
-    });
+  const handleChange = ({ file }: UploadChangeParam<UploadFile<any>>) => {
+    // const files = fileList.map((e) => {
+    //   return {
+    //     ...e,
+    //     url:
+    //       e.status === 'done'
+    //         ? `https://static.guorou.net/${DIR_PATH}/${getFileName(e.name, e.uid)}`
+    //         : '',
+    //   };
+    // });
     if (file.status === 'done') {
-      console.log(files);
+      if (file && onChange) {
+        onChange(`https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`);
+      }
     }
   };
 
@@ -58,7 +62,22 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
       showUploadList={false}
       beforeUpload={handleBeforeUpload}
     >
-      {props.children}
+      {!value && (
+        <>
+          <PlusOutlined />
+          添加图片
+        </>
+      )}
+      {value && (
+        <img
+          style={{
+            margin: '0 auto',
+            display: 'block',
+            maxWidth: '288px',
+          }}
+          src={value}
+        />
+      )}
     </Upload.Dragger>
   );
 };

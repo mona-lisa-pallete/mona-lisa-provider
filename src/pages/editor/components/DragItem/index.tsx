@@ -3,9 +3,7 @@ import { useDrag } from 'react-dnd';
 import { DragItemProps } from './types';
 
 const DragItem: React.FC<DragItemProps> = (props) => {
-  const { left, top, style, id, onSelect } = props;
-
-  console.log(left, top, 'left');
+  const { left, top, style, id, onSelect, active } = props;
 
   const [, drag] = useDrag(
     () => ({
@@ -18,12 +16,17 @@ const DragItem: React.FC<DragItemProps> = (props) => {
     [left, top, id],
   );
 
-  // if (isDragging) {
-  //   return <div ref={drag} />;
-  // }
-
   return (
-    <div ref={drag} style={{ ...style, left, top }} onClick={onSelect}>
+    <div
+      ref={drag}
+      style={{
+        ...style,
+        left: `${left}px`,
+        top: `${top}px`,
+        border: active ? '3px solid #187FFE' : 'none',
+      }}
+      onClick={onSelect}
+    >
       {props.children}
     </div>
   );

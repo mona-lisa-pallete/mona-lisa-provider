@@ -4,6 +4,7 @@ export interface DragItemProps {
   left: CSSProperties['left'];
   top: CSSProperties['top'];
   style: React.CSSProperties;
-  id: number;
+  id: number | string;
   onSelect: () => void;
+  active: boolean;
 }

@@ -27,7 +27,7 @@ interface ContentProp {
   style?: CSSProperties;
 }
 
-interface DSLContent {
+export interface DSLContent {
   /** Content 类型 */
   contentType: 'container' | 'element';
   /** Content 的属性，如生命周期、样式、行为等 */
@@ -40,7 +40,7 @@ interface DSLContent {
   elementRef?: string;
 }
 
-interface DSL {
+export interface DSL {
   /** DSL 的布局内容 */
   content: DSLContent[];
   /** DSL 的行为 */
@@ -51,6 +51,7 @@ export interface IState {
   componentList: any[];
   dsl: DSL;
   selectedElementRef: undefined | string;
+  selectedElementId: undefined | string;
 }
 
 export type IAction =

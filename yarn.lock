@@ -2063,6 +2063,11 @@
   resolved "https://registry.nlark.com/@types/json5/download/@types/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
+"@types/lodash@^4.14.169":
+  version "4.14.169"
+  resolved "https://registry.nlark.com/@types/lodash/download/@types/lodash-4.14.169.tgz#83c217688f07a4d9ef8f28a3ebd1d318f6ff4cbb"
+  integrity sha1-g8IXaI8HpNnvjyij69HTGPb/TLs=
+
 "@types/mdast@^3.0.0":
   version "3.0.3"
   resolved "https://registry.npm.taobao.org/@types/mdast/download/@types/mdast-3.0.3.tgz?cache=0&sync_timestamp=1613380086694&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fmdast%2Fdownload%2F%40types%2Fmdast-3.0.3.tgz#2d7d671b1cd1ea3deb306ea75036c2a0407d2deb"

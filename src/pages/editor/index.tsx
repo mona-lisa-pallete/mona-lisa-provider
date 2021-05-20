@@ -13,7 +13,8 @@ import { Tabs } from 'antd';
 import PageForm from './components/PageForm';
 import DvImageForm from '@/_components/DvImage/form';
 import ActionForm from './components/ActionForm';
-import { IState } from './types';
+import { IState, ActionType as ReducerActionType, DSL, DSLContent } from './types';
+import { ActionType } from './components/ActionForm/types';
 
 const { TabPane } = Tabs;
 
@@ -56,11 +57,13 @@ export const initState: IState = {
     },
   },
   selectedElementRef: undefined,
+  selectedElementId: undefined,
 };
 
 const Editor: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
+  const [formData, setFormData] = useState({});
 
   useHideHeader();
 
@@ -68,12 +71,49 @@ const Editor: React.FC = () => {
     setComponentVal(val);
   };
 
-  const handleData = (changeVal, allVal) => {
-    console.log(changeVal, allVal);
+  const changeElement = (
+    content: DSL['content'],
+    id: string,
+    data: any,
+  ): DSLContent[] | undefined => {
+    const list = content.map((i) => {
+      if (i.contentChild && i.contentChild.length) {
+        i.contentChild.forEach((childItem, index) => {
+          i.contentChild![index].contentProp = data;
+        });
+      }
+      return i!;
+    });
+
+    return list!;
+  };
+
+  const handleData = (changeVal: any, allVal: any) => {
+    console.log(state.selectedElementId);
+    if (state.selectedElementId) {
+      const content = changeElement(state.dsl.content, state.selectedElementId, allVal);
+
+      dispatch({
+        type: ReducerActionType.UpdateComponent,
+        payload: {
+          dsl: {
+            ...state.dsl,
+            content,
+          },
+        },
+      });
+    }
   };
 
   useEffect(() => {
     console.log(state.selectedElementRef);
+    setFormData({
+      action: [
+        {
+          actionType: ActionType.Toast,
+        },
+      ],
+    });
   }, [state.selectedElementRef]);
 
   return (
@@ -93,9 +133,13 @@ const Editor: React.FC = () => {
                 <PageForm />
               </TabPane>
               <TabPane tab="组件配置" key="2">
-                <DvImageForm onChange={handleData} data={{}}>
-                  <ActionForm />
-                </DvImageForm>
+                {state.selectedElementRef === 'DvImage' && (
+                  <DvImageForm
+                    actionRender={<ActionForm pageData={[]} modalData={[]} />}
+                    onChange={handleData}
+                    data={formData}
+                  />
+                )}
               </TabPane>
               <TabPane tab="页面交互" key="3" />
             </Tabs>

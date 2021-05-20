@@ -1,5 +1,5 @@
-import { Button, Popover } from 'antd';
-import React, { useState } from 'react';
+import { Button, Popover, Modal, Input } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   ActionBox,
   BackBtn,
@@ -14,9 +14,24 @@ import {
   PagePopoverBtn,
   PageHeaderCol,
 } from './index.style';
+import { useLocation } from 'umi';
+import EditorContext from '../../context';
+
+const { confirm } = Modal;
 
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
+  const location: any = useLocation();
+  const { state } = useContext(EditorContext);
+  const [value, setValue] = useState(() => {
+    return JSON.stringify(state.dsl);
+  });
+  const query = location.query as { dev: string };
+
+  useEffect(() => {
+    setValue(JSON.stringify(state.dsl));
+  }, [state.dsl]);
+
   const content = (
     <PageList>
       <CreatePageBtn>
@@ -99,6 +114,37 @@ const EditorHeader: React.FC = () => {
       </PageHeaderCol>
       <PageNameBox>项目名称一</PageNameBox>
       <ActionBox>
+        {query.dev && (
+          <Button
+            style={{
+              marginRight: '10px',
+            }}
+            onClick={() => {
+              confirm({
+                title: 'Do you Want to delete these items?',
+                content: (
+                  <Input.TextArea
+                    style={{
+                      height: '500px',
+                    }}
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                    }}
+                    value={value}
+                  />
+                ),
+                onOk() {
+                  console.log('OK');
+                },
+                onCancel() {
+                  console.log('Cancel');
+                },
+              });
+            }}
+          >
+            dsl
+          </Button>
+        )}
         <Button
           style={{
             marginRight: '10px',
