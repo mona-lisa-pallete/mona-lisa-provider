@@ -5,9 +5,9 @@ export enum ActionType {
 }
 
 export enum PageType {
-  WebPage = 'webPage',
-  H5 = 'h5',
-  Mini = 'mini',
+  WebPage = 'openPage',
+  H5 = 'openH5',
+  Mini = 'openMini',
 }
 
 interface PageItem {

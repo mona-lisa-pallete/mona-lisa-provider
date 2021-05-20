@@ -5,19 +5,29 @@ import {
   IInsetBoxComponentAction,
   IUpdateComponentAction,
   ISetSelectedRefAction,
+  ISetFormData,
 } from './action';
 
 import { CSSProperties } from 'react';
+
+export enum DSLActionType {
+  openPage = 'openPage',
+  openH5 = 'openH5',
+  openMini = 'openMini',
+  toast = 'toast',
+  openModal = 'openModal',
+}
 
 interface DSLAction {
   /** 行为 ID, 由后台自动生成 */
   [actionId: string]: {
     /** 行为类型 */
-    actionType: string;
+    actionType: DSLActionType;
     /** 行为名称 */
     actionLabel: string;
     /** 行为代码, 只有自定义行为时才会有 */
     actionCode?: string;
+    actionProp?: { [key: string]: any };
   };
 }
 
@@ -25,6 +35,7 @@ interface ContentProp {
   /** 属性的键值对，由平台定义，文档: TODO */
   [key: string]: any;
   style?: CSSProperties;
+  event?: { [key: string]: string[] };
 }
 
 export interface DSLContent {
@@ -52,6 +63,7 @@ export interface IState {
   dsl: DSL;
   selectedElementRef: undefined | string;
   selectedElementId: undefined | string;
+  formData: any;
 }
 
 export type IAction =
@@ -60,7 +72,8 @@ export type IAction =
   | IInsetComponentAction
   | IInsetBoxComponentAction
   | IUpdateComponentAction
-  | ISetSelectedRefAction;
+  | ISetSelectedRefAction
+  | ISetFormData;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -69,4 +82,5 @@ export enum ActionType {
   InsetBoxComponentAction = 'INSET_BOX_COMPONENT',
   UpdateComponent = 'UPDATE_COMPONENT',
   SetSelectedRef = 'SET_SELECTED_REF',
+  SetFormData = 'SET_FORM_DATA',
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
-import { ComponentItemProps } from './types';
+import { ComponentDragItemProps } from './types';
 
-const ComponentItem: React.FC<ComponentItemProps> = (props) => {
+const ComponentDragItem: React.FC<ComponentDragItemProps> = (props) => {
   const { name } = props;
   const [, drag] = useDrag(
     () => ({
@@ -17,4 +17,4 @@ const ComponentItem: React.FC<ComponentItemProps> = (props) => {
   return <div ref={drag}>{props.children}</div>;
 };
 
-export default ComponentItem;
+export default ComponentDragItem;

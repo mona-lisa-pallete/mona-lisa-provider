@@ -45,3 +45,10 @@ export interface ISetSelectedRefAction {
     id: string;
   };
 }
+
+export interface ISetFormData {
+  type: ActionType.SetFormData;
+  payload: {
+    data: any;
+  };
+}

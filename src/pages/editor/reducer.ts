@@ -18,6 +18,11 @@ const reducer = (state: IState, action: IAction) => {
         selectedElementRef: action.payload.ref,
         selectedElementId: action.payload.id,
       };
+    case ActionType.SetFormData:
+      return {
+        ...state,
+        formData: action.payload.data,
+      };
     default:
       return state;
   }

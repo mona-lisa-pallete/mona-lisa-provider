@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import EditorContext from '../../context';
-import { ActionType } from '../../types';
+import { ActionType, DSLActionType, DSLContent } from '../../types';
 import ViewportItem from '../ViewportItem';
 import { PhoneHeader, ViewportBox, ViewportContainer } from './index.style';
 import InsetItem from '../InsetItem';
@@ -9,6 +9,7 @@ import DragItem from '../DragItem';
 import DvImage from '@/_components/DvImage';
 import DvContainer from '@/_components/DvContainer';
 import PreviewHeader from '@/assets/img/common/preview-header.png';
+import { ActionType as ActionFormType } from '../ActionForm/types';
 
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
@@ -52,12 +53,50 @@ const Viewport: React.FC = () => {
     setHasDropped(false);
   }, [state.componentList]);
 
-  const handleSelect = (ref: string, id: string) => {
+  const handleSelect = (ref: string, id: string, data: DSLContent) => {
     dispatch({
       type: ActionType.SetSelectedRef,
       payload: {
         ref,
         id,
+      },
+    });
+    const actionData = state.dsl.action;
+    const actionFormData: any = [];
+    // eslint-disable-next-line guard-for-in
+    for (const eventKey in data.contentProp.event) {
+      data.contentProp.event[eventKey].forEach((i) => {
+        console.log(actionData[i]);
+        const isOpen = [
+          DSLActionType.openH5,
+          DSLActionType.openMini,
+          DSLActionType.openPage,
+        ].includes(actionData[i].actionType);
+        const isModal = actionData[i].actionType === DSLActionType.openModal;
+        const obj: any = {
+          actionType: '',
+        };
+        if (isOpen) {
+          obj.actionType = ActionFormType.Page;
+          obj.pageType = actionData[i].actionType;
+        } else if (isModal) {
+          obj.actionType = ActionFormType.Modal;
+        } else {
+          obj.actionType = ActionFormType.Toast;
+        }
+        actionFormData.push({
+          ...obj,
+          ...actionData[i].actionProp,
+        });
+      });
+    }
+    dispatch({
+      type: ActionType.SetFormData,
+      payload: {
+        data: {
+          ...data,
+          action: actionFormData,
+        },
       },
     });
   };
@@ -87,7 +126,7 @@ const Viewport: React.FC = () => {
                             }}
                             active={childItem.elementId === state.selectedElementId}
                             onSelect={() => {
-                              handleSelect(childItem.elementRef!, childItem.elementId!);
+                              handleSelect(childItem.elementRef!, childItem.elementId!, childItem);
                             }}
                           >
                             {childItem.elementRef === 'DvImage' && (

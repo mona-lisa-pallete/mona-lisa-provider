@@ -11,9 +11,9 @@ const ActionForm: React.FC<ActionFormProps> = (props) => {
   const { pageData = [], modalData = [] } = props;
   return (
     <Form.List name="action">
-      {(fields, { add }) =>
-        fields.map((field, index) => (
-          <div>
+      {(fields, { add }) => (
+        <>
+          {fields.map((field, index) => (
             <ActionFormBox>
               <div className="dv-action-item">
                 <div className="dv-action-name">
@@ -48,8 +48,6 @@ const ActionForm: React.FC<ActionFormProps> = (props) => {
                 >
                   {({ getFieldValue }) => {
                     const actionType = getFieldValue(['action', index, 'actionType']);
-                    // console.log(actionType, 'actionType');
-
                     const isPage = actionType === ActionType.Page;
                     const isToast = actionType === ActionType.Toast;
                     const isModal = actionType === ActionType.Modal;
@@ -133,20 +131,19 @@ const ActionForm: React.FC<ActionFormProps> = (props) => {
                 </Form.Item>
               </div>
             </ActionFormBox>
-            {index + 1 === fields.length && (
-              <Button
-                type="link"
-                onClick={() => {
-                  add();
-                }}
-              >
-                <PlusOutlined style={{ fontSize: '12px' }} />
-                新增交互配置
-              </Button>
-            )}
-          </div>
-        ))
-      }
+          ))}
+          <Button
+            htmlType="button"
+            type="link"
+            onClick={() => {
+              add();
+            }}
+          >
+            <PlusOutlined style={{ fontSize: '12px' }} />
+            新增交互配置
+          </Button>
+        </>
+      )}
     </Form.List>
   );
 };

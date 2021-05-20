@@ -14,7 +14,7 @@ import PageForm from './components/PageForm';
 import DvImageForm from '@/_components/DvImage/form';
 import ActionForm from './components/ActionForm';
 import { IState, ActionType as ReducerActionType, DSL, DSLContent } from './types';
-import { ActionType } from './components/ActionForm/types';
+import { getComponents } from '@/services/editor';
 
 const { TabPane } = Tabs;
 
@@ -39,7 +39,10 @@ export const initState: IState = {
                 top: '30px',
                 width: '300px',
               },
-              onClick: ['bca84122a2a498e30300bce50b2ca490'],
+              event: {
+                onClick: ['bca84122a2a498e30300bce50b2ca490'],
+                onBlur: ['2'],
+              },
               url:
                 'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
             },
@@ -54,16 +57,20 @@ export const initState: IState = {
         actionLabel: '打开新页面',
         actionType: 'openPage',
       },
+      2: {
+        actionLabel: '打开新页面',
+        actionType: 'toast',
+      },
     },
   },
   selectedElementRef: undefined,
   selectedElementId: undefined,
+  formData: {},
 };
 
 const Editor: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
-  const [formData, setFormData] = useState({});
 
   useHideHeader();
 
@@ -89,10 +96,11 @@ const Editor: React.FC = () => {
   };
 
   const handleData = (changeVal: any, allVal: any) => {
-    console.log(state.selectedElementId);
+    if (changeVal?.action) {
+      return;
+    }
     if (state.selectedElementId) {
       const content = changeElement(state.dsl.content, state.selectedElementId, allVal);
-
       dispatch({
         type: ReducerActionType.UpdateComponent,
         payload: {
@@ -106,15 +114,8 @@ const Editor: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(state.selectedElementRef);
-    setFormData({
-      action: [
-        {
-          actionType: ActionType.Toast,
-        },
-      ],
-    });
-  }, [state.selectedElementRef]);
+    getComponents();
+  }, []);
 
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
@@ -137,7 +138,7 @@ const Editor: React.FC = () => {
                   <DvImageForm
                     actionRender={<ActionForm pageData={[]} modalData={[]} />}
                     onChange={handleData}
-                    data={formData}
+                    data={state.formData}
                   />
                 )}
               </TabPane>

@@ -13,3 +13,10 @@ export interface IAddPageRequest {
 }
 
 export interface IAddPageReponse {}
+
+export interface IGetComponentsReponse {
+  id: number;
+  ref: string;
+  label: string;
+  cdnPath: string;
+}

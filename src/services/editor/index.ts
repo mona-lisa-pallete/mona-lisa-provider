@@ -1,6 +1,12 @@
 import instance from '@/lib/request';
 import { IResponse } from '@/lib/request.types';
-import { IAddPreviewRequest, IAddPreviewReponse, IAddPageReponse, IAddPageRequest } from './schema';
+import {
+  IAddPreviewRequest,
+  IAddPreviewReponse,
+  IAddPageReponse,
+  IAddPageRequest,
+  IGetComponentsReponse,
+} from './schema';
 
 const addPreviewPage = async (data: IAddPreviewRequest) =>
   instance.request<IAddPreviewReponse, IResponse<IAddPreviewReponse>>({
@@ -16,4 +22,11 @@ const addPage = async (data: IAddPageRequest) =>
     method: 'POST',
   });
 
-export { addPreviewPage, addPage };
+const getComponents = async () => {
+  return instance.request<IGetComponentsReponse, IResponse<IGetComponentsReponse>>({
+    url: '/davinciapi/api/1/platform/component',
+    method: 'GET',
+  });
+};
+
+export { addPreviewPage, addPage, getComponents };
