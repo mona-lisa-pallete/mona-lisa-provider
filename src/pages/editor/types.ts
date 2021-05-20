@@ -10,19 +10,19 @@ import {
 
 import { CSSProperties } from 'react';
 
-export enum DSLActionType {
-  openPage = 'openPage',
-  openH5 = 'openH5',
-  openMini = 'openMini',
-  toast = 'toast',
-  openModal = 'openModal',
-}
+export const DSLActionType = {
+  openPage: 'openPage',
+  openH5: 'openH5',
+  openMini: 'openMini',
+  toast: 'toast',
+  openModal: 'openModal',
+};
 
 interface DSLAction {
   /** 行为 ID, 由后台自动生成 */
   [actionId: string]: {
     /** 行为类型 */
-    actionType: DSLActionType;
+    actionType: keyof typeof DSLActionType;
     /** 行为名称 */
     actionLabel: string;
     /** 行为代码, 只有自定义行为时才会有 */

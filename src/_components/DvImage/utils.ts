@@ -1,7 +1,6 @@
 import { OssUploadPolicy } from './schema';
 
 import axios from 'axios';
-import { message } from 'antd';
 
 interface IResponse<T> {
   code: number;
@@ -18,10 +17,7 @@ requestInstance.interceptors.request.use((config) => {
 });
 
 requestInstance.interceptors.response.use((response: any) => {
-  if (response.code !== 0) {
-    message.error(response.msg);
-  }
-  return response;
+  return response.data;
 });
 
 export default requestInstance;

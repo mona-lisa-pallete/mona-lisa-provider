@@ -13,7 +13,7 @@ import { Tabs } from 'antd';
 import PageForm from './components/PageForm';
 import DvImageForm from '@/_components/DvImage/form';
 import ActionForm from './components/ActionForm';
-import { IState, ActionType as ReducerActionType, DSL, DSLContent } from './types';
+import { IState, ActionType as ReducerActionType, DSL, DSLContent, IAction } from './types';
 import { getComponents } from '@/services/editor';
 
 const { TabPane } = Tabs;
@@ -69,7 +69,7 @@ export const initState: IState = {
 };
 
 const Editor: React.FC = () => {
-  const [state, dispatch] = useReducer(reducer, initState);
+  const [state, dispatch] = useReducer<React.Reducer<IAction, IState>>(reducer, initState);
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
 
   useHideHeader();
