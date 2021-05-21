@@ -18,20 +18,29 @@ import { useLocation } from 'umi';
 import EditorContext from '../../context';
 import { addPreviewPage } from '@/services/editor';
 
-const { confirm } = Modal;
-
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
   const location: any = useLocation();
   const { state } = useContext(EditorContext);
-  const [value, setValue] = useState(() => {
-    return JSON.stringify(state.dsl);
-  });
+  const [value, setValue] = useState('');
+  const [visible, setVisible] = useState(false);
   const query = location.query as { dev: string };
 
   useEffect(() => {
     setValue(JSON.stringify(state.dsl));
-  }, [state.dsl]);
+  }, []);
+
+  const TextArea = (
+    <Input.TextArea
+      value={value}
+      style={{
+        height: '400px',
+      }}
+      onChange={(e) => {
+        setValue(e.target.value);
+      }}
+    />
+  );
 
   const content = (
     <PageList>
@@ -121,30 +130,7 @@ const EditorHeader: React.FC = () => {
               marginRight: '10px',
             }}
             onClick={() => {
-              confirm({
-                title: 'Do you Want to delete these items?',
-                content: (
-                  <Input.TextArea
-                    style={{
-                      height: '500px',
-                    }}
-                    onChange={(e) => {
-                      setValue(e.target.value);
-                    }}
-                    value={value}
-                  />
-                ),
-                onOk() {
-                  console.log('OK');
-                  addPreviewPage({
-                    dsl: JSON.parse(value),
-                    page: '1',
-                  });
-                },
-                onCancel() {
-                  console.log('Cancel');
-                },
-              });
+              setVisible(true);
             }}
           >
             dsl
@@ -159,6 +145,24 @@ const EditorHeader: React.FC = () => {
         </Button>
         <Button type="primary">保存</Button>
       </ActionBox>
+      <Modal
+        title="dsl"
+        visible={visible}
+        onOk={async () => {
+          const res = await addPreviewPage({
+            dsl: JSON.parse(value),
+            page: '1',
+          });
+          if (res.code === 0) {
+            window.open(res.data.url);
+          }
+        }}
+        onCancel={() => {
+          setVisible(false);
+        }}
+      >
+        {TextArea}
+      </Modal>
     </EditorHeaderContainer>
   );
 };

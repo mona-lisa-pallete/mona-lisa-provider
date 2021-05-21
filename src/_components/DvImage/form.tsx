@@ -27,29 +27,6 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       <Form.Item name="url" label="图片素材">
         <UploadTool />
       </Form.Item>
-      <div className="dv-image-form__sub-title">组件布局</div>
-      <Form.Item label="所处位置">
-        <Form.Item noStyle name={['style', 'left']}>
-          <Input
-            style={{
-              width: '135px',
-              marginRight: '16px',
-            }}
-            type="number"
-            suffix="X"
-          />
-        </Form.Item>
-        <Form.Item noStyle name={['style', 'top']}>
-          <Input
-            style={{
-              width: '135px',
-            }}
-            type="number"
-            suffix="Y"
-          />
-        </Form.Item>
-      </Form.Item>
-      <div className="dv-image-form__sub-title">交互配置</div>
       {actionRender}
     </Form>
   );
