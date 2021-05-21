@@ -16,6 +16,7 @@ import {
 } from './index.style';
 import { useLocation } from 'umi';
 import EditorContext from '../../context';
+import { addPreviewPage } from '@/services/editor';
 
 const { confirm } = Modal;
 
@@ -135,6 +136,10 @@ const EditorHeader: React.FC = () => {
                 ),
                 onOk() {
                   console.log('OK');
+                  addPreviewPage({
+                    dsl: value,
+                    page: '1',
+                  });
                 },
                 onCancel() {
                   console.log('Cancel');

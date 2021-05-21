@@ -66,7 +66,6 @@ const Viewport: React.FC = () => {
     // eslint-disable-next-line guard-for-in
     for (const eventKey in data.contentProp.event) {
       data.contentProp.event[eventKey].forEach((i) => {
-        console.log(actionData[i]);
         const isOpen = [
           DSLActionType.openH5,
           DSLActionType.openMini,

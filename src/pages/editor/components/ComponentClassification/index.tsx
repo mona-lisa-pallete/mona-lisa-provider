@@ -20,6 +20,7 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
   };
 
   const Tab: any = ComponentMap.get(value)?.node as React.Component;
+  const TabProps = ComponentMap.get(value);
 
   return (
     <ComponentClassificationContainer>
@@ -39,7 +40,7 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
         })}
       </ComponentClassificationList>
       <ComponentTabs>
-        <Tab />
+        <Tab {...TabProps} />
       </ComponentTabs>
     </ComponentClassificationContainer>
   );

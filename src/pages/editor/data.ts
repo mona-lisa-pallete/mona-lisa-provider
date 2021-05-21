@@ -1,5 +1,6 @@
 import React from 'react';
 import { PictureTab } from './components/ComponentTab/';
+import PictureImg from '@/assets/img/component/pic.png';
 
 enum ComponentType {
   Picture = 'picture',
@@ -12,6 +13,7 @@ interface ComponentInfo {
   name: string;
   icon: string;
   node: React.Component;
+  img: any;
 }
 
 const ComponentMap = new Map<ComponentType, ComponentInfo>([
@@ -21,6 +23,7 @@ const ComponentMap = new Map<ComponentType, ComponentInfo>([
       name: '图片',
       icon: 'icon-pic',
       node: PictureTab,
+      img: PictureImg,
     },
   ],
   [

@@ -59,7 +59,6 @@ export interface DSL {
 }
 
 export interface IState {
-  componentList: any[];
   dsl: DSL;
   selectedElementRef: undefined | string;
   selectedElementId: undefined | string;

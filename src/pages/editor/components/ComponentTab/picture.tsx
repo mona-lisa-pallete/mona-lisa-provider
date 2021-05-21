@@ -2,12 +2,19 @@ import React from 'react';
 import ComponentDragItem from '../ComponentDragItem';
 import { TabBox, TabItemName } from './index.style';
 
-const PictureTab: React.FC = () => {
+interface PictureTabProps {
+  img: string;
+}
+
+const PictureTab: React.FC<PictureTabProps> = (props) => {
+  const { img } = props;
+
   return (
     <TabBox>
       <TabItemName>图片组件</TabItemName>
       <ComponentDragItem name="componentDrag">
         <img
+          src={img}
           style={{
             width: '168px',
             height: '168px',

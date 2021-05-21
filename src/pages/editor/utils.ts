@@ -1,0 +1,3 @@
+const conversionActionData = () => {};
+
+export { conversionActionData };
