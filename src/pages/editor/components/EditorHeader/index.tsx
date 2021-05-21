@@ -137,7 +137,7 @@ const EditorHeader: React.FC = () => {
                 onOk() {
                   console.log('OK');
                   addPreviewPage({
-                    dsl: value,
+                    dsl: JSON.parse(value),
                     page: '1',
                   });
                 },
