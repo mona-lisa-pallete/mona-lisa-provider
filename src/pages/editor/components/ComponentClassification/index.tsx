@@ -12,7 +12,7 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
   const { value, data, onChange } = props;
 
   useEffect(() => {
-    console.log(value);
+    // console.log(value);
   }, []);
 
   const handleVal = (val: ComponentType) => {
