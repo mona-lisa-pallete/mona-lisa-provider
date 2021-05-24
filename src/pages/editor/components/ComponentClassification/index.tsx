@@ -25,9 +25,10 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
   return (
     <ComponentClassificationContainer>
       <ComponentClassificationList>
-        {data.map((i) => {
+        {data.map((i, idx) => {
           return (
             <ComponentClassificationItem
+              key={idx}
               onClick={() => {
                 handleVal(i.type);
               }}

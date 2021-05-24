@@ -5,7 +5,7 @@ import ViewportBox from './components/Viewport';
 import EditorContext from './context';
 import reducer from './reducer';
 import ComponentClassification from './components/ComponentClassification';
-import { useHideHeader } from './hooks';
+import { useHideHeader, useWidgetMeta } from './hooks';
 import EditorHeader from './components/EditorHeader';
 import { ComponentData, ComponentType } from './data';
 import { EditorConfig, EditorMain } from './index.style';
@@ -21,6 +21,35 @@ const { TabPane } = Tabs;
 export const initState: IState = {
   dsl: {
     content: [
+      // {
+      //   contentType: 'container',
+      //   contentProp: {
+      //     style: {
+      //       position: 'relative',
+      //     },
+      //   },
+      //   contentChild: [
+      //     {
+      //       contentType: 'element',
+      //       contentProp: {
+      //         style: {
+      //           position: 'absolute',
+      //           left: '20px',
+      //           top: '30px',
+      //           width: '300px',
+      //         },
+      //         event: {
+      //           onClick: ['bca84122a2a498e30300bce50b2ca490'],
+      //           onBlur: ['2'],
+      //         },
+      //         url:
+      //           'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
+      //       },
+      //       elementId: '1',
+      //       elementRef: 'DvImage',
+      //     },
+      //   ],
+      // },
       {
         contentType: 'container',
         contentProp: {
@@ -31,22 +60,9 @@ export const initState: IState = {
         contentChild: [
           {
             contentType: 'element',
-            contentProp: {
-              style: {
-                position: 'absolute',
-                left: '20px',
-                top: '30px',
-                width: '300px',
-              },
-              event: {
-                onClick: ['bca84122a2a498e30300bce50b2ca490'],
-                onBlur: ['2'],
-              },
-              url:
-                'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
-            },
-            elementId: '1',
-            elementRef: 'DvImage',
+            contentProp: {},
+            elementId: '2',
+            elementRef: 'FormButton',
           },
         ],
       },
@@ -72,6 +88,9 @@ const Editor: React.FC = () => {
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
 
   useHideHeader();
+
+  const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(state.selectedElementRef);
+  console.log(fetchingMeta, widgetMeta);
 
   const handleComponentVal = (val: ComponentType) => {
     setComponentVal(val);
