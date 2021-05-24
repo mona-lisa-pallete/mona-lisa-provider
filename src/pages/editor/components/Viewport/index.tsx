@@ -6,10 +6,11 @@ import ViewportItem from '../ViewportItem';
 import { PhoneHeader, ViewportBox, ViewportContainer } from './index.style';
 import InsetItem from '../InsetItem';
 import DragItem from '../DragItem';
-import DvImage from '@/_components/DvImage';
+// import DvImage from '@/_components/DvImage';
 import DvContainer from '@/_components/DvContainer';
 import PreviewHeader from '@/assets/img/common/preview-header.png';
 import { ActionType as ActionFormType } from '../ActionForm/types';
+import { CompLoader } from './comp-loader';
 
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
@@ -106,7 +107,7 @@ const Viewport: React.FC = () => {
       <ViewportBox ref={drag}>
         {state.dsl.content.map((i, index) => {
           return (
-            <>
+            <div key={index}>
               {(index + 1) % 2 === 0 && <InsetItem visible={isStart} index={index} />}
               {i.contentType === 'container' && (
                 <ViewportItem id={i.elementId} index={index}>
@@ -118,6 +119,7 @@ const Viewport: React.FC = () => {
                             id={childItem.elementId!}
                             left={childItem?.contentProp?.style?.left}
                             top={childItem?.contentProp?.style?.top}
+                            key={childItem.elementId}
                             style={{
                               position: 'absolute',
                               left: childItem?.contentProp?.style?.left,
@@ -128,16 +130,20 @@ const Viewport: React.FC = () => {
                               handleSelect(childItem.elementRef!, childItem.elementId!, childItem);
                             }}
                           >
-                            {childItem.elementRef === 'DvImage' && (
+                            <CompLoader
+                              elementRef={childItem.elementRef}
+                              contentProps={childItem.contentProp}
+                            />
+                            {/* {childItem.elementRef === 'DvImage' && (
                               <DvImage contentProps={childItem.contentProp} />
-                            )}
+                            )} */}
                           </DragItem>
                         );
                       })}
                   </DvContainer>
                 </ViewportItem>
               )}
-            </>
+            </div>
           );
         })}
       </ViewportBox>

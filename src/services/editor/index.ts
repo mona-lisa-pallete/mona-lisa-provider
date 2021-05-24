@@ -29,4 +29,13 @@ const getComponents = async () => {
   });
 };
 
-export { addPreviewPage, addPage, getComponents };
+/**
+ * 模拟通过 api 获取组件 meta
+ * @param elementRef
+ * @returns
+ */
+const getCompMeta = async (elementRef: string) => {
+  return fetch(`http://127.0.0.1:22111/${elementRef}.json`).then((res) => res.json());
+};
+
+export { addPreviewPage, addPage, getComponents, getCompMeta };
