@@ -83,6 +83,14 @@ export const initState: IState = {
   formData: {},
 };
 
+const CompPropEditorLoader = ({ widgetMeta, onChange }) => {
+  const hasMeta = !!widgetMeta;
+  const FormComp = hasMeta
+    ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
+    : 'div';
+  return hasMeta ? <FormComp onChange={onChange} /> : null;
+};
+
 const Editor: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
@@ -149,18 +157,24 @@ const Editor: React.FC = () => {
           />
           <ViewportBox />
           <EditorConfig>
-            <Tabs>
+            <Tabs defaultActiveKey="2">
               <TabPane tab="页面设置" key="1">
                 <PageForm />
               </TabPane>
               <TabPane tab="组件配置" key="2">
-                {state.selectedElementRef === 'DvImage' && (
+                <CompPropEditorLoader
+                  widgetMeta={widgetMeta}
+                  onChange={(val) => {
+                    console.log(val);
+                  }}
+                />
+                {/* {state.selectedElementRef === 'DvImage' && (
                   <DvImageForm
                     actionRender={<ActionForm pageData={[]} modalData={[]} />}
                     onChange={handleData}
                     data={state.formData}
                   />
-                )}
+                )} */}
               </TabPane>
               <TabPane tab="页面交互" key="3" />
             </Tabs>
