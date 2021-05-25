@@ -100,7 +100,6 @@ const Viewport: React.FC = () => {
       },
     });
   };
-
   return (
     <ViewportContainer>
       <PhoneHeader src={PreviewHeader} />
@@ -131,12 +130,9 @@ const Viewport: React.FC = () => {
                             }}
                           >
                             <CompLoader
-                              elementRef={childItem.elementRef}
+                              elementRef={childItem.elementRef!}
                               contentProps={childItem.contentProp}
                             />
-                            {/* {childItem.elementRef === 'DvImage' && (
-                              <DvImage contentProps={childItem.contentProp} />
-                            )} */}
                           </DragItem>
                         );
                       })}

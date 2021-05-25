@@ -11,9 +11,9 @@ import { ComponentData, ComponentType } from './data';
 import { EditorConfig, EditorMain } from './index.style';
 import { Tabs } from 'antd';
 import PageForm from './components/PageForm';
-import DvImageForm from '@/_components/DvImage/form';
-import ActionForm from './components/ActionForm';
-import { IState, ActionType as ReducerActionType, DSL, DSLContent } from './types';
+// import DvImageForm from '@/_components/DvImage/form';
+// import ActionForm from './components/ActionForm';
+import { IState } from './types';
 import { getComponents } from '@/services/editor';
 
 const { TabPane } = Tabs;
@@ -60,9 +60,22 @@ export const initState: IState = {
         contentChild: [
           {
             contentType: 'element',
-            contentProp: {},
+            contentProp: {
+              style: {
+                position: 'absolute',
+                left: '20px',
+                top: '30px',
+                width: '300px',
+              },
+              event: {
+                onClick: ['bca84122a2a498e30300bce50b2ca490'],
+                onBlur: ['2'],
+              },
+              url:
+                'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
+            },
             elementId: '2',
-            elementRef: 'FormButton',
+            elementRef: 'DvImage',
           },
         ],
       },
@@ -83,7 +96,7 @@ export const initState: IState = {
   formData: {},
 };
 
-const CompPropEditorLoader = ({ widgetMeta, onChange }) => {
+const CompPropEditorLoader = ({ widgetMeta, onChange }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
@@ -104,42 +117,42 @@ const Editor: React.FC = () => {
     setComponentVal(val);
   };
 
-  const changeElement = (
-    content: DSL['content'],
-    id: string,
-    data: any,
-  ): DSLContent[] | undefined => {
-    const list = content.map((i) => {
-      if (i.contentChild && i.contentChild.length) {
-        i.contentChild.forEach((childItem, index) => {
-          i.contentChild![index].contentProp = data;
-        });
-      }
-      return i!;
-    });
+  // const changeElement = (
+  //   content: DSL['content'],
+  //   id: string,
+  //   data: any,
+  // ): DSLContent[] | undefined => {
+  //   const list = content.map((i) => {
+  //     if (i.contentChild && i.contentChild.length) {
+  //       i.contentChild.forEach((childItem, index) => {
+  //         i.contentChild![index].contentProp = data;
+  //       });
+  //     }
+  //     return i!;
+  //   });
 
-    return list!;
-  };
+  //   return list!;
+  // };
 
-  const handleData = (changeVal: any, allVal: any) => {
-    if (changeVal?.action) {
-      console.log(allVal);
+  // const handleData = (changeVal: any, allVal: any) => {
+  //   if (changeVal?.action) {
+  //     console.log(allVal);
 
-      return;
-    }
-    if (state.selectedElementId) {
-      const content = changeElement(state.dsl.content, state.selectedElementId, allVal);
-      dispatch({
-        type: ReducerActionType.UpdateComponent,
-        payload: {
-          dsl: {
-            ...state.dsl,
-            content,
-          },
-        },
-      });
-    }
-  };
+  //     return;
+  //   }
+  //   if (state.selectedElementId) {
+  //     const content = changeElement(state.dsl.content, state.selectedElementId, allVal);
+  //     dispatch({
+  //       type: ReducerActionType.UpdateComponent,
+  //       payload: {
+  //         dsl: {
+  //           ...state.dsl,
+  //           content,
+  //         },
+  //       },
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     getComponents();

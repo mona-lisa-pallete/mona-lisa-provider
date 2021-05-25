@@ -31,13 +31,27 @@ const config = defineConfig({
     headerLogo: 'https://static.guorou.net/course-static/22a23e8987c449708948925fab439ad3.svg',
   },
   theme,
-  headScripts: ['//at.alicdn.com/t/font_2260391_11ut8faea2el.js'],
-  styles: ['//at.alicdn.com/t/font_2395081_pjtg7zzsnmf.css'],
+  headScripts: [
+    '//static.guorou.net/course-static/fad6f1187bf044528f72e253f124797f.js',
+    '//cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js',
+    '//at.alicdn.com/t/font_2260391_11ut8faea2el.js',
+    '//static.guorou.net/course-static/88f475f5a0514b8e9c898624166d6ea2.js',
+    '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js',
+    '//unpkg.com/antd@4.15.6/dist/antd.min.js',
+  ],
+  externals: {
+    react: 'window.reactVendor.React',
+    'react-dom': 'window.reactVendor.ReactDOM',
+    antd: 'antd',
+  },
+  styles: [
+    '//at.alicdn.com/t/font_2395081_pjtg7zzsnmf.css',
+    '//cdnjs.cloudflare.com/ajax/libs/antd/4.15.6/antd.css',
+  ],
   favicon: 'https://static.guorou.net/portal/logo-simple.svg',
   chainWebpack: (config, { webpack }) => {
     // config.plugin('worker-plugin').use(WorkerPlugin, [{ globalObject: 'this' }]);
   },
-
   plugins: ['@grfe/micro-layout'],
   proxy: {
     ...devProxy,
