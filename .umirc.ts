@@ -32,14 +32,12 @@ const config = defineConfig({
   },
   theme,
   headScripts: [
-    'http://localhost:11111/reactVendor.dll.js',
-    'http://localhost:11111/taroVendor.dll.js',
-    // '//static.guorou.net/course-static/fad6f1187bf044528f72e253f124797f.js',
+    '//localhost:11111/reactVendor.dll.js',
+    '//localhost:11111/taroVendor.dll.js',
     '//cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js',
     '//at.alicdn.com/t/font_2260391_11ut8faea2el.js',
-    // '//static.guorou.net/course-static/88f475f5a0514b8e9c898624166d6ea2.js',
     '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js',
-    '//unpkg.com/antd@4.15.6/dist/antd.min.js',
+    '//localhost:11111/antd.dll.js',
   ],
   externals: {
     react: 'reactVendor.React',

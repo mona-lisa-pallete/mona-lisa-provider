@@ -29,6 +29,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
     visible,
     onOk,
     children,
+    confirmLoading = false,
     width = 400,
   } = props;
 
@@ -45,6 +46,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
         handleVisible(false);
       }}
       width={width}
+      confirmLoading={confirmLoading}
       title={
         <IconTitle
           iconStyle={{

@@ -10,11 +10,11 @@ import { useHideHeader, useWidgetMeta } from './hooks';
 import EditorHeader from './components/EditorHeader';
 import { ComponentData, ComponentType } from './data';
 import { EditorConfig, EditorMain } from './index.style';
-import { Tabs } from 'antd';
+import { Form, Tabs } from 'antd';
 import PageForm from './components/PageForm';
 // import DvImageForm from '@/_components/DvImage/form';
-// import ActionForm from './components/ActionForm';
-import { IState } from './types';
+import ActionForm from './components/ActionForm';
+import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents } from '@/services/editor';
 
 const { TabPane } = Tabs;
@@ -56,6 +56,8 @@ export const initState: IState = {
         contentProp: {
           style: {
             position: 'relative',
+            width: '100%',
+            height: '300px',
           },
         },
         contentChild: [
@@ -97,12 +99,12 @@ export const initState: IState = {
   formData: {},
 };
 
-const CompPropEditorLoader = ({ widgetMeta, onChange }: any) => {
+const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
     : 'div';
-  return hasMeta ? <FormComp onChange={onChange} /> : null;
+  return hasMeta ? <FormComp onChange={onChange} actionRender={actionRender} /> : null;
 };
 
 const Editor: React.FC = () => {
@@ -118,46 +120,50 @@ const Editor: React.FC = () => {
     setComponentVal(val);
   };
 
-  // const changeElement = (
-  //   content: DSL['content'],
-  //   id: string,
-  //   data: any,
-  // ): DSLContent[] | undefined => {
-  //   const list = content.map((i) => {
-  //     if (i.contentChild && i.contentChild.length) {
-  //       i.contentChild.forEach((childItem, index) => {
-  //         i.contentChild![index].contentProp = data;
-  //       });
-  //     }
-  //     return i!;
-  //   });
+  const changeElement = (
+    content: DSL['content'],
+    id: string,
+    data: any,
+  ): DSLContent[] | undefined => {
+    const list = content.map((i) => {
+      if (i.contentChild && i.contentChild.length) {
+        i.contentChild.forEach((childItem, index) => {
+          i.contentChild![index].contentProp = data;
+        });
+      }
+      return i!;
+    });
 
-  //   return list!;
-  // };
+    return list!;
+  };
 
-  // const handleData = (changeVal: any, allVal: any) => {
-  //   if (changeVal?.action) {
-  //     console.log(allVal);
+  const handleData = (changeVal: any, allVal: any) => {
+    if (changeVal?.action) {
+      console.log(allVal);
 
-  //     return;
-  //   }
-  //   if (state.selectedElementId) {
-  //     const content = changeElement(state.dsl.content, state.selectedElementId, allVal);
-  //     dispatch({
-  //       type: ReducerActionType.UpdateComponent,
-  //       payload: {
-  //         dsl: {
-  //           ...state.dsl,
-  //           content,
-  //         },
-  //       },
-  //     });
-  //   }
-  // };
+      return;
+    }
+    if (state.selectedElementId) {
+      const content = changeElement(state.dsl.content, state.selectedElementId, allVal);
+      dispatch({
+        type: ReducerActionType.UpdateComponent,
+        payload: {
+          dsl: {
+            ...state.dsl,
+            content,
+          },
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     getComponents();
   }, []);
+
+  const handleValues = (val: any) => {
+    console.log(val);
+  };
 
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
@@ -177,19 +183,13 @@ const Editor: React.FC = () => {
               </TabPane>
               <TabPane tab="组件配置" key="2">
                 <CompPropEditorLoader
+                  data={state.formData}
+                  onChange={handleData}
                   widgetMeta={widgetMeta}
-                  onChange={(val) => {
-                    console.log(val);
-                  }}
                 />
-                {/* 
-                {state.selectedElementRef === 'DvImage' && (
-                  <DvImageForm
-                    actionRender={<ActionForm pageData={[]} modalData={[]} />}
-                    onChange={handleData}
-                    data={state.formData}
-                  />
-                )} */}
+                <Form layout="vertical" onValuesChange={handleData}>
+                  <ActionForm pageData={[]} modalData={[]} />
+                </Form>
               </TabPane>
               <TabPane tab="页面交互" key="3" />
             </Tabs>

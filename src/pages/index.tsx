@@ -3,7 +3,7 @@ import { history } from 'umi';
 
 const HomeEntrance: React.FC = () => {
   useEffect(() => {
-    history.push('/editor');
+    history.push('/project');
   }, []);
 
   return <h1>davinci-provider</h1>;

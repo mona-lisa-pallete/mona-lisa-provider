@@ -45,7 +45,7 @@ const ComponentMap = new Map<ComponentType, ComponentInfo>([
   [
     ComponentType.Modal,
     {
-      name: '按钮',
+      name: '弹窗',
       icon: 'icon-Dialog',
       node: PictureTab,
     },

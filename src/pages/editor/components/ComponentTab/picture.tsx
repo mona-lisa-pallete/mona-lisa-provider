@@ -12,7 +12,7 @@ const PictureTab: React.FC<PictureTabProps> = (props) => {
   return (
     <TabBox>
       <TabItemName>图片组件</TabItemName>
-      <ComponentDragItem name="componentDrag">
+      <ComponentDragItem name="picture">
         <img
           src={img}
           style={{

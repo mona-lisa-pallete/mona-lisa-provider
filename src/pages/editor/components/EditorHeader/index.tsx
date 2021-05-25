@@ -28,7 +28,7 @@ const EditorHeader: React.FC = () => {
 
   useEffect(() => {
     setValue(JSON.stringify(state.dsl));
-  }, []);
+  }, [state.dsl]);
 
   const TextArea = (
     <Input.TextArea

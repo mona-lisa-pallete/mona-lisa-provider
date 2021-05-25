@@ -166,6 +166,8 @@ const Page: React.FC = () => {
     },
   ];
 
+  const getData = async () => {};
+
   const copyPage = () => {};
 
   const goToEdit = () => {
@@ -175,7 +177,7 @@ const Page: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader title="页面列表">
-        <Button type="primary">创建项目</Button>
+        <Button type="primary">创建页面</Button>
       </PageHeader>
       <PageMain>
         <ProTable<PageItem>
@@ -186,6 +188,7 @@ const Page: React.FC = () => {
           search={{
             labelWidth: 'auto',
           }}
+          request={getData}
           form={{
             labelAlign: 'left',
           }}

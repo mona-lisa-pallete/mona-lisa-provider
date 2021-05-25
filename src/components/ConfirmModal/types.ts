@@ -6,4 +6,5 @@ export interface ConfirmModalProps {
   visible: boolean;
   onOk: () => void;
   width?: number;
+  confirmLoading?: boolean;
 }

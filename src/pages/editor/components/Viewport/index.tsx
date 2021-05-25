@@ -15,6 +15,7 @@ import { CompLoader } from './comp-loader';
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
+  const [, setDropName] = useState('');
   const [{ isStart }, drag] = useDrop(
     {
       accept: 'box',
@@ -28,6 +29,8 @@ const Viewport: React.FC = () => {
         if (didDrop) {
           return;
         }
+        const itemData = monitor.getItem() as any;
+        setDropName(itemData.name);
         setHasDropped(!hasDropped);
       },
     },
@@ -36,23 +39,23 @@ const Viewport: React.FC = () => {
 
   useEffect(() => {
     if (hasDropped) {
-      dispatch({
-        type: ActionType.AddComponent,
-        payload: {
-          text: `${new Date().getTime()}`,
-          id: new Date().getTime(),
-          style: {
-            left: 0,
-            top: 0,
-          },
-        },
-      });
+      // dispatch({
+      //   type: ActionType.AddComponent,
+      //   payload: {
+      //     text: `${new Date().getTime()}`,
+      //     id: new Date().getTime(),
+      //     style: {
+      //       left: 0,
+      //       top: 0,
+      //     },
+      //   },
+      // });
     }
   }, [hasDropped]);
 
   useEffect(() => {
     setHasDropped(false);
-  }, [state.componentList]);
+  }, [state.dsl.content]);
 
   const handleSelect = (ref: string, id: string, data: DSLContent) => {
     dispatch({
@@ -100,17 +103,27 @@ const Viewport: React.FC = () => {
       },
     });
   };
+
+  // const Dom = window?.DvImageForm?.default;
+
+  // console.log(Dom, 'Dom');
+
   return (
     <ViewportContainer>
       <PhoneHeader src={PreviewHeader} />
       <ViewportBox ref={drag}>
         {state.dsl.content.map((i, index) => {
           return (
-            <div key={index}>
+            <div
+              style={{
+                width: '100%',
+              }}
+              key={index}
+            >
               {(index + 1) % 2 === 0 && <InsetItem visible={isStart} index={index} />}
               {i.contentType === 'container' && (
                 <ViewportItem id={i.elementId} index={index}>
-                  <DvContainer>
+                  <DvContainer style={i.contentProp.style}>
                     {i?.contentChild &&
                       i.contentChild.map((childItem) => {
                         return (

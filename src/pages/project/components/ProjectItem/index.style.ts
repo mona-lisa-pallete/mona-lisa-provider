@@ -19,6 +19,7 @@ export const ProjectItemName = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  min-width: calc(100% - 30px);
 `;
 
 export const ProjectItemHeader = styled.div`
