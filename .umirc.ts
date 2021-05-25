@@ -40,8 +40,8 @@ const config = defineConfig({
     '//unpkg.com/antd@4.15.6/dist/antd.min.js',
   ],
   externals: {
-    react: 'window.reactVendor.React',
-    'react-dom': 'window.reactVendor.ReactDOM',
+    react: 'reactVendor.React',
+    'react-dom': 'reactVendor.ReactDOM',
     antd: 'antd',
   },
   styles: [
