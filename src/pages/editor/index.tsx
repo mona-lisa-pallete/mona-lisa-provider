@@ -182,7 +182,8 @@ const Editor: React.FC = () => {
                     console.log(val);
                   }}
                 />
-                {/* {state.selectedElementRef === 'DvImage' && (
+                {/* 
+                {state.selectedElementRef === 'DvImage' && (
                   <DvImageForm
                     actionRender={<ActionForm pageData={[]} modalData={[]} />}
                     onChange={handleData}
