@@ -13,6 +13,12 @@ window.React = React;
 
 moment.locale('zh-cn');
 
+if (taroVendor.applyPolyfills) {
+  taroVendor.applyPolyfills().then(function () {
+    taroVendor.defineCustomElements(window);
+  });
+}
+
 export function rootContainer(container: React.ReactNode) {
   return <ConfigProvider locale={zhCN}>{container}</ConfigProvider>;
 }
