@@ -17,15 +17,16 @@ import type { ProColumns } from '@ant-design/pro-table';
 import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
 import ConfirmModal from '@/components/ConfirmModal';
-
-interface PageItem {
-  id: number;
-  url: string;
-}
+import { getPages, getPageUsers } from '@/services/page';
+import { useLocation } from 'umi';
+import { PageItem } from '@/services/page/schema';
+import moment from 'moment';
 
 const Page: React.FC = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [modelVisible, setModelVisible] = useState(false);
+  const location: any = useLocation();
+  const { query } = location;
 
   const columns: Array<ProColumns<PageItem>> = [
     {
@@ -46,14 +47,14 @@ const Page: React.FC = () => {
           <PageInfo>
             <PageImg>
               <Image
-                src={record.url}
+                src={record.thumbnailUrl}
                 preview={false}
                 className="page-img"
                 placeholder={<PlaceholderImg />}
               />
             </PageImg>
             <PageDetail>
-              <PageName>果肉名师倾心整理,语数英知识点点一语数英知识点点语数一</PageName>
+              <PageName>{record.name}</PageName>
               <PageAction>
                 <Button type="link" style={{ marginRight: '40px' }}>
                   <i className="iconicon-copy iconfont" />
@@ -88,48 +89,67 @@ const Page: React.FC = () => {
     },
     {
       title: '创建人',
-      dataIndex: 'created_at',
+      dataIndex: 'createUserName',
       valueType: 'select',
       formItemProps: {
         colon: false,
       },
       fieldProps: {
         placeholder: '请输入创建人',
-        mode: 'multiple',
-        maxTagCount: 'responsive',
+        filterOption: true,
+        showSearch: true,
+      },
+      async request() {
+        const res = await getPageUsers();
+        if (res.code === 0) {
+          return res.data.map((i) => {
+            return {
+              label: i,
+              value: i,
+            };
+          });
+        } else {
+          return [];
+        }
       },
     },
     {
       title: '创建时间',
-      dataIndex: 'created_at',
-      valueType: 'dateRange',
+      dataIndex: 'createTime',
+      // valueType: 'dateRange',
       hideInSearch: true,
-      search: {
-        transform: (value) => {
-          return {
-            startTime: value[0],
-            endTime: value[1],
-          };
-        },
+      renderText(_, record) {
+        return moment(record.updateTime).format('YYYY-MM-DD HH:MM:SS');
       },
+      // search: {
+      //   transform: (value) => {
+      //     return {
+      //       startTime: value[0],
+      //       endTime: value[1],
+      //     };
+      //   },
+      // },
     },
     {
       title: '最近修改人',
-      dataIndex: 'created_at',
+      dataIndex: 'updateUserName',
       hideInSearch: true,
     },
     {
       title: '最近修改时间',
-      dataIndex: 'created_at',
+      dataIndex: 'updateTime',
       hideInSearch: true,
-      valueType: 'dateRange',
-      search: {
-        transform: (value) => {
-          return {
-            startTime: value[0],
-            endTime: value[1],
-          };
-        },
+      // valueType: 'dateRange',
+      // search: {
+      //   transform: (value) => {
+      //     return {
+      //       startTime: value[0],
+      //       endTime: value[1],
+      //     };
+      //   },
+      // },
+      renderText(_, record) {
+        return moment(record.updateTime).format('YYYY-MM-DD HH:MM:SS');
       },
     },
     {
@@ -166,23 +186,57 @@ const Page: React.FC = () => {
     },
   ];
 
-  const getData = async () => {};
+  const getData = async (params: any = {}) => {
+    const res = await getPages({
+      ...params,
+      projectId: query.projectId,
+      currentPage: params.current,
+      limit: params.pageSize,
+    });
+    return {
+      data: res.data.list,
+      success: true,
+      total: res.data.totalCount,
+    };
+  };
 
   const copyPage = () => {};
+
+  // useEffect(() => {
+  //   const getUsersData = async () => {
+  //     const res = await getPageUsers();
+  //     if (res.code === 0) {
+  //       setUsers(
+  //         res.data.map((i) => {
+  //           return {
+  //             label: i,
+  //             value: i,
+  //           };
+  //         }),
+  //       );
+  //     }
+  //   };
+  //   getUsersData();
+  // }, []);
 
   const goToEdit = () => {
     window.open(`/davinciprovider/editor?pageId=${2}`);
   };
 
+  const addPage = () => {
+    window.open(`/davinciprovider/editor?pageId=0`);
+  };
+
   return (
     <PageContainer>
       <PageHeader title="页面列表">
-        <Button type="primary">创建页面</Button>
+        <Button type="primary" onClick={addPage}>
+          创建页面
+        </Button>
       </PageHeader>
       <PageMain>
         <ProTable<PageItem>
           bordered
-          dataSource={[{ id: 1, url: '' }]}
           columns={columns}
           rowKey="id"
           search={{

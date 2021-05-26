@@ -9,7 +9,7 @@ export interface IAddPreviewReponse {
 
 export interface IAddPageRequest {
   page: string;
-  dsl: string;
+  dsl: any;
 }
 
 export interface IAddPageReponse {}

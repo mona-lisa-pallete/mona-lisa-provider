@@ -1,10 +1,14 @@
-export interface IGetProjectRequest {
+export interface IGetPagesRequest {
   name: string;
   createUserName: string;
+  projectId: string;
+  currentPage: string;
+  limit: string;
 }
 
-export interface ProjectItem {
-  id: number;
+export interface PageItem {
+  projectId: number;
+  page: string;
   name: string;
   createUserId: number;
   createUserName: string;
@@ -12,14 +16,16 @@ export interface ProjectItem {
   updateUserName: string;
   createTime: string;
   updateTime: string;
+  status: number;
+  editVersion: number;
+  releaseVersion: number;
+  releaseUsername: string;
+  releaseTime: string;
+  thumbnailUrl: string;
 }
 
-export interface IGetProjectReponse {
+export interface IGetPagesReponse {
   totalCount: number;
   currentPage: number;
-  list: ProjectItem[];
-}
-
-export interface IAddProjectRequest {
-  name: string;
+  list: PageItem[];
 }

@@ -16,7 +16,7 @@ import {
 } from './index.style';
 import { useLocation } from 'umi';
 import EditorContext from '../../context';
-import { addPreviewPage } from '@/services/editor';
+import { addPage, addPreviewPage } from '@/services/editor';
 
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
@@ -41,6 +41,28 @@ const EditorHeader: React.FC = () => {
       }}
     />
   );
+
+  const preview = async (dsl: any) => {
+    const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
+    const res = await addPreviewPage({
+      dsl: dslData,
+      page: '1',
+    });
+    if (res.code === 0) {
+      setTimeout(() => {
+        window.open(res.data.url);
+      }, 2000);
+    }
+  };
+
+  const save = async () => {
+    await addPage({
+      dsl: state.dsl,
+      page: '1',
+    });
+    // if (res.code === 0) {
+    // }
+  };
 
   const content = (
     <PageList>
@@ -140,22 +162,21 @@ const EditorHeader: React.FC = () => {
           style={{
             marginRight: '10px',
           }}
+          onClick={() => {
+            preview(state.dsl);
+          }}
         >
           预览
         </Button>
-        <Button type="primary">保存</Button>
+        <Button type="primary" onClick={save}>
+          保存
+        </Button>
       </ActionBox>
       <Modal
         title="dsl"
         visible={visible}
-        onOk={async () => {
-          const res = await addPreviewPage({
-            dsl: JSON.parse(value),
-            page: '1',
-          });
-          if (res.code === 0) {
-            window.open(res.data.url);
-          }
+        onOk={() => {
+          preview(value);
         }}
         onCancel={() => {
           setVisible(false);

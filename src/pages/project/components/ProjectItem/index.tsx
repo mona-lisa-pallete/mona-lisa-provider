@@ -19,7 +19,11 @@ const ProjectItem: React.FC<ProjectItemProps> = (props) => {
       <ProjectItemHeader>
         <ProjectItemName>{name}</ProjectItemName>
         <Dropdown overlay={actionRender} className="form-manage-item__btn">
-          <ProjectItemIcon>
+          <ProjectItemIcon
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <MoreOutlined className="more-icon" style={{ fontSize: '19px' }} />
           </ProjectItemIcon>
         </Dropdown>

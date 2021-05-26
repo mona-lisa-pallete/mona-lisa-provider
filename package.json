@@ -33,6 +33,7 @@
     "react-dnd": "^14.0.2",
     "react-dnd-html5-backend": "^14.0.0",
     "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.3",
     "react-use": "^17.2.4",
     "styled-components": "^5.3.0",
     "umi": "3.4.20"
@@ -63,5 +64,18 @@
       "pre-commit": "f2elint commit-file-scan",
       "commit-msg": "f2elint commit-msg-scan"
     }
-  }
+  },
+  "yapi-code.domain": "http://mock.guorou.local",
+  "yapi-code.project": [
+    {
+      "name": "Davinci",
+      "token": "ef0875f913f4b4f92e634e620b68e3b9cd4cb0176551ca678a4f65f9f4158edb",
+      "domain": "http://mock.guorou.local"
+    }
+  ],
+  "yapi-code.mockNumber": "Random.natural(1000,1000)",
+  "yapi-code.mockBoolean": "false",
+  "yapi-code.mockString": "Random.cword(5, 7)",
+  "yapi-code.mockKeyWordEqual": {},
+  "yapi-code.mockKeyWordLike": {}
 }

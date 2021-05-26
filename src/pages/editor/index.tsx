@@ -22,35 +22,6 @@ const { TabPane } = Tabs;
 export const initState: IState = {
   dsl: {
     content: [
-      // {
-      //   contentType: 'container',
-      //   contentProp: {
-      //     style: {
-      //       position: 'relative',
-      //     },
-      //   },
-      //   contentChild: [
-      //     {
-      //       contentType: 'element',
-      //       contentProp: {
-      //         style: {
-      //           position: 'absolute',
-      //           left: '20px',
-      //           top: '30px',
-      //           width: '300px',
-      //         },
-      //         event: {
-      //           onClick: ['bca84122a2a498e30300bce50b2ca490'],
-      //           onBlur: ['2'],
-      //         },
-      //         url:
-      //           'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
-      //       },
-      //       elementId: '1',
-      //       elementRef: 'DvImage',
-      //     },
-      //   ],
-      // },
       {
         contentType: 'container',
         contentProp: {
@@ -138,32 +109,33 @@ const Editor: React.FC = () => {
   };
 
   const handleData = (changeVal: any, allVal: any) => {
+    console.log(changeVal);
+
     if (changeVal?.action) {
       console.log(allVal);
+      // return;
+    }
+    const data = { ...state.formData.contentProp, ...allVal };
 
-      return;
-    }
-    if (state.selectedElementId) {
-      const content = changeElement(state.dsl.content, state.selectedElementId, allVal);
-      dispatch({
-        type: ReducerActionType.UpdateComponent,
-        payload: {
-          dsl: {
-            ...state.dsl,
-            content,
-          },
-        },
-      });
-    }
+    // console.log(data, 'datadata');
+
+    // if (state.selectedElementId) {
+    //   const content = changeElement(state.dsl.content, state.selectedElementId, data);
+    //   dispatch({
+    //     type: ReducerActionType.UpdateComponent,
+    //     payload: {
+    //       dsl: {
+    //         ...state.dsl,
+    //         content,
+    //       },
+    //     },
+    //   });
+    // }
   };
 
   useEffect(() => {
     getComponents();
   }, []);
-
-  const handleValues = (val: any) => {
-    console.log(val);
-  };
 
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
@@ -187,9 +159,11 @@ const Editor: React.FC = () => {
                   onChange={handleData}
                   widgetMeta={widgetMeta}
                 />
-                <Form layout="vertical" onValuesChange={handleData}>
-                  <ActionForm pageData={[]} modalData={[]} />
-                </Form>
+                {state.selectedElementRef && (
+                  <Form layout="vertical" onValuesChange={handleData}>
+                    <ActionForm pageData={[]} modalData={[]} />
+                  </Form>
+                )}
               </TabPane>
               <TabPane tab="页面交互" key="3" />
             </Tabs>

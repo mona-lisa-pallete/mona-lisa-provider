@@ -22,10 +22,26 @@ const Project: React.FC = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [user, setUsers] = useState<Array<{ label: string; value: string }>>([]);
 
-  const menu = () => {
+  const editProject = (item: ProjectItemType) => {
+    setModalVisible(true);
+    form.setFieldsValue({
+      name: item.name,
+    });
+  };
+
+  const menu = (item: ProjectItemType) => {
     return (
       <MenuBtn>
-        <Menu.Item key="edit">删除</Menu.Item>
+        {/* <Menu.Item key="edit">删除</Menu.Item> */}
+        <Menu.Item
+          key="edit"
+          onClick={(e) => {
+            e.domEvent.stopPropagation();
+            editProject(item);
+          }}
+        >
+          编辑项目
+        </Menu.Item>
       </MenuBtn>
     );
   };
@@ -111,6 +127,7 @@ const Project: React.FC = () => {
           <ProFormSelect
             fieldProps={{
               filterOption: true,
+              showSearch: true,
             }}
             options={user}
             name="creater"
@@ -127,7 +144,7 @@ const Project: React.FC = () => {
                 onClick={() => {
                   goToPage(i.id);
                 }}
-                actionRender={menu()}
+                actionRender={menu(i)}
               />
             );
           })}
