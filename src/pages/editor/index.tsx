@@ -15,55 +15,56 @@ import PageForm from './components/PageForm';
 // import DvImageForm from '@/_components/DvImage/form';
 import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
-import { getComponents } from '@/services/editor';
+import { getComponents, getPage } from '@/services/editor';
+import { useLocation } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
 export const initState: IState = {
   dsl: {
-    content: [
-      {
-        contentType: 'container',
-        contentProp: {
-          style: {
-            position: 'relative',
-            width: '100%',
-            height: '300px',
-          },
-        },
-        contentChild: [
-          {
-            contentType: 'element',
-            contentProp: {
-              style: {
-                position: 'absolute',
-                left: '20px',
-                top: '30px',
-                width: '300px',
-              },
-              event: {
-                onClick: ['bca84122a2a498e30300bce50b2ca490'],
-                onBlur: ['2'],
-              },
-              url:
-                'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
-            },
-            elementId: '2',
-            elementRef: 'DvImage',
-          },
-        ],
-      },
-    ],
-    action: {
-      bca84122a2a498e30300bce50b2ca490: {
-        actionLabel: '打开新页面',
-        actionType: 'openPage',
-      },
-      2: {
-        actionLabel: '打开新页面',
-        actionType: 'toast',
-      },
-    },
+    // content: [
+    //   {
+    //     contentType: 'container',
+    //     contentProp: {
+    //       style: {
+    //         position: 'relative',
+    //         width: '100%',
+    //         height: '300px',
+    //       },
+    //     },
+    //     contentChild: [
+    //       {
+    //         contentType: 'element',
+    //         contentProp: {
+    //           style: {
+    //             position: 'absolute',
+    //             left: '20px',
+    //             top: '30px',
+    //             width: '300px',
+    //           },
+    //           event: {
+    //             onClick: ['bca84122a2a498e30300bce50b2ca490'],
+    //             onBlur: ['2'],
+    //           },
+    //           url:
+    //             'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
+    //         },
+    //         elementId: '2',
+    //         elementRef: 'DvImage',
+    //       },
+    //     ],
+    //   },
+    // ],
+    // action: {
+    //   bca84122a2a498e30300bce50b2ca490: {
+    //     actionLabel: '打开新页面',
+    //     actionType: 'openPage',
+    //   },
+    //   2: {
+    //     actionLabel: '打开新页面',
+    //     actionType: 'toast',
+    //   },
+    // },
   },
   selectedElementRef: undefined,
   selectedElementId: undefined,
@@ -81,6 +82,8 @@ const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender }: any) => {
 const Editor: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
+  const location: any = useLocation();
+  const { query } = location;
 
   useHideHeader();
 
@@ -117,21 +120,34 @@ const Editor: React.FC = () => {
     }
     const data = { ...state.formData.contentProp, ...allVal };
 
-    // console.log(data, 'datadata');
+    console.log(data, 'datadata');
 
-    // if (state.selectedElementId) {
-    //   const content = changeElement(state.dsl.content, state.selectedElementId, data);
-    //   dispatch({
-    //     type: ReducerActionType.UpdateComponent,
-    //     payload: {
-    //       dsl: {
-    //         ...state.dsl,
-    //         content,
-    //       },
-    //     },
-    //   });
-    // }
+    if (state.selectedElementId) {
+      const content = changeElement(state.dsl.content, state.selectedElementId, data);
+      dispatch({
+        type: ReducerActionType.UpdateComponent,
+        payload: {
+          dsl: {
+            ...state.dsl,
+            content,
+          },
+        },
+      });
+    }
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getPage(query.pageId);
+      dispatch({
+        type: ReducerActionType.SetPageData,
+        payload: {
+          dsl: res.data.dsl,
+        },
+      });
+    };
+    getData();
+  }, []);
 
   useEffect(() => {
     getComponents();

@@ -6,6 +6,11 @@ export interface IGetPagesRequest {
   limit: string;
 }
 
+export enum PlatformType {
+  WEB = 'WEB',
+  MINIAPP = 'MINIAPP',
+}
+
 export interface PageItem {
   projectId: number;
   page: string;
@@ -16,16 +21,21 @@ export interface PageItem {
   updateUserName: string;
   createTime: string;
   updateTime: string;
-  status: number;
+  status: 1 | 0;
   editVersion: number;
   releaseVersion: number;
   releaseUsername: string;
   releaseTime: string;
   thumbnailUrl: string;
+  platform: PlatformType[];
 }
 
 export interface IGetPagesReponse {
   totalCount: number;
   currentPage: number;
   list: PageItem[];
+}
+
+export interface IUpdatePageRequest {
+  action: 'online' | 'offline';
 }

@@ -6,6 +6,7 @@ import { getScrollWidth } from '@/utils/common';
 interface PreviewModalProp {
   onChange: () => void;
   visible: boolean;
+  h5Url: string;
 }
 const PreviewModal: React.FC<PreviewModalProp> = (props) => {
   const { visible } = props;

@@ -1,14 +1,23 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Form, Input, Menu, message } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, Menu, message, Modal } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { MenuBtn, ProjectContainer, ProjectListContainer, ProjectMain } from './index.style';
 import { QueryFilter, ProFormText, ProFormSelect } from '@ant-design/pro-form';
 import ProjectItem from './components/ProjectItem';
 import { useHistory } from 'react-router';
 import ConfirmModal from '@/components/ConfirmModal';
-import { addProject, getProjects, getProjectUsers } from '@/services/project';
+import {
+  addProject,
+  delProject,
+  getProjects,
+  getProjectUsers,
+  setProject,
+} from '@/services/project';
 import { ProjectItem as ProjectItemType } from '@/services/project/schema';
 import moment from 'moment';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 const Project: React.FC = () => {
   const history = useHistory();
@@ -21,23 +30,51 @@ const Project: React.FC = () => {
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [user, setUsers] = useState<Array<{ label: string; value: string }>>([]);
+  const [projectId, setProjectId] = useState<string | number>('');
 
-  const editProject = (item: ProjectItemType) => {
+  const editProject = (id: string | number, name: string) => {
     setModalVisible(true);
+    setProjectId(id);
     form.setFieldsValue({
-      name: item.name,
+      name,
+    });
+  };
+
+  const handleDelProject = (id: string | number) => {
+    confirm({
+      title: '提示',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除之后暂时无法找回，是否确认删除？',
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      async onOk() {
+        const res = await delProject(id);
+        if (res.code === 0) {
+          message.success('删除成功');
+        }
+      },
     });
   };
 
   const menu = (item: ProjectItemType) => {
     return (
       <MenuBtn>
-        {/* <Menu.Item key="edit">删除</Menu.Item> */}
+        <Menu.Item
+          key="del"
+          onClick={(e) => {
+            e.domEvent.stopPropagation();
+            handleDelProject(item.id);
+          }}
+        >
+          删除项目
+        </Menu.Item>
         <Menu.Item
           key="edit"
           onClick={(e) => {
             e.domEvent.stopPropagation();
-            editProject(item);
+            editProject(item.id, item.name);
           }}
         >
           编辑项目
@@ -63,25 +100,50 @@ const Project: React.FC = () => {
       message.success('创建成功');
       setConfirmLoading(false);
       setModalVisible(false);
+      getData();
     }
   };
 
-  const goToPage = (projectId: number) => {
+  const setProjectData = async (values: any) => {
+    setConfirmLoading(true);
+    const res = await setProject(projectId, {
+      name: values.name,
+    });
+    if (res.code === 0) {
+      message.success('修改成功');
+      setConfirmLoading(false);
+      setModalVisible(false);
+      getData();
+    }
+  };
+
+  const handleProjectData = (values: any) => {
+    const isEdit = !!projectId;
+    if (isEdit) {
+      setProjectData(values);
+    } else {
+      addProjectData(values);
+    }
+  };
+
+  const goToPage = (projectRouteId: number) => {
+    // @ts-ignore 是有query这个参数的，但是umi没有声明
     history.push({
       pathname: `/page`,
       query: {
-        projectId: `${projectId}`,
+        projectId: `${projectRouteId}`,
       },
     });
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getProjects(query);
-      setData(res.data.list);
-    };
-    getData();
+  const getData = useCallback(async () => {
+    const res = await getProjects(query);
+    setData(res.data.list);
   }, [query]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
   useEffect(() => {
     const getUsersData = async () => {
@@ -156,7 +218,7 @@ const Project: React.FC = () => {
         confirmLoading={confirmLoading}
         onChangeVisible={setModalVisible}
       >
-        <Form onFinish={addProjectData} form={form} colon layout="vertical">
+        <Form onFinish={handleProjectData} form={form} colon layout="vertical">
           <Form.Item
             rules={[
               {

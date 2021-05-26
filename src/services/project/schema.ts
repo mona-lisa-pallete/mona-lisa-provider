@@ -23,3 +23,7 @@ export interface IGetProjectReponse {
 export interface IAddProjectRequest {
   name: string;
 }
+
+export interface ISetProjectRequest {
+  name: string;
+}

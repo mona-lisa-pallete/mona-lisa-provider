@@ -6,6 +6,7 @@ import {
   IUpdateComponentAction,
   ISetSelectedRefAction,
   ISetFormData,
+  ISetPageData,
 } from './action';
 
 import { CSSProperties } from 'react';
@@ -72,7 +73,8 @@ export type IAction =
   | IInsetBoxComponentAction
   | IUpdateComponentAction
   | ISetSelectedRefAction
-  | ISetFormData;
+  | ISetFormData
+  | ISetPageData;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -82,4 +84,5 @@ export enum ActionType {
   UpdateComponent = 'UPDATE_COMPONENT',
   SetSelectedRef = 'SET_SELECTED_REF',
   SetFormData = 'SET_FORM_DATA',
+  SetPageData = 'SET_PAGE_DATA',
 }

@@ -1,5 +1,5 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Form, Image, Radio, Select, Tag } from 'antd';
+import { Button, Form, Image, message, Modal, Radio, Select, Tag } from 'antd';
 import React, { useState } from 'react';
 import {
   CopyForm,
@@ -17,10 +17,13 @@ import type { ProColumns } from '@ant-design/pro-table';
 import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
 import ConfirmModal from '@/components/ConfirmModal';
-import { getPages, getPageUsers } from '@/services/page';
+import { delPage, getPages, getPageUsers, updatePage } from '@/services/page';
 import { useLocation } from 'umi';
-import { PageItem } from '@/services/page/schema';
+import { PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 const Page: React.FC = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -74,15 +77,31 @@ const Page: React.FC = () => {
       title: '页面类型',
       dataIndex: 'state',
       hideInSearch: true,
-      render() {
+      render(_, item) {
         return (
           <PageTag>
-            <Tag className="mini" color="#F1F8EB">
-              小程序
-            </Tag>
-            <Tag className="h5" color="#EAF4FF">
-              H5
-            </Tag>
+            {item.platform.map((p) => {
+              let node;
+              switch (p) {
+                case PlatformType.MINIAPP:
+                  node = (
+                    <Tag className="mini" color="#F1F8EB">
+                      小程序
+                    </Tag>
+                  );
+                  break;
+                case PlatformType.WEB:
+                  node = (
+                    <Tag className="h5" color="#EAF4FF">
+                      H5
+                    </Tag>
+                  );
+                  break;
+                default:
+                  break;
+              }
+              return node;
+            })}
           </PageTag>
         );
       },
@@ -157,7 +176,7 @@ const Page: React.FC = () => {
       valueType: 'option',
       hideInSearch: true,
       width: 260,
-      render() {
+      render(_, item) {
         return (
           <>
             <Button type="link" onClick={goToEdit}>
@@ -171,6 +190,26 @@ const Page: React.FC = () => {
             >
               预览
             </Button>
+            {item.status === 0 && (
+              <Button
+                type="link"
+                onClick={() => {
+                  handlePageStatus(item.page, 'online');
+                }}
+              >
+                上线
+              </Button>
+            )}
+            {item.status === 1 && (
+              <Button
+                type="link"
+                onClick={() => {
+                  handlePageStatus(item.page, 'offline');
+                }}
+              >
+                下线
+              </Button>
+            )}
             <Button
               type="link"
               onClick={() => {
@@ -179,7 +218,14 @@ const Page: React.FC = () => {
             >
               复制
             </Button>
-            <Button type="link">删除</Button>
+            <Button
+              type="link"
+              onClick={() => {
+                handleDelPage(item.page);
+              }}
+            >
+              删除
+            </Button>
           </>
         );
       },
@@ -201,6 +247,35 @@ const Page: React.FC = () => {
   };
 
   const copyPage = () => {};
+
+  const handleDelPage = (id: string | number) => {
+    confirm({
+      title: '提示',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除之后暂时无法找回，是否确认删除？',
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      async onOk() {
+        const res = await delPage(id);
+        if (res.code === 0) {
+          message.success('删除成功');
+        }
+      },
+    });
+  };
+
+  const handlePageStatus = async (id: string | number, action: 'online' | 'offline') => {
+    const res = await updatePage(id, { action });
+    const actionMsg = {
+      online: '上线成功',
+      offline: '下线成功',
+    };
+    if (res.code === 0) {
+      message.success(actionMsg[action]);
+    }
+  };
 
   // useEffect(() => {
   //   const getUsersData = async () => {
@@ -253,6 +328,7 @@ const Page: React.FC = () => {
         />
       </PageMain>
       <PreviewModal
+        h5Url=""
         onChange={() => {
           setPreviewVisible(false);
         }}

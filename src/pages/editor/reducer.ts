@@ -15,6 +15,13 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         formData: action.payload.data,
       };
+    case ActionType.SetPageData:
+      console.log(action.payload.dsl);
+
+      return {
+        ...state,
+        dsl: action.payload.dsl,
+      };
     default:
       return state;
   }

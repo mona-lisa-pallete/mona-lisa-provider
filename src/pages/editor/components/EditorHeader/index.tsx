@@ -59,6 +59,7 @@ const EditorHeader: React.FC = () => {
     await addPage({
       dsl: state.dsl,
       page: '1',
+      name: 'ffff',
     });
     // if (res.code === 0) {
     // }

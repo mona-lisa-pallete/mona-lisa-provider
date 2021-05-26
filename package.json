@@ -29,6 +29,7 @@
     "immutability-helper": "^3.1.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "qrcode": "^1.4.4",
     "react": "^17.0.2",
     "react-dnd": "^14.0.2",
     "react-dnd-html5-backend": "^14.0.0",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.169",
+    "@types/qrcode": "^1.4.0",
     "@types/styled-components": "^5.1.9",
     "@umijs/fabric": "^2.3.1",
     "@umijs/test": "^3.2.24",
