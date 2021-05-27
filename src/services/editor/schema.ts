@@ -20,6 +20,21 @@ export interface IGetComponentsReponse {
   ref: string;
   label: string;
   cdnPath: string;
+  componentMeta: {
+    version: string;
+    elementRef: string;
+    logo: string;
+    label: string;
+    eventAttr: Array<{
+      alias: string;
+      type: string;
+    }>;
+    propFormConfig: {
+      useSystemForm: boolean;
+      useCustomForm: boolean;
+      customFormRef: string;
+    };
+  };
 }
 
 export interface IGetPageReponse {

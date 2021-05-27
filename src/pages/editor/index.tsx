@@ -17,11 +17,13 @@ import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
+import { groupBy } from 'lodash';
 
 const { TabPane } = Tabs;
 
 export const initState: IState = {
   dsl: {
+    content: [],
     // content: [
     //   {
     //     contentType: 'container',
@@ -84,6 +86,7 @@ const Editor: React.FC = () => {
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
   const location: any = useLocation();
   const { query } = location;
+  const [componentMap, setComponentMap] = useState<{ [key: string]: any[] }>({});
 
   useHideHeader();
 
@@ -146,11 +149,19 @@ const Editor: React.FC = () => {
         },
       });
     };
-    getData();
+    if (query.pageId) {
+      getData();
+    }
   }, []);
 
   useEffect(() => {
-    getComponents();
+    const getComponentsData = async () => {
+      const res = await getComponents();
+      const group = groupBy(res.data, 'componentMeta.classification');
+      console.log(group);
+      setComponentMap(group);
+    };
+    getComponentsData();
   }, []);
 
   return (
@@ -159,6 +170,7 @@ const Editor: React.FC = () => {
         <EditorHeader />
         <EditorMain>
           <ComponentClassification
+            componentMap={componentMap}
             onChange={handleComponentVal}
             value={componentVal}
             data={ComponentData}

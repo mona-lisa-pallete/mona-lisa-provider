@@ -89,10 +89,10 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
     }
   }, [hasBoxDropped, index]);
 
-  useEffect(() => {
-    setHasDropped(false);
-    setHasBoxDropped(false);
-  }, [state.componentList]);
+  // useEffect(() => {
+  //   setHasDropped(false);
+  //   setHasBoxDropped(false);
+  // }, [state.componentList]);
 
   return (
     <div>

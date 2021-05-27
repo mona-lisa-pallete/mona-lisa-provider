@@ -56,7 +56,7 @@ export interface DSL {
   /** DSL 的布局内容 */
   content: DSLContent[];
   /** DSL 的行为 */
-  action: DSLAction;
+  action?: DSLAction;
 }
 
 export interface IState {

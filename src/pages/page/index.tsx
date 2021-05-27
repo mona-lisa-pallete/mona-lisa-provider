@@ -1,8 +1,7 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Form, Image, message, Modal, Radio, Select, Tag } from 'antd';
+import { Button, Image, message, Modal, Tag } from 'antd';
 import React, { useState } from 'react';
 import {
-  CopyForm,
   PageAction,
   PageContainer,
   PageDetail,
@@ -16,18 +15,19 @@ import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
-import ConfirmModal from '@/components/ConfirmModal';
+// import ConfirmModal from '@/components/ConfirmModal';
 import { delPage, getPages, getPageUsers, updatePage } from '@/services/page';
 import { useLocation } from 'umi';
 import { PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { PageEdit } from './types';
 
 const { confirm } = Modal;
 
 const Page: React.FC = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [modelVisible, setModelVisible] = useState(false);
+  // const [modelVisible, setModelVisible] = useState(false);
   const location: any = useLocation();
   const { query } = location;
 
@@ -179,7 +179,12 @@ const Page: React.FC = () => {
       render(_, item) {
         return (
           <>
-            <Button type="link" onClick={goToEdit}>
+            <Button
+              type="link"
+              onClick={() => {
+                goToEdit(item.page);
+              }}
+            >
               编辑
             </Button>
             <Button
@@ -213,7 +218,8 @@ const Page: React.FC = () => {
             <Button
               type="link"
               onClick={() => {
-                setModelVisible(true);
+                copyPage(item.page);
+                // setModelVisible(true);
               }}
             >
               复制
@@ -245,8 +251,6 @@ const Page: React.FC = () => {
       total: res.data.totalCount,
     };
   };
-
-  const copyPage = () => {};
 
   const handleDelPage = (id: string | number) => {
     confirm({
@@ -294,12 +298,16 @@ const Page: React.FC = () => {
   //   getUsersData();
   // }, []);
 
-  const goToEdit = () => {
-    window.open(`/davinciprovider/editor?pageId=${2}`);
+  const goToEdit = (page: string | number) => {
+    window.open(`/davinciprovider/editor?pageId=${page}&type=${PageEdit.Edit}`);
   };
 
   const addPage = () => {
-    window.open(`/davinciprovider/editor?pageId=0`);
+    window.open(`/davinciprovider/editor?type=${PageEdit.Add}`);
+  };
+
+  const copyPage = (page: string | number) => {
+    window.open(`/davinciprovider/editor?type=${PageEdit.Add}&pageId=${page}`);
   };
 
   return (
@@ -334,7 +342,7 @@ const Page: React.FC = () => {
         }}
         visible={previewVisible}
       />
-      <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
+      {/* <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
         <CopyForm colon layout="vertical">
           <Form.Item label="页面类型">
             <Radio.Group>
@@ -353,7 +361,7 @@ const Page: React.FC = () => {
             </Radio.Group>
           </Form.Item>
         </CopyForm>
-      </ConfirmModal>
+      </ConfirmModal> */}
     </PageContainer>
   );
 };

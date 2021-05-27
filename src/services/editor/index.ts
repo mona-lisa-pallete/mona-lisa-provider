@@ -24,7 +24,7 @@ const addPage = async (data: IAddPageRequest) =>
   });
 
 const getComponents = async () => {
-  return instance.request<IGetComponentsReponse, IResponse<IGetComponentsReponse>>({
+  return instance.request<IGetComponentsReponse[], IResponse<IGetComponentsReponse[]>>({
     url: '/davinciapi/api/1/platform/component',
     method: 'GET',
   });

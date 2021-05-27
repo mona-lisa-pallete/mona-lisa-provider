@@ -4,15 +4,17 @@ import { TabBox, TabItemName } from './index.style';
 
 interface PictureTabProps {
   img: string;
+  label: string;
+  name: string;
 }
 
-const PictureTab: React.FC<PictureTabProps> = (props) => {
-  const { img } = props;
+const ComponentTab: React.FC<PictureTabProps> = (props) => {
+  const { img, label, name } = props;
 
   return (
     <TabBox>
-      <TabItemName>图片组件</TabItemName>
-      <ComponentDragItem name="picture">
+      <TabItemName>{label}</TabItemName>
+      <ComponentDragItem name={name}>
         <img
           src={img}
           style={{
@@ -24,4 +26,4 @@ const PictureTab: React.FC<PictureTabProps> = (props) => {
     </TabBox>
   );
 };
-export default PictureTab;
+export default ComponentTab;

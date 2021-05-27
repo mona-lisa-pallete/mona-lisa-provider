@@ -1,4 +1,4 @@
-import { Button, Popover, Modal, Input } from 'antd';
+import { Button, Popover, Modal, Input, message } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   ActionBox,
@@ -24,7 +24,7 @@ const EditorHeader: React.FC = () => {
   const { state } = useContext(EditorContext);
   const [value, setValue] = useState('');
   const [visible, setVisible] = useState(false);
-  const query = location.query as { dev: string };
+  const query = location.query as { dev: string; pageId: string };
 
   useEffect(() => {
     setValue(JSON.stringify(state.dsl));
@@ -46,23 +46,23 @@ const EditorHeader: React.FC = () => {
     const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
     const res = await addPreviewPage({
       dsl: dslData,
-      page: '1',
+      page: query.pageId,
     });
     if (res.code === 0) {
-      setTimeout(() => {
-        window.open(res.data.url);
-      }, 2000);
+      // message.success('保存成功');
+      window.open(res.data.url);
     }
   };
 
   const save = async () => {
-    await addPage({
+    const res = await addPage({
       dsl: state.dsl,
-      page: '1',
+      page: query.pageId,
       name: 'ffff',
     });
-    // if (res.code === 0) {
-    // }
+    if (res.code === 0) {
+      message.success('保存成功');
+    }
   };
 
   const content = (
