@@ -1,34 +1,35 @@
 import React from 'react';
-import { useDrag } from 'react-dnd';
+import { DragItemContainer } from './index.style';
 import { DragItemProps } from './types';
 
 const DragItem: React.FC<DragItemProps> = (props) => {
-  const { left, top, style, id, onSelect, active } = props;
+  const { left, top, style, onSelect, active } = props;
 
-  const [, drag] = useDrag(
-    () => ({
-      type: 'a',
-      item: { left, top, id },
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    }),
-    [left, top, id],
-  );
+  // const [, drag] = useDrag(
+  //   () => ({
+  //     type: 'a',
+  //     item: { left, top, id },
+  //     collect: (monitor) => ({
+  //       isDragging: monitor.isDragging(),
+  //     }),
+  //   }),
+  //   [left, top, id],
+  // );
 
   return (
-    <div
-      ref={drag}
+    <DragItemContainer
+      // ref={drag}
       style={{
         ...style,
         left: `${left}px`,
         top: `${top}px`,
-        border: active ? '3px solid #187FFE' : 'none',
+        // border: active ? '3px solid #187FFE' : '3px solid rgba(0,0,0,0)',
       }}
       onClick={onSelect}
+      active={active}
     >
       {props.children}
-    </div>
+    </DragItemContainer>
   );
 };
 export default DragItem;

@@ -102,7 +102,6 @@ const EditorHeader: React.FC = () => {
 
   const handleIcon = (val: boolean) => {
     setExpendVal(val);
-    console.log(val);
   };
 
   return (

@@ -106,57 +106,65 @@ const Viewport: React.FC = () => {
     });
   };
 
-  // const Dom = window?.DvImageForm?.default;
-
-  // console.log(Dom, 'Dom');
+  const isNullData = state.dsl.content.length === 0;
+  const isLast = state.dsl.content.length > 0;
 
   return (
     <ViewportContainer>
       <PhoneHeader src={PreviewHeader} />
       <ViewportBox ref={drag}>
+        {isNullData && <InsetItem height="605px" visible={isStart} index={-1} />}
         {state?.dsl?.content?.map((i, index) => {
           return (
-            <div
-              style={{
-                width: '100%',
-              }}
-              key={index}
-            >
-              {(index + 1) % 2 === 0 && <InsetItem visible={isStart} index={index} />}
-              {i.contentType === 'container' && (
-                <ViewportItem id={i.elementId} index={index}>
-                  <DvContainer style={i.contentProp.style}>
-                    {i?.contentChild &&
-                      i.contentChild.map((childItem) => {
-                        return (
-                          <DragItem
-                            id={childItem.elementId!}
-                            left={childItem?.contentProp?.style?.left}
-                            top={childItem?.contentProp?.style?.top}
-                            key={childItem.elementId}
-                            style={{
-                              position: 'absolute',
-                              left: childItem?.contentProp?.style?.left,
-                              top: childItem?.contentProp?.style?.top,
-                            }}
-                            active={childItem.elementId === state.selectedElementId}
-                            onSelect={() => {
-                              handleSelect(childItem.elementRef!, childItem.elementId!, childItem);
-                            }}
-                          >
-                            <CompLoader
-                              elementRef={childItem.elementRef!}
-                              contentProps={childItem.contentProp}
-                            />
-                          </DragItem>
-                        );
-                      })}
-                  </DvContainer>
-                </ViewportItem>
-              )}
-            </div>
+            <>
+              <InsetItem visible={isStart} index={index} />
+              <div
+                style={{
+                  width: '100%',
+                }}
+                key={index}
+              >
+                {/* {(index + 1) % 2 === 0 && <InsetItem visible={isStart} index={index} />} */}
+                {i.contentType === 'container' && (
+                  <ViewportItem id={i.elementId} index={index}>
+                    <DvContainer style={i.contentProp.style}>
+                      {i?.contentChild &&
+                        i.contentChild.map((childItem) => {
+                          return (
+                            <DragItem
+                              id={childItem.elementId!}
+                              left={childItem?.contentProp?.style?.left}
+                              top={childItem?.contentProp?.style?.top}
+                              key={childItem.elementId}
+                              style={{
+                                position: 'absolute',
+                                left: childItem?.contentProp?.style?.left,
+                                top: childItem?.contentProp?.style?.top,
+                              }}
+                              active={childItem.elementId === state.selectedElementId}
+                              onSelect={() => {
+                                handleSelect(
+                                  childItem.elementRef!,
+                                  childItem.elementId!,
+                                  childItem,
+                                );
+                              }}
+                            >
+                              <CompLoader
+                                elementRef={childItem.elementRef!}
+                                contentProps={childItem.contentProp}
+                              />
+                            </DragItem>
+                          );
+                        })}
+                    </DvContainer>
+                  </ViewportItem>
+                )}
+              </div>
+            </>
           );
         })}
+        {isLast && <InsetItem style={{ flex: 1 }} visible={isStart} index={-2} />}
       </ViewportBox>
     </ViewportContainer>
   );

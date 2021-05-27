@@ -10,6 +10,7 @@ const apiList = [
   '/login',
   '/davinciapi',
   '/pauthapi',
+  '/enrollmentapi',
 ];
 
 let localProxy = {};
