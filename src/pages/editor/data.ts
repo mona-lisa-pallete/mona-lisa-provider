@@ -1,28 +1,23 @@
-import React from 'react';
-import { PictureTab } from './components/ComponentTab/';
 import PictureImg from '@/assets/img/component/pic.png';
 
 enum ComponentType {
-  Picture = 'picture',
-  Button = 'button',
-  Text = 'text',
-  Modal = 'modal',
+  Picture = 'Image',
+  Button = 'Button',
+  Text = 'Text',
 }
 
-interface ComponentInfo {
-  name: string;
-  icon: string;
-  node: React.Component;
-  img: any;
-}
+// interface ComponentInfo {
+//   name: string;
+//   icon: string;
+//   img: any;
+// }
 
-const ComponentMap = new Map<ComponentType, ComponentInfo>([
+const ComponentMap = new Map<ComponentType, any>([
   [
     ComponentType.Picture,
     {
       name: '图片',
       icon: 'icon-pic',
-      node: PictureTab,
       img: PictureImg,
     },
   ],
@@ -31,7 +26,6 @@ const ComponentMap = new Map<ComponentType, ComponentInfo>([
     {
       name: '按钮',
       icon: 'icon-button',
-      node: PictureTab,
     },
   ],
   [
@@ -39,15 +33,6 @@ const ComponentMap = new Map<ComponentType, ComponentInfo>([
     {
       name: '文本',
       icon: 'icon-Typography',
-      node: PictureTab,
-    },
-  ],
-  [
-    ComponentType.Modal,
-    {
-      name: '弹窗',
-      icon: 'icon-Dialog',
-      node: PictureTab,
     },
   ],
 ]);
@@ -63,10 +48,6 @@ const ComponentData = [
   },
   {
     type: ComponentType.Text,
-    node: 2,
-  },
-  {
-    type: ComponentType.Modal,
     node: 2,
   },
 ];

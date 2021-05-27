@@ -1,6 +1,11 @@
 import instance from '@/lib/request';
 import { IResponse } from '@/lib/request.types';
-import { IGetProjectReponse, IGetProjectRequest, IAddProjectRequest } from './schema';
+import {
+  IGetProjectReponse,
+  IGetProjectRequest,
+  IAddProjectRequest,
+  ISetProjectRequest,
+} from './schema';
 
 const getProjects = async (params: IGetProjectRequest) =>
   instance.request<IGetProjectReponse, IResponse<IGetProjectReponse>>({
@@ -22,4 +27,17 @@ const getProjectUsers = async () =>
     method: 'GET',
   });
 
-export { getProjects, addProject, getProjectUsers };
+const setProject = async (id: string | number, data: ISetProjectRequest) =>
+  instance.request<undefined, IResponse<undefined>>({
+    url: `/davinciapi/api/1/provider/project/${id}`,
+    data,
+    method: 'PATCH',
+  });
+
+const delProject = async (id: string | number) =>
+  instance.request<undefined, IResponse<undefined>>({
+    url: `/davinciapi/api/1/provider/project/${id}`,
+    method: 'DELETE',
+  });
+
+export { getProjects, addProject, getProjectUsers, setProject, delProject };

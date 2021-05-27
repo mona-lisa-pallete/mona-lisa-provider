@@ -7,9 +7,10 @@ import {
   ComponentTabs,
 } from './index.style';
 import { ComponentClassificationProps } from './types';
+import ComponentTab from '../ComponentTab/index';
 
 function ComponentClassification(props: ComponentClassificationProps<ComponentType>) {
-  const { value, data, onChange } = props;
+  const { value, data, onChange, componentMap } = props;
 
   useEffect(() => {
     // console.log(value);
@@ -19,8 +20,7 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
     onChange(val);
   };
 
-  const Tab: any = ComponentMap.get(value)?.node as React.Component;
-  const TabProps = ComponentMap.get(value);
+  const tabData = componentMap[value] || [];
 
   return (
     <ComponentClassificationContainer>
@@ -41,7 +41,15 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
         })}
       </ComponentClassificationList>
       <ComponentTabs>
-        <Tab {...TabProps} />
+        {tabData.map((i) => {
+          return (
+            <ComponentTab
+              img={i.componentMeta.logo}
+              label={i.componentMeta.label}
+              name={i.componentMeta.label.elementRef}
+            />
+          );
+        })}
       </ComponentTabs>
     </ComponentClassificationContainer>
   );

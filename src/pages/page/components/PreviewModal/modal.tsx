@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   PreviewModalRoot,
   PreviewPhone,
@@ -11,15 +11,28 @@ import {
   PreviewQRName,
 } from './index.style';
 import phone from '@/assets/img/common/phone.png';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import QRCode from 'qrcode';
+import copy from 'copy-to-clipboard';
 
 interface PreviewModalProp {
   onChange: () => void;
+  h5Url: string;
 }
 
 const PreviewModal: React.FC<PreviewModalProp> = (props) => {
-  const { onChange } = props;
+  const { onChange, h5Url = 'http://www.baidu.com' } = props;
+  const [h5QRCode, setH5QRCode] = useState('');
+  const [miniQRCode] = useState('');
+
+  useEffect(() => {
+    QRCode.toDataURL(h5Url, {
+      width: 128,
+    }).then((url) => {
+      setH5QRCode(url);
+    });
+  }, []);
 
   return (
     <>
@@ -32,18 +45,25 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
           </PreviewPhoneContainer>
           <PreviewQRContainer>
             <PreviewQRItem>
-              <img src="" alt="" />
+              <img src={h5QRCode} />
               <PreviewQRInfo>
                 <PreviewQRName>H5链接</PreviewQRName>
-                <PreviewQRLink>https://ant.design/components/overview-cn/</PreviewQRLink>
+                <PreviewQRLink>{h5Url}</PreviewQRLink>
                 <PreviewQRAction>
-                  <Button>复制链接</Button>
-                  <Button>下载二维码</Button>
+                  <Button
+                    onClick={() => {
+                      copy(h5Url);
+                      message.success('复制成功');
+                    }}
+                  >
+                    复制链接
+                  </Button>
+                  <Button onClick={() => {}}>下载二维码</Button>
                 </PreviewQRAction>
               </PreviewQRInfo>
             </PreviewQRItem>
             <PreviewQRItem>
-              <img src="" alt="" />
+              <img src={miniQRCode} />
               <PreviewQRInfo>
                 <PreviewQRName>小程序链接</PreviewQRName>
                 <PreviewQRLink>https://ant.design/components/overview-cn/</PreviewQRLink>

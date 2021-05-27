@@ -1,10 +1,19 @@
-export interface IGetProjectRequest {
+export interface IGetPagesRequest {
   name: string;
   createUserName: string;
+  projectId: string;
+  currentPage: string;
+  limit: string;
 }
 
-export interface ProjectItem {
-  id: number;
+export enum PlatformType {
+  WEB = 'WEB',
+  MINIAPP = 'MINIAPP',
+}
+
+export interface PageItem {
+  projectId: number;
+  page: string;
   name: string;
   createUserId: number;
   createUserName: string;
@@ -12,14 +21,21 @@ export interface ProjectItem {
   updateUserName: string;
   createTime: string;
   updateTime: string;
+  status: 1 | 0;
+  editVersion: number;
+  releaseVersion: number;
+  releaseUsername: string;
+  releaseTime: string;
+  thumbnailUrl: string;
+  platform: PlatformType[];
 }
 
-export interface IGetProjectReponse {
+export interface IGetPagesReponse {
   totalCount: number;
   currentPage: number;
-  list: ProjectItem[];
+  list: PageItem[];
 }
 
-export interface IAddProjectRequest {
-  name: string;
+export interface IUpdatePageRequest {
+  action: 'online' | 'offline';
 }

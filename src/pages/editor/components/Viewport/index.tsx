@@ -54,7 +54,9 @@ const Viewport: React.FC = () => {
   }, [hasDropped]);
 
   useEffect(() => {
-    setHasDropped(false);
+    if (state.dsl.content) {
+      setHasDropped(false);
+    }
   }, [state.dsl.content]);
 
   const handleSelect = (ref: string, id: string, data: DSLContent) => {
@@ -112,7 +114,7 @@ const Viewport: React.FC = () => {
     <ViewportContainer>
       <PhoneHeader src={PreviewHeader} />
       <ViewportBox ref={drag}>
-        {state.dsl.content.map((i, index) => {
+        {state?.dsl?.content?.map((i, index) => {
           return (
             <div
               style={{

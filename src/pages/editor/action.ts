@@ -52,3 +52,10 @@ export interface ISetFormData {
     data: any;
   };
 }
+
+export interface ISetPageData {
+  type: ActionType.SetPageData;
+  payload: {
+    dsl: any;
+  };
+}

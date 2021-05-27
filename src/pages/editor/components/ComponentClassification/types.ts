@@ -9,4 +9,7 @@ export interface ComponentClassificationProps<T> {
   value: T;
   data: Array<ComponentClassificationItem<T>>;
   onChange: (val: T) => void;
+  componentMap: {
+    [key: string]: any[];
+  };
 }

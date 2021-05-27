@@ -9,7 +9,8 @@ export interface IAddPreviewReponse {
 
 export interface IAddPageRequest {
   page: string;
-  dsl: string;
+  dsl: any;
+  name: string;
 }
 
 export interface IAddPageReponse {}
@@ -19,4 +20,34 @@ export interface IGetComponentsReponse {
   ref: string;
   label: string;
   cdnPath: string;
+  componentMeta: {
+    version: string;
+    elementRef: string;
+    logo: string;
+    label: string;
+    eventAttr: Array<{
+      alias: string;
+      type: string;
+    }>;
+    propFormConfig: {
+      useSystemForm: boolean;
+      useCustomForm: boolean;
+      customFormRef: string;
+    };
+  };
+}
+
+export interface IGetPageReponse {
+  projectId: number;
+  page: string;
+  name: string;
+  thumbnailUrl: string;
+  createUserId: number;
+  createUserName: string;
+  updateUserId: number;
+  updateUserName: string;
+  createTime: string;
+  updateTime: string;
+  status: number;
+  dsl: any;
 }

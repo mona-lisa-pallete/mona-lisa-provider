@@ -1,4 +1,4 @@
-import { Button, Popover, Modal, Input } from 'antd';
+import { Button, Popover, Modal, Input, message } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   ActionBox,
@@ -16,7 +16,7 @@ import {
 } from './index.style';
 import { useLocation } from 'umi';
 import EditorContext from '../../context';
-import { addPreviewPage } from '@/services/editor';
+import { addPage, addPreviewPage } from '@/services/editor';
 
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
@@ -24,7 +24,7 @@ const EditorHeader: React.FC = () => {
   const { state } = useContext(EditorContext);
   const [value, setValue] = useState('');
   const [visible, setVisible] = useState(false);
-  const query = location.query as { dev: string };
+  const query = location.query as { dev: string; pageId: string };
 
   useEffect(() => {
     setValue(JSON.stringify(state.dsl));
@@ -41,6 +41,29 @@ const EditorHeader: React.FC = () => {
       }}
     />
   );
+
+  const preview = async (dsl: any) => {
+    const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
+    const res = await addPreviewPage({
+      dsl: dslData,
+      page: query.pageId,
+    });
+    if (res.code === 0) {
+      // message.success('保存成功');
+      window.open(res.data.url);
+    }
+  };
+
+  const save = async () => {
+    const res = await addPage({
+      dsl: state.dsl,
+      page: query.pageId,
+      name: 'ffff',
+    });
+    if (res.code === 0) {
+      message.success('保存成功');
+    }
+  };
 
   const content = (
     <PageList>
@@ -140,22 +163,21 @@ const EditorHeader: React.FC = () => {
           style={{
             marginRight: '10px',
           }}
+          onClick={() => {
+            preview(state.dsl);
+          }}
         >
           预览
         </Button>
-        <Button type="primary">保存</Button>
+        <Button type="primary" onClick={save}>
+          保存
+        </Button>
       </ActionBox>
       <Modal
         title="dsl"
         visible={visible}
-        onOk={async () => {
-          const res = await addPreviewPage({
-            dsl: JSON.parse(value),
-            page: '1',
-          });
-          if (res.code === 0) {
-            window.open(res.data.url);
-          }
+        onOk={() => {
+          preview(value);
         }}
         onCancel={() => {
           setVisible(false);
