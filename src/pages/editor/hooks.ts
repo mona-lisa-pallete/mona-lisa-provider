@@ -1,4 +1,5 @@
 import { getCompMeta } from '@/services/editor';
+import { getDllApi } from '@/utils/host';
 import { useEffect, useState } from 'react';
 import { LoadScript } from './load-stuff';
 
@@ -48,9 +49,9 @@ const useWidgetMeta = (() => {
         await Promise.all([
           // LoadScript({ src: `http://127.0.0.1:22110/zxj/main.js` }),
           // 加载组件实例
-          LoadScript({ src: `http://127.0.0.1:22111/${elementRef}.js` }),
+          LoadScript({ src: `${getDllApi()}/${elementRef}.js` }),
           // // 加载组件的表单实例
-          LoadScript({ src: `http://127.0.0.1:22111/${customFormRef}.js` }),
+          LoadScript({ src: `${getDllApi()}/${customFormRef}.js` }),
         ]);
 
         setMetaState({

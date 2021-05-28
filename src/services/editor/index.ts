@@ -1,5 +1,6 @@
 import instance from '@/lib/request';
 import { IResponse } from '@/lib/request.types';
+import { getDllApi } from '@/utils/host';
 import {
   IAddPreviewRequest,
   IAddPreviewReponse,
@@ -42,7 +43,7 @@ const getPage = async (id: string | number) =>
  * @returns
  */
 const getCompMeta = async (elementRef: string) => {
-  return fetch(`http://127.0.0.1:22111/${elementRef}.json`).then((res) => res.json());
+  return fetch(`${getDllApi()}/${elementRef}.json`).then((res) => res.json());
 };
 
 export { addPreviewPage, addPage, getComponents, getCompMeta, getPage };
