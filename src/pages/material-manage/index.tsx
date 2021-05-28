@@ -14,6 +14,8 @@ import Picture from './components/Picture/';
 import Video from './components/Video/';
 import { PictureRef as PictureRefType } from './components/picture/types';
 import { VideoRef as VideoRefType } from './components/Video/types';
+import { FileRef as FileRefType } from './components/File/types';
+import File from './components/File/';
 
 const { TabPane } = Tabs;
 
@@ -34,6 +36,7 @@ const MaterialManage: React.FC = () => {
   const [editMaterialType, setEditMaterialType] = useState(MaterialType.Image);
   const PictureRef = useRef<PictureRefType>(null);
   const VideoRef = useRef<VideoRefType>(null);
+  const FileRef = useRef<FileRefType>(null);
   // const [userOption, setUserOption] = useState<Array<{ label: string; value: string | number }>>(
   //   [],
   // );
@@ -227,6 +230,26 @@ const MaterialManage: React.FC = () => {
               }}
               onDelMaterial={handleDelMaterial}
               ref={VideoRef}
+            />
+          </TabPane>
+          <TabPane>
+            <File
+              onPreview={(
+                selectedIndex: number,
+                data: Array<{
+                  url: string;
+                  type: MaterialType;
+                  id: number;
+                }>,
+                visible: boolean,
+              ) => {
+                handleViewer(selectedIndex, data, visible, MaterialType.File);
+              }}
+              onChangeName={(name: string, id: number) => {
+                handleChangeName(name, id, MaterialType.Video);
+              }}
+              onDelMaterial={handleDelMaterial}
+              ref={FileRef}
             />
           </TabPane>
         </Tabs>
