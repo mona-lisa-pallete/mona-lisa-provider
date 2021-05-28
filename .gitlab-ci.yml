@@ -16,7 +16,7 @@ stages:
 
 .DefaultJob:
   tags:
-    - share-runner
+    - runner2
   dependencies: []
   variables:
     GIT_STRATEGY: none
