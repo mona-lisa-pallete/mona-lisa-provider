@@ -62,6 +62,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
               height: '118px',
             },
           },
+          elementRef: 'DavinciDiv',
           contentChild: [
             {
               contentType: 'element',

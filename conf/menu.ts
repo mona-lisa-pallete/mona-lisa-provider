@@ -4,6 +4,10 @@ const Menus: MenusOptions[] = [
     // entry_dev: '//localhost:8100',
     path: '/project',
   },
+  {
+    title: '素材管理',
+    path: '/material-manage',
+  },
 ];
 interface MenusOptions {
   title: string;
