@@ -43,7 +43,12 @@ const getPage = async (id: string | number) =>
  * @returns
  */
 const getCompMeta = async (elementRef: string) => {
-  return fetch(`${getDllApi()}/${elementRef}.json`).then((res) => res.json());
+  const isLocal = window.location.host.includes('localhost');
+  if (isLocal) {
+    return fetch(`${getDllApi()}/${elementRef}.json`).then((res) => res.json());
+  } else {
+    return Promise.resolve();
+  }
 };
 
 export { addPreviewPage, addPage, getComponents, getCompMeta, getPage };
