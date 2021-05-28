@@ -41,13 +41,14 @@ const useWidgetMeta = (() => {
     }
     const [metaState, setMetaState] = useState(initState);
     useEffect(() => {
-      if (!elementRef) return;
+      if (!elementRef || !elementRefMeta) return;
       getCompMeta(elementRef).then(async (metaFromRemote) => {
+        const isLocal = window.location.host.includes('localhost');
         console.log(elementRefMeta);
-
+        const RefMeta = isLocal ? metaFromRemote : elementRefMeta;
         const {
           propFormConfig: { customFormRef },
-        } = metaFromRemote;
+        } = RefMeta;
         await Promise.all([
           // LoadScript({ src: `http://127.0.0.1:22110/zxj/main.js` }),
           // 加载组件实例
@@ -67,7 +68,7 @@ const useWidgetMeta = (() => {
       //     metadata: metaFromRemote,
       //   });
       // });
-    }, [elementRef]);
+    }, [elementRef, elementRefMeta]);
 
     return metaState;
   };

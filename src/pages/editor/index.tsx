@@ -93,11 +93,8 @@ const Editor: React.FC = () => {
   const [allComponent, setAllComponent] = useState<any[]>([]);
 
   useHideHeader();
-  const selectedRefMeta = allComponent.find((i) => i.ref === state.selectedElementRef);
-  console.log(
-    allComponent.find((i) => i.ref === state.selectedElementRef),
-    'allComponent',
-  );
+  const selectedRefMeta = allComponent.find((i) => i.ref === state.selectedElementRef)
+    ?.componentMeta;
 
   const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(
     state.selectedElementRef,
@@ -202,6 +199,16 @@ const Editor: React.FC = () => {
           dsl: res.data.dsl,
         },
       });
+      const elementRefData = res.data?.dsl?.content?.[0]?.contentChild?.[0];
+      if (elementRefData) {
+        dispatch({
+          type: ReducerActionType.SetSelectedRef,
+          payload: {
+            id: elementRefData.elementId,
+            ref: elementRefData.elementRef,
+          },
+        });
+      }
     };
     if (query.pageId) {
       getData();

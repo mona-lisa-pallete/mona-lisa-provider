@@ -18,10 +18,10 @@ const getApi = () => {
 const getDllHost = () => {
   const host: { [key: string]: string } = {
     'localhost:9999': 'http://127.0.0.1:22111',
-    'portalhome.uae.shensz.local': 'http://static.guorou.net/davinci/lib/',
-    'testportalhome.uae.shensz.local': 'http://static.guorou.net/davinci/lib/',
-    'portal.test.guorou.net': 'http://static.guorou.net/davinci/lib/',
-    'portal.guorou.net': 'http://static.guorou.net/davinci/lib/',
+    'portalhome.uae.shensz.local': 'http://static.guorou.net/davinci/lib',
+    'testportalhome.uae.shensz.local': 'http://static.guorou.net/davinci/lib',
+    'portal.test.guorou.net': 'http://static.guorou.net/davinci/lib',
+    'portal.guorou.net': 'http://static.guorou.net/davinci/lib',
   };
   return host;
 };
