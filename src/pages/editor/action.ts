@@ -34,7 +34,7 @@ export interface IInsetBoxComponentAction {
 export interface IUpdateComponentAction {
   type: ActionType.UpdateComponent;
   payload: {
-    dsl: DSL[];
+    dsl: DSL;
   };
 }
 

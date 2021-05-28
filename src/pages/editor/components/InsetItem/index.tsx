@@ -4,29 +4,30 @@ import EditorContext from '../../context';
 import { ActionType } from '../../types';
 import { InsetItemBox } from './index.style';
 import { InsetItemProps } from './types';
+import { nanoid } from 'nanoid';
 
 const InsetItem: React.FC<InsetItemProps> = (props) => {
-  const { index, visible } = props;
+  const { index, visible, height = '118px', style = {} } = props;
   const { state, dispatch } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
-  const [hasBoxDropped, setHasBoxDropped] = useState(false);
-  const [dragType, setDragType] = useState('');
+  const [hasBoxDropped] = useState(false);
+  const [elementRef, setElementRef] = useState('');
 
-  const [{ isBoxOverCurrent }, drag] = useDrop({
-    accept: 'box',
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      isBoxOverCurrent: monitor.isOver({ shallow: true }),
-    }),
-    drop(item: any, monitor) {
-      const didDrop = monitor.didDrop();
-      if (didDrop) {
-        return;
-      }
-      setDragType(item?.name);
-      setHasBoxDropped(true);
-    },
-  });
+  // const [{ isBoxOverCurrent }, drag] = useDrop({
+  //   accept: 'box',
+  //   collect: (monitor) => ({
+  //     isOver: monitor.isOver(),
+  //     isBoxOverCurrent: monitor.isOver({ shallow: true }),
+  //   }),
+  //   drop(item: any, monitor) {
+  //     const didDrop = monitor.didDrop();
+  //     if (didDrop) {
+  //       return;
+  //     }
+  //     setElementRef(item?.name);
+  //     setHasBoxDropped(true);
+  //   },
+  // });
 
   const [{ isOverCurrent }, insetDrag] = useDrop({
     accept: 'box',
@@ -39,53 +40,96 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
       if (didDrop) {
         return;
       }
-      setDragType(item?.name);
+      setElementRef(item?.name);
       setHasDropped(true);
     },
   });
 
   useEffect(() => {
     if (hasDropped) {
-      const list = state.componentList.slice();
-      list.splice(index, 0, {
-        child: [
-          {
-            text: `${dragType}${Math.ceil(Math.random() * 10)}`,
-            id: new Date().getTime(),
+      console.log(2222222);
+
+      const isNullData = index === -1;
+      const list = state.dsl.content.slice();
+      if (isNullData) {
+        const elementId = nanoid();
+        list.push({
+          contentType: 'container',
+          contentProp: {
+            style: {
+              position: 'relative',
+              width: '100%',
+              height: '118px',
+            },
           },
-        ],
-      });
-      dispatch({
-        type: ActionType.InsetComponent,
-        payload: {
-          data: list,
-        },
-      });
+          contentChild: [
+            {
+              contentType: 'element',
+              contentProp: {},
+              elementId,
+              elementRef,
+            },
+          ],
+        });
+        dispatch({
+          type: ActionType.UpdateComponent,
+          payload: {
+            dsl: {
+              content: list,
+              action: state.dsl.action,
+            },
+          },
+        });
+        dispatch({
+          type: ActionType.SetSelectedRef,
+          payload: {
+            id: elementId,
+            ref: elementRef,
+          },
+        });
+      }
+      //   const list = state.dsl.content;
+      //   list.splice(index, 0, {
+      //     child: [
+      //       {
+      //         text: `${dragType}${Math.ceil(Math.random() * 10)}`,
+      //         id: new Date().getTime(),
+      //       },
+      //     ],
+      //   });
+      //   dispatch({
+      //     type: ActionType.InsetComponent,
+      //     payload: {
+      //       data: list,
+      //     },
+      //   });
     }
-  }, [hasDropped, index]);
+  }, [hasDropped, index, elementRef, state.dsl.content]);
 
   useEffect(() => {
     if (hasBoxDropped) {
-      const list = state.componentList.slice();
-      if (list[index].child) {
-        list[index].child.push({
-          text: `${dragType}${Math.ceil(Math.random() * 10)}`,
-          id: new Date().getTime(),
-        });
-      } else {
-        list[index].child = [
-          {
-            text: `${dragType}${Math.ceil(Math.random() * 10)}`,
-            id: new Date().getTime(),
-          },
-        ];
-      }
-      dispatch({
-        type: ActionType.InsetBoxComponentAction,
-        payload: {
-          data: list,
-        },
-      });
+      const list = state.dsl.content;
+      console.log(list);
+
+      // if (list[index].child) {
+      //   list[index].child.push({
+      //     text: `${dragType}${Math.ceil(Math.random() * 10)}`,
+      //     id: new Date().getTime(),
+      //   });
+      // } else {
+      //   list[index].child = [
+      //     {
+      //       text: `${dragType}${Math.ceil(Math.random() * 10)}`,
+      //       id: new Date().getTime(),
+      //     },
+      //   ];
+      // }
+      // dispatch({
+      //   type: ActionType.InsetBoxComponentAction,
+      //   payload: {
+      //     data: list,
+      //   },
+      // });
     }
   }, [hasBoxDropped, index]);
 
@@ -95,24 +139,32 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
   // }, [state.componentList]);
 
   return (
-    <div>
+    <div
+      style={{
+        height,
+        display: visible ? 'flex' : 'none',
+        marginBottom: '20px',
+        ...style,
+      }}
+    >
       <InsetItemBox
         ref={insetDrag}
         style={{
-          border: isOverCurrent ? '1px solid blue' : 'none',
-          display: visible ? 'block' : 'none',
+          border: '1px dashed #c0c2cc',
+          background: isOverCurrent ? '#F5F5F7' : '#fff',
+          height: '100%',
         }}
       >
-        插入此处
+        放在此处{`${visible}`}
       </InsetItemBox>
-      <div
+      {/* <div
         ref={drag}
         style={{
-          border: isBoxOverCurrent ? '1px solid red' : 'none',
+          border: isBoxOverCurrent ? '1px solid #c0c2cc' : 'none',
         }}
       >
         {props.children}
-      </div>
+      </div> */}
     </div>
   );
 };

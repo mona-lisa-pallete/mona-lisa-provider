@@ -46,7 +46,7 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
             <ComponentTab
               img={i.componentMeta.logo}
               label={i.componentMeta.label}
-              name={i.componentMeta.label.elementRef}
+              name={i.componentMeta.elementRef}
             />
           );
         })}

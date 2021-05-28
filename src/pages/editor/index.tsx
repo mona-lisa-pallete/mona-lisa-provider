@@ -18,6 +18,7 @@ import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './type
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
 import { groupBy } from 'lodash';
+import { CSSProperties } from 'styled-components';
 
 const { TabPane } = Tabs;
 
@@ -73,12 +74,14 @@ export const initState: IState = {
   formData: {},
 };
 
-const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender }: any) => {
+const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, onChangeStyle }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
     : 'div';
-  return hasMeta ? <FormComp onChange={onChange} actionRender={actionRender} /> : null;
+  return hasMeta ? (
+    <FormComp onChange={onChange} actionRender={actionRender} onChangeStyle={onChangeStyle} />
+  ) : null;
 };
 
 const Editor: React.FC = () => {
@@ -110,7 +113,36 @@ const Editor: React.FC = () => {
       }
       return i!;
     });
+    return list!;
+  };
 
+  const changeElementStyle = (
+    content: DSL['content'],
+    id: string,
+    style: CSSProperties,
+  ): DSLContent[] | undefined => {
+    const list = content.map((i) => {
+      if (i.contentChild && i.contentChild.length) {
+        let contentChild: DSLContent[] = [];
+        i.contentChild.forEach((childItem, index) => {
+          contentChild = i.contentChild!;
+          if (id === childItem.elementId) {
+            i.contentChild![index].contentProp.style = style;
+          }
+        });
+        if (contentChild) {
+          const heightArr: number[] = contentChild
+            .filter((contentChildItem) => contentChildItem.contentProp?.style?.height)
+            .map((contentChildItem) => contentChildItem!.contentProp!.style!.height) as number[];
+          i.contentProp.style = {
+            ...i.contentProp.style,
+            height: Math.max(...heightArr!),
+          };
+          // const styleArr = contentChild.map)
+        }
+      }
+      return i!;
+    });
     return list!;
   };
 
@@ -137,6 +169,19 @@ const Editor: React.FC = () => {
         },
       });
     }
+  };
+
+  const handleElementStyle = (style: CSSProperties) => {
+    const content = changeElementStyle(state.dsl.content, state.selectedElementId!, style);
+    dispatch({
+      type: ReducerActionType.UpdateComponent,
+      payload: {
+        dsl: {
+          ...state.dsl,
+          content,
+        },
+      },
+    });
   };
 
   useEffect(() => {
@@ -186,6 +231,7 @@ const Editor: React.FC = () => {
                   data={state.formData}
                   onChange={handleData}
                   widgetMeta={widgetMeta}
+                  onChangeStyle={handleElementStyle}
                 />
                 {state.selectedElementRef && (
                   <Form layout="vertical" onValuesChange={handleData}>
