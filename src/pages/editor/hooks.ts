@@ -49,6 +49,8 @@ const useWidgetMeta = (() => {
         const {
           propFormConfig: { customFormRef },
         } = RefMeta;
+        console.log(customFormRef, 'customFormRef');
+
         await Promise.all([
           // LoadScript({ src: `http://127.0.0.1:22110/zxj/main.js` }),
           // 加载组件实例
@@ -59,7 +61,7 @@ const useWidgetMeta = (() => {
 
         setMetaState({
           fetching: false,
-          metadata: metaFromRemote,
+          metadata: RefMeta,
         });
       });
       // getCompMeta(elementRef).then((metaFromRemote) => {
