@@ -90,10 +90,19 @@ const Editor: React.FC = () => {
   const location: any = useLocation();
   const { query } = location;
   const [componentMap, setComponentMap] = useState<{ [key: string]: any[] }>({});
+  const [allComponent, setAllComponent] = useState<any[]>([]);
 
   useHideHeader();
+  const selectedRefMeta = allComponent.find((i) => i.ref === state.selectedElementRef);
+  console.log(
+    allComponent.find((i) => i.ref === state.selectedElementRef),
+    'allComponent',
+  );
 
-  const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(state.selectedElementRef);
+  const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(
+    state.selectedElementRef,
+    selectedRefMeta,
+  );
   console.log(fetchingMeta, widgetMeta);
 
   const handleComponentVal = (val: ComponentType) => {
@@ -205,6 +214,7 @@ const Editor: React.FC = () => {
       const group = groupBy(res.data, 'componentMeta.classification');
       console.log(group);
       setComponentMap(group);
+      setAllComponent(res.data);
     };
     getComponentsData();
   }, []);

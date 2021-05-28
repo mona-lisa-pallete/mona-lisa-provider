@@ -22,7 +22,7 @@ const useHideHeader = () => {
 const useWidgetMeta = (() => {
   /** meta 缓存 */
   const metaCache: Record<string, any> = {};
-  return (elementRef: string) => {
+  return (elementRef: string, elementRefMeta?: any) => {
     let initState = {
       fetching: false,
       metadata: null,
@@ -43,6 +43,8 @@ const useWidgetMeta = (() => {
     useEffect(() => {
       if (!elementRef) return;
       getCompMeta(elementRef).then(async (metaFromRemote) => {
+        console.log(elementRefMeta);
+
         const {
           propFormConfig: { customFormRef },
         } = metaFromRemote;
