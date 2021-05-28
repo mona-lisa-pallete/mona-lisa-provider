@@ -17,6 +17,7 @@ import {
 import { useLocation } from 'umi';
 import EditorContext from '../../context';
 import { addPage, addPreviewPage } from '@/services/editor';
+import { DSL } from '../../types';
 
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
@@ -54,9 +55,10 @@ const EditorHeader: React.FC = () => {
     }
   };
 
-  const save = async () => {
+  const save = async (dsl: string | DSL = state.dsl) => {
+    const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
     const res = await addPage({
-      dsl: state.dsl,
+      dsl: dslData,
       page: query.pageId,
       name: 'ffff',
     });
@@ -168,7 +170,12 @@ const EditorHeader: React.FC = () => {
         >
           预览
         </Button>
-        <Button type="primary" onClick={save}>
+        <Button
+          type="primary"
+          onClick={() => {
+            save();
+          }}
+        >
           保存
         </Button>
       </ActionBox>
@@ -181,6 +188,31 @@ const EditorHeader: React.FC = () => {
         onCancel={() => {
           setVisible(false);
         }}
+        footer={
+          <div>
+            <Button
+              onClick={() => {
+                setVisible(false);
+              }}
+            >
+              取消
+            </Button>
+            <Button
+              onClick={() => {
+                save(value);
+              }}
+            >
+              保存
+            </Button>
+            <Button
+              onClick={() => {
+                preview(value);
+              }}
+            >
+              预览
+            </Button>
+          </div>
+        }
       >
         {TextArea}
       </Modal>

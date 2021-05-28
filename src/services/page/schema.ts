@@ -11,6 +11,12 @@ export enum PlatformType {
   MINIAPP = 'MINIAPP',
 }
 
+export enum MiniPageStyle {
+  Default = 'default',
+  SemiImmersion = 'semiImmersion',
+  Immersion = 'immersion',
+}
+
 export interface PageItem {
   projectId: number;
   page: string;

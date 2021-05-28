@@ -22,6 +22,7 @@ import { PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { PageEdit } from './types';
+import PageSettingModal from './components/PageSettingModal';
 
 const { confirm } = Modal;
 
@@ -30,6 +31,7 @@ const Page: React.FC = () => {
   // const [modelVisible, setModelVisible] = useState(false);
   const location: any = useLocation();
   const { query } = location;
+  const [settingVisible, setSettingVisible] = useState(false);
 
   const columns: Array<ProColumns<PageItem>> = [
     {
@@ -227,6 +229,14 @@ const Page: React.FC = () => {
             <Button
               type="link"
               onClick={() => {
+                setSettingVisible(true);
+              }}
+            >
+              设置
+            </Button>
+            <Button
+              type="link"
+              onClick={() => {
                 handleDelPage(item.page);
               }}
             >
@@ -341,6 +351,12 @@ const Page: React.FC = () => {
           setPreviewVisible(false);
         }}
         visible={previewVisible}
+      />
+      <PageSettingModal
+        onChangeVisible={(val) => {
+          setSettingVisible(val);
+        }}
+        visible={settingVisible}
       />
       {/* <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
         <CopyForm colon layout="vertical">

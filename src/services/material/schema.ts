@@ -17,21 +17,31 @@ export interface IGetMaterialsResponse {
 }
 
 export interface IGetMaterialsResponseList {
-  componentName: string;
-  contentLength: number;
   id: number;
   materialName: string;
   materialType: string;
+  materialVersion: number;
   ossUrl: string;
-  pageConfigId: number;
+  contentMd5: string;
+  contentCrc64: string;
+  contentType: string;
+  contentLength: number;
+  contentWidth: number;
+  contentHeight: number;
+  contentDuration: number;
+  createUserId: number;
+  createUserName: string;
+  createTime: string;
+  updateUserId: number;
+  updateUserName: string;
+  updateTime: string;
+  status: number;
 }
 
 export interface IAddMaterialRequest {
   materialType: string;
   ossUrl: string;
   materialName?: string;
-  pageConfigId?: string;
-  componentName?: string;
 }
 
 export interface IAddMaterialsResponse {
@@ -39,20 +49,25 @@ export interface IAddMaterialsResponse {
 }
 
 export interface IGetMaterialResponse {
-  contentDuration: number;
-  contentHeight: number;
-  contentLength: number;
-  contentMd5: string;
-  contentType: string;
-  contentWidth: number;
-  createTime: string;
-  createUserName: string;
   id: number;
   materialName: string;
   materialType: string;
+  materialVersion: number;
   ossUrl: string;
-  updateTime: string;
+  contentMd5: string;
+  contentCrc64: string;
+  contentType: string;
+  contentLength: number;
+  contentWidth: number;
+  contentHeight: number;
+  contentDuration: number;
+  createUserId: number;
+  createUserName: string;
+  createTime: string;
+  updateUserId: number;
   updateUserName: string;
+  updateTime: string;
+  status: number;
 }
 
 export interface ISetMaterialRequest {
