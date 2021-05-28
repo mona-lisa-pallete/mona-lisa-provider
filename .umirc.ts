@@ -37,7 +37,7 @@ const config = defineConfig({
     '//course-static.oss-cn-hangzhou.aliyuncs.com/browser.min.js',
     '//at.alicdn.com/t/font_2260391_11ut8faea2el.js',
     '//course-static.oss-cn-hangzhou.aliyuncs.com/moment.js',
-    'https://static.guorou.net/davinci/lib/taroVendor.dll.js',
+    'https://static.guorou.net/davinci/lib/antd.min.dll.js',
   ],
   externals: {
     react: 'reactVendor.React',
