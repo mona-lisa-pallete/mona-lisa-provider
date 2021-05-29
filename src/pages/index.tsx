@@ -6,7 +6,7 @@ const HomeEntrance: React.FC = () => {
     history.push('/project');
   }, []);
 
-  return <h1>davinci-provider</h1>;
+  return <div />;
 };
 
 export default HomeEntrance;

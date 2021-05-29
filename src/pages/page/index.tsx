@@ -1,6 +1,6 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Image, message, Modal, Tag } from 'antd';
-import React, { useState } from 'react';
+import { Button, Image, message, Modal, Popover, Tag } from 'antd';
+import React, { useRef, useState } from 'react';
 import {
   PageAction,
   PageContainer,
@@ -10,8 +10,13 @@ import {
   PageMain,
   PageName,
   PageTag,
+  Point,
+  StatusContainer,
+  TableActionMenu,
+  PagePopoverStyle,
+  TableActionCol,
 } from './index.style';
-import ProTable from '@ant-design/pro-table';
+import ProTable, { ActionType } from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
@@ -32,6 +37,7 @@ const Page: React.FC = () => {
   const location: any = useLocation();
   const { query } = location;
   const [settingVisible, setSettingVisible] = useState(false);
+  const tableRef = useRef<ActionType>();
 
   const columns: Array<ProColumns<PageItem>> = [
     {
@@ -39,6 +45,7 @@ const Page: React.FC = () => {
       width: 48,
       title: 'ID',
       hideInSearch: true,
+      fixed: 'left',
     },
     {
       title: '落地页',
@@ -47,6 +54,8 @@ const Page: React.FC = () => {
         label: '页面名称',
         colon: false,
       },
+      fixed: 'left',
+      width: 250,
       render(_, record) {
         return (
           <PageInfo>
@@ -79,6 +88,7 @@ const Page: React.FC = () => {
       title: '页面类型',
       dataIndex: 'state',
       hideInSearch: true,
+      width: 150,
       render(_, item) {
         return (
           <PageTag>
@@ -109,9 +119,52 @@ const Page: React.FC = () => {
       },
     },
     {
+      title: '页面状态',
+      dataIndex: 'status',
+      width: 100,
+      hideInSearch: true,
+      render(_, item) {
+        const statusName = item.status === 1 ? '已上线' : '未上线';
+        return (
+          <StatusContainer>
+            <Point />
+            {statusName}
+          </StatusContainer>
+        );
+      },
+    },
+    {
+      title: '线上版本号',
+      dataIndex: 'releaseVersion',
+      hideInSearch: true,
+      width: 100,
+    },
+    {
+      title: '上线/下线人',
+      dataIndex: 'releaseUsername',
+      hideInSearch: true,
+      width: 100,
+    },
+    {
+      title: '上线/下线时间',
+      dataIndex: 'releaseTime',
+      hideInSearch: true,
+      renderText(_, record) {
+        return moment(record.releaseTime).format('YYYY-MM-DD HH:MM:SS');
+      },
+      width: 175,
+    },
+    {
+      title: '编辑版本',
+      dataIndex: 'editVersion',
+      hideInSearch: true,
+      width: 100,
+    },
+    {
       title: '创建人',
       dataIndex: 'createUserName',
       valueType: 'select',
+      width: 100,
       formItemProps: {
         colon: false,
       },
@@ -136,6 +189,7 @@ const Page: React.FC = () => {
     },
     {
       title: '创建时间',
+      width: 175,
       dataIndex: 'createTime',
       // valueType: 'dateRange',
       hideInSearch: true,
@@ -155,11 +209,13 @@ const Page: React.FC = () => {
       title: '最近修改人',
       dataIndex: 'updateUserName',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '最近修改时间',
       dataIndex: 'updateTime',
       hideInSearch: true,
+      width: 180,
       // valueType: 'dateRange',
       // search: {
       //   transform: (value) => {
@@ -179,8 +235,37 @@ const Page: React.FC = () => {
       hideInSearch: true,
       width: 260,
       render(_, item) {
+        const menu = (
+          <TableActionMenu>
+            <Button
+              type="text"
+              onClick={() => {
+                copyPage(item.page);
+                // setModelVisible(true);
+              }}
+            >
+              复制
+            </Button>
+            <Button
+              type="text"
+              onClick={() => {
+                setSettingVisible(true);
+              }}
+            >
+              设置
+            </Button>
+            <Button
+              type="text"
+              onClick={() => {
+                handleDelPage(item.page);
+              }}
+            >
+              删除
+            </Button>
+          </TableActionMenu>
+        );
         return (
-          <>
+          <TableActionCol>
             <Button
               type="link"
               onClick={() => {
@@ -217,32 +302,17 @@ const Page: React.FC = () => {
                 下线
               </Button>
             )}
-            <Button
-              type="link"
-              onClick={() => {
-                copyPage(item.page);
-                // setModelVisible(true);
-              }}
-            >
-              复制
-            </Button>
-            <Button
-              type="link"
-              onClick={() => {
-                setSettingVisible(true);
-              }}
-            >
-              设置
-            </Button>
-            <Button
-              type="link"
-              onClick={() => {
-                handleDelPage(item.page);
-              }}
-            >
-              删除
-            </Button>
-          </>
+            <Popover overlayClassName="table-action-menu" content={menu}>
+              <Button type="link">
+                <i
+                  style={{
+                    color: '#1980FF',
+                  }}
+                  className="icon-more iconfont"
+                />
+              </Button>
+            </Popover>
+          </TableActionCol>
         );
       },
     },
@@ -275,6 +345,7 @@ const Page: React.FC = () => {
         const res = await delPage(id);
         if (res.code === 0) {
           message.success('删除成功');
+          tableRef.current?.reload();
         }
       },
     });
@@ -287,6 +358,7 @@ const Page: React.FC = () => {
       offline: '下线成功',
     };
     if (res.code === 0) {
+      tableRef.current?.reload();
       message.success(actionMsg[action]);
     }
   };
@@ -322,6 +394,7 @@ const Page: React.FC = () => {
 
   return (
     <PageContainer>
+      <PagePopoverStyle />
       <PageHeader title="页面列表">
         <Button type="primary" onClick={addPage}>
           创建页面
@@ -330,11 +403,13 @@ const Page: React.FC = () => {
       <PageMain>
         <ProTable<PageItem>
           bordered
+          actionRef={tableRef}
           columns={columns}
           rowKey="id"
           search={{
             labelWidth: 'auto',
           }}
+          scroll={{ x: 'max-content' }}
           request={getData}
           form={{
             labelAlign: 'left',

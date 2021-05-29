@@ -7,12 +7,24 @@ import { Button, Form, Input, Radio } from 'antd';
 import React from 'react';
 import { ShareFormContainer, ShareFormItem } from './index.style';
 import { PageSettingModalProps } from './types';
+import { useModel } from 'umi';
+import { useDeepCompareEffect } from 'react-use';
 
 const { TextArea } = Input;
 
 const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
   const { visible, onChangeVisible } = props;
   const [form] = Form.useForm();
+  const { setMaterialVisible, selectedData, materialVisible } = useModel('useMaterialModel');
+
+  useDeepCompareEffect(() => {
+    if (selectedData?.url && !materialVisible) {
+      form.setFieldsValue({
+        shareImage: selectedData.url,
+      });
+      console.log(selectedData);
+    }
+  }, [selectedData]);
 
   return (
     <ConfirmModal
@@ -96,7 +108,13 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
                       <TextArea />
                     </Form.Item>
                     <Form.Item name="shareImage" label="H5分享图片">
-                      <UploadTool />
+                      <UploadTool
+                        onSelectMaterial={() => {
+                          console.log('onSelectMaterial');
+
+                          setMaterialVisible(true);
+                        }}
+                      />
                     </Form.Item>
                   </ShareFormItem>
                 )}
@@ -109,7 +127,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
                       <TextArea />
                     </Form.Item>
                     <Form.Item label="小程序分享图片">
-                      <UploadTool />
+                      <UploadTool onSelectMaterial={() => {}} />
                     </Form.Item>
                   </ShareFormItem>
                 )}

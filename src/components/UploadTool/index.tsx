@@ -15,7 +15,7 @@ const getFileName = (fileName: string, uid: string) => {
 };
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
-  const { value, onChange } = props;
+  const { value, onChange, onSelectMaterial } = props;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -86,6 +86,9 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
           width: '100%',
           marginTop: '10px',
           color: 'rgba(5, 12, 50, 0.7)',
+        }}
+        onClick={() => {
+          onSelectMaterial();
         }}
       >
         <svg

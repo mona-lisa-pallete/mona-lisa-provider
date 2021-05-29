@@ -1,5 +1,5 @@
 import { Form } from 'antd';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const PageContainer = styled.div`
   background: #ffffff;
@@ -78,5 +78,58 @@ export const PageTag = styled.div`
 export const CopyForm = styled(Form)`
   .ant-form-item {
     margin-bottom: 16px;
+  }
+`;
+
+export const Point = styled.div<{ online?: boolean }>`
+  width: 8px;
+  height: 8px;
+  background: ${(props: any) => (props.online ? '#52c41a' : '#C0C2CC')};
+  border-radius: 50%;
+  margin-right: 12px;
+`;
+
+export const StatusContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const TableActionMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > .ant-btn {
+    width: 100%;
+  }
+`;
+
+export const PagePopoverStyle = createGlobalStyle`
+  .table-action-menu {
+    .ant-popover-inner-content {
+      padding: 4px 0;
+      min-width: 96px;
+    }
+    .ant-btn {
+      width: 96px;
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(5, 12, 50, 0.7);
+      &:hover {
+        background-color: #F5F5F7;
+      }
+    }
+  }
+`;
+
+export const TableActionCol = styled.div`
+  .ant-btn {
+    height: auto;
+    padding: 0 12px;
+    line-height: 1.3;
+    border-right: 1px solid #e8e9ed;
+    &:last-child {
+      border-right: none;
+    }
   }
 `;
