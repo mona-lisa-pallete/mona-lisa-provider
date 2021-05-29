@@ -106,6 +106,9 @@ const MaterialManage: React.FC = () => {
         case MaterialType.Video:
           VideoRef.current!.getVideoData()();
           break;
+        case MaterialType.File:
+          FileRef!.current!.reload()();
+          break;
         default:
           break;
       }
@@ -186,12 +189,7 @@ const MaterialManage: React.FC = () => {
             素材上传
           </Button>
         </div>
-        <Tabs
-          defaultActiveKey={MaterialType.Image}
-          // onTabClick={(key) => {
-          //   setMaterialType(key as MaterialType);
-          // }}
-        >
+        <Tabs defaultActiveKey={MaterialType.Image}>
           <TabPane tab="图片" key={MaterialType.Image}>
             <Picture
               onPreview={(
@@ -232,7 +230,7 @@ const MaterialManage: React.FC = () => {
               ref={VideoRef}
             />
           </TabPane>
-          <TabPane>
+          <TabPane tab="文档" key={MaterialType.File}>
             <File
               onPreview={(
                 selectedIndex: number,
@@ -246,7 +244,7 @@ const MaterialManage: React.FC = () => {
                 handleViewer(selectedIndex, data, visible, MaterialType.File);
               }}
               onChangeName={(name: string, id: number) => {
-                handleChangeName(name, id, MaterialType.Video);
+                handleChangeName(name, id, MaterialType.File);
               }}
               onDelMaterial={handleDelMaterial}
               ref={FileRef}

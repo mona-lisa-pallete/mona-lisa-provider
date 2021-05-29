@@ -238,7 +238,7 @@ const Viewer: React.FC<ViewerProps> = (props) => {
               }}
             />
           )}
-          {fileList.length && selectedData?.type === 'image' && (
+          {fileList.length && selectedData?.type === MaterialType.Image && (
             <img
               style={{
                 transform: `translate(-50%, -50%) scale(${scale / 100})`,
@@ -246,7 +246,7 @@ const Viewer: React.FC<ViewerProps> = (props) => {
               src={selectedData.url}
             />
           )}
-          {fileList.length && selectedData?.type === 'video' && (
+          {/* {fileList.length && selectedData?.type === MaterialType.Video && (
             <video
               controls
               style={{
@@ -255,7 +255,29 @@ const Viewer: React.FC<ViewerProps> = (props) => {
               }}
               src={selectedData.url}
             />
-          )}
+          )} */}
+          {fileList.length &&
+            selectedData?.type === MaterialType.Video &&
+            selectedData.url.includes('.pdf') && (
+              <iframe
+                style={{
+                  transform: `translate(-50%, -50%) scale(${scale / 100})`,
+                }}
+                frameBorder={0}
+                src={selectedData.url}
+              />
+            )}
+          {fileList.length &&
+            selectedData?.type === MaterialType.Video &&
+            !selectedData.url.includes('.pdf') && (
+              <iframe
+                style={{
+                  transform: `translate(-50%, -50%) scale(${scale / 100})`,
+                }}
+                frameBorder={0}
+                src={`http://view.officeapps.live.com/op/view.aspx?src=${selectedData.url}`}
+              />
+            )}
           {!isLast && (
             <RightOutlined
               className="action-next"

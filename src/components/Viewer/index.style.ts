@@ -87,6 +87,16 @@ export const ViewerList = styled.div`
       margin-right: 0;
     }
   }
+  iframe {
+    width: auto;
+    max-width: 136px;
+    height: 72px;
+    margin-right: 7px;
+    object-fit: scale-down;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 `;
 export const ViewerDetails = styled.div`
   width: 260px;
@@ -115,6 +125,14 @@ export const ViewerFile = styled.div`
     left: 50%;
     z-index: 10;
     max-width: 1000px;
+  }
+  > iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    width: 1000px;
+    height: 500px;
   }
   .action-prev {
     z-index: 11;

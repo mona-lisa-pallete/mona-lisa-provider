@@ -1,3 +1,5 @@
+import { MaterialType } from '@/pages/material-manage/types';
+
 export interface IGetMaterialsRequest {
   limit: string | number;
   materialType: string;
@@ -19,7 +21,7 @@ export interface IGetMaterialsResponse {
 export interface IGetMaterialsResponseList {
   id: number;
   materialName: string;
-  materialType: string;
+  materialType: MaterialType;
   materialVersion: number;
   ossUrl: string;
   contentMd5: string;
