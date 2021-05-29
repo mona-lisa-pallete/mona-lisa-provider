@@ -84,6 +84,8 @@ const Project: React.FC = () => {
   };
 
   const handleModalVisible = () => {
+    form.resetFields();
+    setProjectId('');
     setModalVisible(true);
   };
 
@@ -217,6 +219,7 @@ const Project: React.FC = () => {
         visible={modalVisible}
         confirmLoading={confirmLoading}
         onChangeVisible={setModalVisible}
+        title={projectId ? '编辑项目' : '创建项目'}
       >
         <Form onFinish={handleProjectData} form={form} colon layout="vertical">
           <Form.Item

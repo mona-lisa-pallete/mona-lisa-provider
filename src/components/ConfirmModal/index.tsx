@@ -31,6 +31,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
     children,
     confirmLoading = false,
     width = 400,
+    title = '',
   } = props;
 
   const handleVisible = (val: boolean) => {
@@ -56,7 +57,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
             marginRight: '15px',
           }}
         >
-          创建项目
+          {title}
         </IconTitle>
       }
     >

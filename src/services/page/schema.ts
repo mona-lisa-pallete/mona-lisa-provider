@@ -12,9 +12,9 @@ export enum PlatformType {
 }
 
 export enum MiniPageStyle {
-  Default = 'default',
-  SemiImmersion = 'semiImmersion',
-  Immersion = 'immersion',
+  Default = 'none',
+  SemiImmersion = 'half',
+  Immersion = 'full',
 }
 
 export interface PageItem {
