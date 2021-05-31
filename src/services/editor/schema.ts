@@ -1,3 +1,5 @@
+import { PlatformType } from '../page/schema';
+
 export interface IAddPreviewRequest {
   page: string;
   dsl: string;
@@ -50,4 +52,14 @@ export interface IGetPageReponse {
   updateTime: string;
   status: number;
   dsl: any;
+  platform: PlatformType[];
+  attributes: {
+    miniappImmersion: string;
+    shareTitle: string;
+    shareDescription: string;
+    shareImage: string;
+    miniappShareTitle: string;
+    miniappShareDescription: string;
+    miniappShareImage: string;
+  };
 }

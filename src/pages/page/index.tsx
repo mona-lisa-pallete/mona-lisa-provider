@@ -27,7 +27,7 @@ import { PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { PageEdit } from './types';
-import PageSettingModal from './components/PageSettingModal';
+import PageSettingModal from './components/PageSettingModal/';
 
 const { confirm } = Modal;
 
@@ -37,6 +37,7 @@ const Page: React.FC = () => {
   const location: any = useLocation();
   const { query } = location;
   const [settingVisible, setSettingVisible] = useState(false);
+  const [pageId, setPageId] = useState('');
   const tableRef = useRef<ActionType>();
 
   const columns: Array<ProColumns<PageItem>> = [
@@ -249,6 +250,7 @@ const Page: React.FC = () => {
             <Button
               type="text"
               onClick={() => {
+                setPageId(item.page);
                 setSettingVisible(true);
               }}
             >
@@ -428,6 +430,7 @@ const Page: React.FC = () => {
         visible={previewVisible}
       />
       <PageSettingModal
+        id={pageId}
         onChangeVisible={(val) => {
           setSettingVisible(val);
         }}

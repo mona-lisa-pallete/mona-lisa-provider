@@ -50,7 +50,7 @@ const File = (props: FileMaterialProps, ref: React.Ref<FileRef>) => {
       ...params,
       page: params.current || 1,
       limit: params.pageSize || 10,
-      materialType: MaterialType.Video,
+      materialType: MaterialType.File,
     });
     setList(res.data.list);
     return {

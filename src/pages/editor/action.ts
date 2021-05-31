@@ -59,3 +59,10 @@ export interface ISetPageData {
     dsl: any;
   };
 }
+
+export interface ISetComponentMeta {
+  type: ActionType.SetComponentMeta;
+  payload: {
+    meta: any;
+  };
+}

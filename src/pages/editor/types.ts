@@ -7,6 +7,7 @@ import {
   ISetSelectedRefAction,
   ISetFormData,
   ISetPageData,
+  ISetComponentMeta,
 } from './action';
 
 import { CSSProperties } from 'react';
@@ -64,6 +65,7 @@ export interface IState {
   selectedElementRef: undefined | string;
   selectedElementId: undefined | string;
   formData: any;
+  selectedElementMeta: undefined | any;
 }
 
 export type IAction =
@@ -74,7 +76,8 @@ export type IAction =
   | IUpdateComponentAction
   | ISetSelectedRefAction
   | ISetFormData
-  | ISetPageData;
+  | ISetPageData
+  | ISetComponentMeta;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -85,4 +88,5 @@ export enum ActionType {
   SetSelectedRef = 'SET_SELECTED_REF',
   SetFormData = 'SET_FORM_DATA',
   SetPageData = 'SET_PAGE_DATA',
+  SetComponentMeta = 'SET_COMPONENT_META',
 }
