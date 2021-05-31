@@ -4,7 +4,7 @@ import UploadTool from '@/components/UploadTool';
 import { FormSubTitle } from '@/pages/editor/index.style';
 import { MiniPageStyle, PlatformType } from '@/services/page/schema';
 import { Button, Form, Input, Radio } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ShareFormContainer, ShareFormItem } from './index.style';
 import { PageSettingModalProps } from './types';
 import { useModel } from 'umi';
@@ -25,6 +25,12 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
       console.log(selectedData);
     }
   }, [selectedData]);
+
+  useEffect(() => {
+    if (!visible) {
+      form.resetFields();
+    }
+  }, [form, visible]);
 
   return (
     <ConfirmModal
@@ -95,8 +101,6 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
         <Form.Item noStyle shouldUpdate>
           {() => {
             const platform = form.getFieldValue('platform');
-            console.log(platform);
-
             return (
               <ShareFormContainer>
                 {(platform === PlatformType.WEB || Array.isArray(platform)) && (
@@ -110,8 +114,6 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
                     <Form.Item name="shareImage" label="H5分享图片">
                       <UploadTool
                         onSelectMaterial={() => {
-                          console.log('onSelectMaterial');
-
                           setMaterialVisible(true);
                         }}
                       />

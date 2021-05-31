@@ -46,6 +46,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
       onCancel={() => {
         handleVisible(false);
       }}
+      centered
       width={width}
       confirmLoading={confirmLoading}
       title={
