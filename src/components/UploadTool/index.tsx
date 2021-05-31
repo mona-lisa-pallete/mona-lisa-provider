@@ -15,7 +15,7 @@ const getFileName = (fileName: string, uid: string) => {
 };
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
-  const { value, onChange, onSelectMaterial } = props;
+  const { value, onChange, onSelectMaterial, onChangeFile } = props;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -51,6 +51,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     if (file.status === 'done') {
       if (file && onChange) {
         onChange(`https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`);
+        onChangeFile && onChangeFile(file);
       }
     }
   };
@@ -75,7 +76,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
             style={{
               margin: '0 auto',
               display: 'block',
-              maxWidth: '288px',
+              maxWidth: '287px',
             }}
             src={value}
           />

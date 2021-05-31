@@ -17,8 +17,9 @@ import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
-import { groupBy } from 'lodash';
+import { groupBy, merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
+import PlatformUploadTool from '@/_components/PlatformUploadTool';
 
 const { TabPane } = Tabs;
 
@@ -76,26 +77,12 @@ export const initState: IState = {
   selectedElementMeta: undefined,
 };
 
-const UploadTool = ({ onSelected }) => {
-  return (
-    <div
-      onClick={(e) => {
-        onSelected?.({
-          url: 'hhh',
-        });
-      }}
-    >
-      平台素材控件
-    </div>
-  );
-};
-
 /**
  * 平台提供给接入方的组件或者组件编辑表单的上下文，包含 UI、选择器
  */
 const PlatformContext = {
   ui: {
-    UploadTool,
+    UploadTool: PlatformUploadTool,
   },
 };
 
@@ -155,7 +142,8 @@ const Editor: React.FC = () => {
     const list = content.map((i) => {
       if (i.contentChild && i.contentChild.length) {
         i.contentChild.forEach((childItem, index) => {
-          i.contentChild![index].contentProp = data;
+          i.contentChild![index].contentProp = merge(i.contentChild![index].contentProp, data);
+          console.log(i.contentChild![index].contentProp, 'i.contentChild![index].contentProp');
         });
       }
       return i!;
@@ -193,13 +181,7 @@ const Editor: React.FC = () => {
     return list!;
   };
 
-  const handleData = (changeVal: any, allVal: any) => {
-    console.log(changeVal);
-
-    if (changeVal?.action) {
-      console.log(allVal);
-      // return;
-    }
+  const handleData = (allVal: any) => {
     const data = { ...state.formData.contentProp, ...allVal };
 
     console.log(data, 'datadata');

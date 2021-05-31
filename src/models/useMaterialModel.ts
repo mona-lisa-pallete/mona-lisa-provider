@@ -10,6 +10,7 @@ export default function useMaterialModel() {
   const [materialVisible, setMaterialVisible] = useState(false);
   const [materialType, setMaterialType] = useState(MaterialType.Image);
   const [selectedData, setSelectData] = useState<Material>();
+  const [extraData, setExtraData] = useState<any>();
 
   return {
     materialVisible,
@@ -18,6 +19,8 @@ export default function useMaterialModel() {
     setMaterialType,
     selectedData,
     setSelectData,
+    extraData,
+    setExtraData,
   };
 }
 

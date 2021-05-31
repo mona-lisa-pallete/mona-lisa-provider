@@ -1,6 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
 import type { RcFile } from 'antd/lib/upload';
-import { imgErrorMsg, imgErrorType, imgFormatError } from '@/utils/error-msg';
 
 function getScrollWidth() {
   if (document.body.clientHeight === document.body.scrollHeight) {
@@ -50,57 +49,6 @@ function secondsFormat(s: number) {
   };
 }
 
-const isRightSizeImg = (img: HTMLImageElement) => {
-  return new Promise(
-    (resolve: () => void, reject: (error: { type: imgErrorType; msg: imgErrorMsg }) => void) => {
-      img.onload = async (e: any) => {
-        const { width } = e.target;
-        if (width % 375 !== 0) {
-          reject({
-            type: imgErrorType.size,
-            msg: imgErrorMsg.sizeError,
-          });
-          return;
-        }
-        resolve();
-      };
-    },
-  );
-};
-
-const isRightSizeCountDownImg = (img: HTMLImageElement) => {
-  return new Promise(
-    (resolve: () => void, reject: (error: { type: imgErrorType; msg: string }) => void) => {
-      img.onload = async (e: any) => {
-        const { width, height } = e.target;
-        if (width % 375 !== 0 || height % 65 !== 0) {
-          reject({
-            type: imgErrorType.size,
-            msg: '营销条底图限制长为375的倍数，高为65的倍数，请调整之后重新上传',
-          });
-          return;
-        }
-        resolve();
-      };
-    },
-  );
-};
-
-const isRightFormatImg = (types: Array<Blob['type']>, file: RcFile) => {
-  return new Promise(
-    (resolve: () => void, reject: (error: { type: imgErrorType; msg: string }) => void) => {
-      if (!types.includes(file.type)) {
-        reject({
-          type: imgErrorType.format,
-          msg: imgFormatError.get(types)!,
-        });
-      } else {
-        resolve();
-      }
-    },
-  );
-};
-
 function checkPhone(phone: number | string) {
   let value = '';
   if (typeof phone === 'number') {
@@ -143,15 +91,25 @@ function isImgSize(size: number) {
   return size / 1024 / 1024 <= 20;
 }
 
+function getImageSize(img: HTMLImageElement) {
+  return new Promise((resolve: (size: { width: number; height: number }) => void) => {
+    // eslint-disable-next-line no-param-reassign
+    img.onload = (e: any) => {
+      const { width, height } = e.target;
+      resolve({
+        width,
+        height,
+      });
+    };
+  });
+}
+
 export {
   getScrollWidth,
   swapArr,
   validateFile,
   secondsFormat,
-  isRightSizeImg,
-  isRightFormatImg,
   checkPhone,
-  isRightSizeCountDownImg,
   getFileName,
   getFileType,
   isMp4,
@@ -159,4 +117,5 @@ export {
   isPicGif,
   isVideoSize,
   isImgSize,
+  getImageSize,
 };

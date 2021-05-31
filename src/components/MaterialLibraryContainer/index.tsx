@@ -3,7 +3,7 @@ import { useModel } from 'umi';
 import MaterialLibrary from '@/components/MaterialLibrary/';
 
 const MaterialLibraryContainer: React.FC = () => {
-  const { materialVisible, materialType, setMaterialVisible, setSelectData } = useModel(
+  const { materialVisible, materialType, setMaterialVisible, setSelectData, extraData } = useModel(
     'useMaterialModel',
   );
 
@@ -17,6 +17,7 @@ const MaterialLibraryContainer: React.FC = () => {
           name,
         });
       }}
+      extra={extraData}
       onClose={() => {
         setMaterialVisible(false);
       }}
