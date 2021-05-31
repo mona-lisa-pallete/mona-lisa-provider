@@ -74,13 +74,41 @@ export const initState: IState = {
   formData: {},
 };
 
+const UploadTool = ({ onSelected }) => {
+  return (
+    <div
+      onClick={(e) => {
+        onSelected?.({
+          url: 'hhh',
+        });
+      }}
+    >
+      平台素材控件
+    </div>
+  );
+};
+
+/**
+ * 平台提供给接入方的组件或者组件编辑表单的上下文，包含 UI、选择器
+ */
+const PlatformContext = {
+  ui: {
+    UploadTool,
+  },
+};
+
 const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, onChangeStyle }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
     : 'div';
   return hasMeta ? (
-    <FormComp onChange={onChange} actionRender={actionRender} onChangeStyle={onChangeStyle} />
+    <FormComp
+      onChange={onChange}
+      platformCtx={PlatformContext}
+      actionRender={actionRender}
+      onChangeStyle={onChangeStyle}
+    />
   ) : null;
 };
 
