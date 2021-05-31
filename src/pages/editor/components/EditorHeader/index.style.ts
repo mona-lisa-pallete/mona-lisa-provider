@@ -6,6 +6,8 @@ export const EditorHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100vw;
+  position: relative;
+  z-index: 11;
   background: #ffffff;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
   padding: 0 16px;
