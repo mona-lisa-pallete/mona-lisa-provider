@@ -72,7 +72,7 @@ const MaterialManage = (props: VideoMaterialProps, ref: React.Ref<VideoRef>) => 
     async () => {
       const res = await getMaterials({
         limit: videoPageSize,
-        materialType: 'video',
+        materialType: MaterialType.Video,
         page: videoPageNum,
         ...query,
       });

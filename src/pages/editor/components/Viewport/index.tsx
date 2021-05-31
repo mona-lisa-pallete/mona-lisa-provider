@@ -150,6 +150,11 @@ const Viewport: React.FC = () => {
                                 );
                               }}
                             >
+                              {/* {console.log(state.selectedElementMeta, 'state.selectedElementMeta')}
+                              {state.selectedElementMeta?.propFormConfig?.defaultFields &&
+                                !childItem.contentProp[
+                                  state.selectedElementMeta?.propFormConfig?.defaultFields
+                                ] && <img src={state.selectedElementMeta?.logo} />} */}
                               <CompLoader
                                 elementRef={childItem.elementRef!}
                                 contentProps={childItem.contentProp}

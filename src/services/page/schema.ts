@@ -43,5 +43,15 @@ export interface IGetPagesReponse {
 }
 
 export interface IUpdatePageRequest {
-  action: 'online' | 'offline';
+  action?: 'online' | 'offline';
+  name?: string;
+  attributes?: {
+    miniappImmersion?: MiniPageStyle;
+    shareTitle?: string;
+    shareDescription?: string;
+    shareImage?: string;
+    miniappShareTitle?: string;
+    miniappShareDescription?: string;
+    miniappShareImage?: string;
+  };
 }

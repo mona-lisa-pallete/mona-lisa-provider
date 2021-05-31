@@ -20,6 +20,11 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         dsl: action.payload.dsl,
       };
+    case ActionType.SetComponentMeta:
+      return {
+        ...state,
+        selectedElementMeta: action.payload.meta,
+      };
     default:
       return state;
   }

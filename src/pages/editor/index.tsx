@@ -25,6 +25,7 @@ const { TabPane } = Tabs;
 export const initState: IState = {
   dsl: {
     content: [],
+    action: {},
     // content: [
     //   {
     //     contentType: 'container',
@@ -72,6 +73,7 @@ export const initState: IState = {
   selectedElementRef: undefined,
   selectedElementId: undefined,
   formData: {},
+  selectedElementMeta: undefined,
 };
 
 const UploadTool = ({ onSelected }) => {
@@ -129,6 +131,17 @@ const Editor: React.FC = () => {
     selectedRefMeta,
   );
   console.log(fetchingMeta, widgetMeta);
+
+  useEffect(() => {
+    if (widgetMeta) {
+      dispatch({
+        type: ReducerActionType.SetComponentMeta,
+        payload: {
+          meta: widgetMeta,
+        },
+      });
+    }
+  }, [widgetMeta]);
 
   const handleComponentVal = (val: ComponentType) => {
     setComponentVal(val);
@@ -268,9 +281,9 @@ const Editor: React.FC = () => {
           <ViewportBox />
           <EditorConfig>
             <Tabs defaultActiveKey="2">
-              <TabPane tab="页面设置" key="1">
+              {/* <TabPane tab="页面设置" key="1">
                 <PageForm />
-              </TabPane>
+              </TabPane> */}
               <TabPane tab="组件配置" key="2">
                 <CompPropEditorLoader
                   data={state.formData}

@@ -246,7 +246,7 @@ const Viewer: React.FC<ViewerProps> = (props) => {
               src={selectedData.url}
             />
           )}
-          {/* {fileList.length && selectedData?.type === MaterialType.Video && (
+          {fileList.length && selectedData?.type === MaterialType.Video && (
             <video
               controls
               style={{
@@ -255,9 +255,9 @@ const Viewer: React.FC<ViewerProps> = (props) => {
               }}
               src={selectedData.url}
             />
-          )} */}
+          )}
           {fileList.length &&
-            selectedData?.type === MaterialType.Video &&
+            selectedData?.type === MaterialType.File &&
             selectedData.url.includes('.pdf') && (
               <iframe
                 style={{
@@ -268,7 +268,7 @@ const Viewer: React.FC<ViewerProps> = (props) => {
               />
             )}
           {fileList.length &&
-            selectedData?.type === MaterialType.Video &&
+            selectedData?.type === MaterialType.File &&
             !selectedData.url.includes('.pdf') && (
               <iframe
                 style={{
