@@ -23,6 +23,7 @@ import {
 } from '@/utils/common';
 import type { RcFile } from 'antd/lib/upload';
 import './index.less';
+import { MessageType } from '@/utils/message';
 
 enum FileType {
   Img = 'image',
@@ -78,7 +79,7 @@ const MaterialManageUpload: React.FC = () => {
         },
       });
       setFileList([]);
-      window.opener.postMessage('m-upload-success', '*');
+      window.opener.postMessage(MessageType.UploadSuccess, '*');
     }
   };
 

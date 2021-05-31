@@ -1,7 +1,9 @@
 import { getUploadPolicy } from '@/services/common';
-import { Upload } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Upload } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import React, { useState } from 'react';
+import { UploadButton } from './index.style';
 import { UploadToolProps } from './types';
 
 const DIR_PATH = 'kbase/davinciprovider/assets';
@@ -13,6 +15,7 @@ const getFileName = (fileName: string, uid: string) => {
 };
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
+  const { value, onChange, onSelectMaterial } = props;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -35,31 +38,71 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     return Promise.resolve();
   };
 
-  const handleChange = ({ file, fileList }: UploadChangeParam<UploadFile<any>>) => {
-    const files = fileList.map((e) => {
-      return {
-        ...e,
-        url:
-          e.status === 'done'
-            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(e.name, e.uid)}`
-            : '',
-      };
-    });
+  const handleChange = ({ file }: UploadChangeParam<UploadFile<any>>) => {
+    // const files = fileList.map((e) => {
+    //   return {
+    //     ...e,
+    //     url:
+    //       e.status === 'done'
+    //         ? `https://static.guorou.net/${DIR_PATH}/${getFileName(e.name, e.uid)}`
+    //         : '',
+    //   };
+    // });
     if (file.status === 'done') {
-      console.log(files);
+      if (file && onChange) {
+        onChange(`https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`);
+      }
     }
   };
 
   return (
-    <Upload.Dragger
-      onChange={handleChange}
-      action={ossPath}
-      data={getData}
-      showUploadList={false}
-      beforeUpload={handleBeforeUpload}
-    >
-      {props.children}
-    </Upload.Dragger>
+    <div>
+      <Upload.Dragger
+        onChange={handleChange}
+        action={ossPath}
+        data={getData}
+        showUploadList={false}
+        beforeUpload={handleBeforeUpload}
+      >
+        {!value && (
+          <UploadButton>
+            <PlusOutlined style={{ color: '#8E91A3', fontSize: '20px', marginBottom: '6px' }} />
+            添加图片
+          </UploadButton>
+        )}
+        {value && (
+          <img
+            style={{
+              margin: '0 auto',
+              display: 'block',
+              maxWidth: '288px',
+            }}
+            src={value}
+          />
+        )}
+      </Upload.Dragger>
+      <Button
+        style={{
+          width: '100%',
+          marginTop: '10px',
+          color: 'rgba(5, 12, 50, 0.7)',
+        }}
+        onClick={() => {
+          onSelectMaterial();
+        }}
+      >
+        <svg
+          style={{
+            marginRight: '8px',
+          }}
+          className="icon"
+          aria-hidden="true"
+        >
+          <use xlinkHref="#iconsucaiku" />
+        </svg>
+        素材库选择
+      </Button>
+    </div>
   );
 };
 export default UploadTool;

@@ -1,1 +1,5 @@
-export interface UploadToolProps {}
+export interface UploadToolProps {
+  value?: string;
+  onChange?: (val: string) => void;
+  onSelectMaterial: () => void;
+}

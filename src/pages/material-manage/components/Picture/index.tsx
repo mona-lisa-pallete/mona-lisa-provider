@@ -173,7 +173,8 @@ const MaterialManage = (props: PictureMaterialProps, ref: React.Ref<PictureRef>)
         cancelText: '取消',
         centered: true,
         async onOk() {
-          onDelMaterial(id);
+          await onDelMaterial(id);
+          getImageData();
           // const res = await delMaterial(id);
           // if (res.code === 0) {
           //   const list = await getImageData();

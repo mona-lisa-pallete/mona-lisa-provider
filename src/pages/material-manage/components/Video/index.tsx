@@ -177,7 +177,8 @@ const MaterialManage = (props: VideoMaterialProps, ref: React.Ref<VideoRef>) => 
           //   const data = await getVideoData();
           //   resolve(data);
           // }
-          onDelMaterial(id);
+          await onDelMaterial(id);
+          getVideoData();
         },
       });
     });

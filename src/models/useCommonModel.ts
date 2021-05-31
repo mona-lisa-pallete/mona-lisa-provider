@@ -11,7 +11,7 @@ export default function useAuthModel() {
     const top = Math.ceil(window.screen.height / 2) - 300;
     const left = Math.ceil(window.screen.width / 2) - 200;
     const newW = window.open(
-      '/portallandingpage/material-manage/upload',
+      '/davinciprovider/material-manage/upload',
       'newwindow',
       `height=600, width=400, top=${top}, left=${left}, toolbar=no, menubar=no, resizable=no,location=no, status=no, fullscreen=no`,
     );

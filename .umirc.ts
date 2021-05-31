@@ -35,9 +35,9 @@ const config = defineConfig({
     'https://static.guorou.net/davinci/lib/reactVendor.dll.js',
     'https://static.guorou.net/davinci/lib/taroVendor.dll.js',
     '//course-static.oss-cn-hangzhou.aliyuncs.com/browser.min.js',
-    '//at.alicdn.com/t/font_2260391_11ut8faea2el.js',
     '//course-static.oss-cn-hangzhou.aliyuncs.com/moment.js',
     'https://static.guorou.net/davinci/lib/antd.min.dll.js',
+    '//at.alicdn.com/t/font_2395081_pjtg7zzsnmf.js',
   ],
   externals: {
     react: 'reactVendor.React',
