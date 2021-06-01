@@ -47,8 +47,6 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
 
   useEffect(() => {
     if (hasDropped) {
-      console.log(2222222);
-
       const isNullData = index === -1;
       const list = state.dsl.content.slice();
       if (isNullData) {

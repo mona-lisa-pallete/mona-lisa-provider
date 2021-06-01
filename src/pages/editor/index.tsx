@@ -86,17 +86,19 @@ const PlatformContext = {
   },
 };
 
-const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, onChangeStyle }: any) => {
+const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValues }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
     : 'div';
+  console.log(initialValues, 'initialValues');
+
   return hasMeta ? (
     <FormComp
       onChange={onChange}
+      initialValues={initialValues}
       platformCtx={PlatformContext}
       actionRender={actionRender}
-      onChangeStyle={onChangeStyle}
     />
   ) : null;
 };
@@ -117,8 +119,6 @@ const Editor: React.FC = () => {
     state.selectedElementRef,
     selectedRefMeta,
   );
-  console.log(fetchingMeta, widgetMeta);
-
   useEffect(() => {
     if (widgetMeta) {
       dispatch({
@@ -143,7 +143,6 @@ const Editor: React.FC = () => {
       if (i.contentChild && i.contentChild.length) {
         i.contentChild.forEach((childItem, index) => {
           i.contentChild![index].contentProp = merge(i.contentChild![index].contentProp, data);
-          console.log(i.contentChild![index].contentProp, 'i.contentChild![index].contentProp');
         });
       }
       return i!;
@@ -183,8 +182,6 @@ const Editor: React.FC = () => {
 
   const handleData = (allVal: any) => {
     const data = { ...state.formData.contentProp, ...allVal };
-
-    console.log(data, 'datadata');
 
     if (state.selectedElementId) {
       const content = changeElement(state.dsl.content, state.selectedElementId, data);
@@ -231,6 +228,12 @@ const Editor: React.FC = () => {
             ref: elementRefData.elementRef,
           },
         });
+        dispatch({
+          type: ReducerActionType.SetFormData,
+          payload: {
+            data: elementRefData.contentProp,
+          },
+        });
       }
     };
     if (query.pageId) {
@@ -242,7 +245,6 @@ const Editor: React.FC = () => {
     const getComponentsData = async () => {
       const res = await getComponents();
       const group = groupBy(res.data, 'componentMeta.classification');
-      console.log(group);
       setComponentMap(group);
       setAllComponent(res.data);
     };
@@ -268,7 +270,7 @@ const Editor: React.FC = () => {
               </TabPane> */}
               <TabPane tab="组件配置" key="2">
                 <CompPropEditorLoader
-                  data={state.formData}
+                  initialValues={state.formData}
                   onChange={handleData}
                   widgetMeta={widgetMeta}
                   onChangeStyle={handleElementStyle}

@@ -1,4 +1,12 @@
-import React, { CSSProperties, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  CSSProperties,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import UploadTool from '@/components/UploadTool/';
 import { PlatformUploadToolProps } from './types';
 import { useModel } from 'umi';
@@ -8,12 +16,20 @@ import EditorContext from '@/pages/editor/context';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { ActionType, DSL, DSLContent } from '@/pages/editor/types';
 
-const PlatformUploadTool: React.FC<PlatformUploadToolProps> = (props) => {
+const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
   const { onSelected } = props;
   const { setMaterialVisible } = useModel('useMaterialModel');
   const { selectMaterial, isSuccess } = useSelectMaterial();
   const [urlVal, setUrlVal] = useState('');
   const { state, dispatch } = useContext(EditorContext);
+
+  useImperativeHandle(ref, () => {
+    return {
+      setUrlVal(url: string) {
+        setUrlVal(url);
+      },
+    };
+  });
 
   useEffect(() => {
     if (isSuccess && selectMaterial) {
@@ -106,4 +122,4 @@ const PlatformUploadTool: React.FC<PlatformUploadToolProps> = (props) => {
   );
 };
 
-export default PlatformUploadTool;
+export default forwardRef(PlatformUploadTool);

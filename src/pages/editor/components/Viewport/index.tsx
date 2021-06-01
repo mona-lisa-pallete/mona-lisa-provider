@@ -59,7 +59,7 @@ const Viewport: React.FC = () => {
     }
   }, [state.dsl.content]);
 
-  const handleSelect = (ref: string, id: string) => {
+  const handleSelect = (ref: string, id: string, data: any) => {
     dispatch({
       type: ActionType.SetSelectedRef,
       payload: {
@@ -95,15 +95,14 @@ const Viewport: React.FC = () => {
     //     });
     //   });
     // }
-    // dispatch({
-    //   type: ActionType.SetFormData,
-    //   payload: {
-    //     data: {
-    //       ...data,
-    //       action: actionFormData,
-    //     },
-    //   },
-    // });
+    dispatch({
+      type: ActionType.SetFormData,
+      payload: {
+        data: {
+          ...data.contentProp,
+        },
+      },
+    });
   };
 
   const isNullData = state.dsl.content.length === 0;

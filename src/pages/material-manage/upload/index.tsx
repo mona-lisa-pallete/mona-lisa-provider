@@ -12,15 +12,7 @@ import { Progress, Button, message, Input, Modal } from 'antd';
 import editIcon from '@/assets/img/common/edit.png';
 import { addMaterials } from '@/services/material';
 import { MaterialType } from '../types';
-import {
-  getFileName,
-  isRightSizeImg,
-  getFileType,
-  isImgSize,
-  isPic,
-  isVideoSize,
-  isMp4,
-} from '@/utils/common';
+import { getFileName, getFileType, isImgSize, isPic, isVideoSize, isMp4 } from '@/utils/common';
 import type { RcFile } from 'antd/lib/upload';
 import './index.less';
 import { MessageType } from '@/utils/message';
@@ -116,17 +108,6 @@ const MaterialManageUpload: React.FC = () => {
     const url = window.URL || window.webkitURL;
     const img = new Image(); // 手动创建一个Image对象
     img.src = url.createObjectURL(file); // 创建Image的对象的url
-    try {
-      await isRightSizeImg(img);
-    } catch (error) {
-      message.error({
-        content: error.msg,
-        style: {
-          marginTop: '210px',
-        },
-      });
-      return Promise.reject();
-    }
     return Promise.resolve();
   };
 
