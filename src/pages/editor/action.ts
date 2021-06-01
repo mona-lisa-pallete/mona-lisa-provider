@@ -41,9 +41,9 @@ export interface IUpdateComponentAction {
 export interface ISetSelectedRefAction {
   type: ActionType.SetSelectedRef;
   payload: {
-    ref: string;
-    id: string;
-    containerId: string;
+    ref: string | undefined;
+    id: string | undefined;
+    containerId: string | undefined;
   };
 }
 

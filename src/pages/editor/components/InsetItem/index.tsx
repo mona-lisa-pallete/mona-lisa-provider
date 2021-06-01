@@ -38,7 +38,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         style: {
           position: 'relative',
           width: '100%',
-          height: '118px',
+          height: '200px',
         },
       },
       elementId: containerId,
@@ -61,25 +61,30 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         },
       },
     });
-    dispatch({
-      type: ActionType.SetSelectedRef,
-      payload: {
-        id: elementId,
-        ref: elementRef,
-        containerId,
-      },
-    });
+    if (index === -1) {
+      dispatch({
+        type: ActionType.SetSelectedRef,
+        payload: {
+          id: elementId,
+          ref: elementRef,
+          containerId,
+        },
+      });
+    }
   };
 
   useEffect(() => {
     if (hasDropped && dropRef.current) {
       const isNullData = index === -1;
+      const isLast = index === -2;
       const list = state.dsl.content.slice();
       // 为空时
-      if (isNullData) {
+      if (isNullData || isLast) {
         pushElement(list);
+        dropRef.current = false;
         return;
       }
+      console.log(index);
 
       const elementId = nanoid();
       const containerId = nanoid();
@@ -89,7 +94,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           style: {
             position: 'relative',
             width: '100%',
-            height: '118px',
+            height: '200px',
           },
         },
         elementRef: 'DavinciDiv',
@@ -112,14 +117,14 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           },
         },
       });
-      dispatch({
-        type: ActionType.SetSelectedRef,
-        payload: {
-          id: elementId,
-          ref: elementRef,
-          containerId,
-        },
-      });
+      // dispatch({
+      //   type: ActionType.SetSelectedRef,
+      //   payload: {
+      //     id: elementId,
+      //     ref: elementRef,
+      //     containerId,
+      //   },
+      // });
       dropRef.current = false;
     }
   }, [hasDropped, index, elementRef, state.dsl.content]);

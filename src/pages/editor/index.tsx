@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useMemo, useReducer, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ViewportBox from './components/Viewport';
@@ -20,6 +20,8 @@ import { useLocation } from 'react-router-dom';
 import { groupBy, merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
+import ContainerForm from './components/ContainerForm';
+import { changeElementStyleById, findElementById } from './utils';
 
 const { TabPane } = Tabs;
 
@@ -112,6 +114,7 @@ const Editor: React.FC = () => {
   const { query } = location;
   const [componentMap, setComponentMap] = useState<{ [key: string]: any[] }>({});
   const [allComponent, setAllComponent] = useState<any[]>([]);
+  const [containerVal, setContainerVal] = useState<any>({});
 
   useHideHeader();
   const selectedRefMeta = allComponent.find((i) => i.ref === state.selectedElementRef)
@@ -262,6 +265,47 @@ const Editor: React.FC = () => {
     getComponentsData();
   }, []);
 
+  useEffect(() => {
+    if (state.selectedContainerId && !state.selectedElementRef) {
+      const element = state.dsl?.content?.find(
+        (i: any) => i.elementId === state.selectedContainerId,
+      );
+      let height: string = element?.contentProp?.style?.height;
+      if (height) {
+        if (typeof height === 'string' && height.includes('px')) {
+          height = height.replace('px', '');
+        }
+        setContainerVal({
+          height,
+        });
+      }
+    }
+  }, [state.dsl?.content, state.selectedContainerId, state.selectedElementRef]);
+
+  const handleContainer = (height: number) => {
+    if (state.selectedContainerId && !state.selectedElementRef) {
+      const element = findElementById(state.selectedContainerId, state.dsl.content);
+      console.log(element);
+
+      if (element?.contentProp?.style?.height) {
+        // element.contentProp.style.height = height;
+        const content = changeElementStyleById(state.selectedContainerId, state.dsl.content, {
+          height,
+        });
+        dispatch({
+          type: ReducerActionType.UpdateComponent,
+          payload: {
+            dsl: {
+              content,
+              action: state.dsl.action,
+            },
+          },
+        });
+        console.log(element, 'element');
+      }
+    }
+  };
+
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
       <DndProvider backend={HTML5Backend}>
@@ -280,7 +324,11 @@ const Editor: React.FC = () => {
                 <PageForm />
               </TabPane> */}
               <TabPane tab="组件配置" key="2">
-                {widgetMeta && (
+                {state.selectedContainerId && !state.selectedElementId && (
+                  <ContainerForm values={containerVal} onChange={handleContainer} />
+                )}
+                {/* {`${widgetMeta} ${state.selectedContainerId} ${state.selectedElementId}`} */}
+                {widgetMeta && state.selectedContainerId && state.selectedElementId && (
                   <CompPropEditorLoader
                     initialValues={state.formData}
                     onChange={handleData}

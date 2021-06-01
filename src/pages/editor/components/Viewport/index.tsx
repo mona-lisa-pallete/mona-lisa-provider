@@ -11,6 +11,7 @@ import DvContainer from '@/_components/DvContainer';
 import PreviewHeader from '@/assets/img/common/preview-header.png';
 // import { ActionType as ActionFormType } from '../ActionForm/types';
 import { CompLoader } from './comp-loader';
+import Draggable from 'react-draggable';
 
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
@@ -130,41 +131,73 @@ const Viewport: React.FC = () => {
                     actionVisible={state.selectedContainerId === i.elementId}
                     id={i.elementId}
                     index={index}
+                    active={state.selectedContainerId === i.elementId}
+                    onClick={() => {
+                      dispatch({
+                        type: ActionType.SetSelectedRef,
+                        payload: {
+                          containerId: i.elementId!,
+                          id: undefined,
+                          ref: undefined,
+                        },
+                      });
+                    }}
                   >
-                    <DvContainer style={i.contentProp.style}>
+                    {/* <Draggable
+                      bounds="parent"
+                      onStart={() => {
+                        console.log(222222);
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'inline-block',
+                        }}
+                      >
+                        222
+                      </div>
+                    </Draggable> */}
+                    <DvContainer index={index} style={i.contentProp.style}>
                       {i?.contentChild &&
                         i.contentChild.map((childItem) => {
                           return (
-                            <DragItem
-                              id={childItem.elementId!}
-                              left={childItem?.contentProp?.style?.left}
-                              top={childItem?.contentProp?.style?.top}
-                              key={childItem.elementId}
-                              style={{
-                                position: 'absolute',
-                                left: childItem?.contentProp?.style?.left,
-                                top: childItem?.contentProp?.style?.top,
-                              }}
-                              active={childItem.elementId === state.selectedElementId}
-                              onSelect={() => {
-                                handleSelect(
-                                  childItem.elementRef!,
-                                  childItem.elementId!,
-                                  childItem,
-                                  i.elementId!,
-                                );
-                              }}
-                            >
-                              {/* {console.log(state.selectedElementMeta, 'state.selectedElementMeta')}
-                              {state.selectedElementMeta?.propFormConfig?.defaultFields &&
-                                !childItem.contentProp[
-                                  state.selectedElementMeta?.propFormConfig?.defaultFields
-                                ] && <img src={state.selectedElementMeta?.logo} />} */}
-                              <CompLoader
-                                elementRef={childItem.elementRef!}
-                                contentProps={childItem.contentProp}
-                              />
-                            </DragItem>
+                            <Draggable bounds="parent">
+                              {/* <DragItem
+                                id={childItem.elementId!}
+                                key={childItem.elementId}
+                                active={childItem.elementId === state.selectedElementId}
+                                onSelect={(e) => {
+                                  e.stopPropagation();
+                                  handleSelect(
+                                    childItem.elementRef!,
+                                    childItem.elementId!,
+                                    childItem,
+                                    i.elementId!,
+                                  );
+                                }}
+                              > */}
+                              <div>
+                                <DragItem
+                                  id={childItem.elementId!}
+                                  key={childItem.elementId}
+                                  onSelect={(e) => {
+                                    e.stopPropagation();
+                                    handleSelect(
+                                      childItem.elementRef!,
+                                      childItem.elementId!,
+                                      childItem,
+                                      i.elementId!,
+                                    );
+                                  }}
+                                >
+                                  <CompLoader
+                                    elementRef={childItem.elementRef!}
+                                    contentProps={childItem.contentProp}
+                                  />
+                                </DragItem>
+                              </div>
+                              {/* </DragItem> */}
+                            </Draggable>
                           );
                         })}
                     </DvContainer>

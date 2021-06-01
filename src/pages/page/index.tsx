@@ -235,6 +235,7 @@ const Page: React.FC = () => {
       valueType: 'option',
       hideInSearch: true,
       width: 260,
+      fixed: 'right',
       render(_, item) {
         const menu = (
           <TableActionMenu>

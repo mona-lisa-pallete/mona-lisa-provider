@@ -46,7 +46,7 @@ const config = defineConfig({
   },
   styles: [
     '//at.alicdn.com/t/font_2395081_9sik77mosu5.css',
-    '//cdnjs.cloudflare.com/ajax/libs/antd/4.15.6/antd.css',
+    'https://static.guorou.net/course-static/8b5e1c66cad44947aa14258d1220678d.css',
   ],
   favicon: 'https://static.guorou.net/portal/logo-simple.svg',
   chainWebpack: (config, { webpack }) => {
