@@ -37,7 +37,7 @@ const config = defineConfig({
     '//course-static.oss-cn-hangzhou.aliyuncs.com/browser.min.js',
     '//course-static.oss-cn-hangzhou.aliyuncs.com/moment.js',
     'https://static.guorou.net/davinci/lib/antd.min.dll.js',
-    '//at.alicdn.com/t/font_2395081_pjtg7zzsnmf.js',
+    '//at.alicdn.com/t/font_2395081_9sik77mosu5.js',
   ],
   externals: {
     react: 'reactVendor.React',
@@ -45,7 +45,7 @@ const config = defineConfig({
     antd: 'antd',
   },
   styles: [
-    '//at.alicdn.com/t/font_2395081_pjtg7zzsnmf.css',
+    '//at.alicdn.com/t/font_2395081_9sik77mosu5.css',
     '//cdnjs.cloudflare.com/ajax/libs/antd/4.15.6/antd.css',
   ],
   favicon: 'https://static.guorou.net/portal/logo-simple.svg',

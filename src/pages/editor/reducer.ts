@@ -9,6 +9,7 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         selectedElementRef: action.payload.ref,
         selectedElementId: action.payload.id,
+        selectedContainerId: action.payload.containerId,
       };
     case ActionType.SetFormData:
       return {

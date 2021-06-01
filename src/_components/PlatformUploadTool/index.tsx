@@ -6,6 +6,7 @@ import React, {
   useState,
   forwardRef,
   useImperativeHandle,
+  useCallback,
 } from 'react';
 import UploadTool from '@/components/UploadTool/';
 import { PlatformUploadToolProps } from './types';
@@ -31,12 +32,29 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
     };
   });
 
-  useEffect(() => {
+  const setImgUrl = useCallback(() => {
     if (isSuccess && selectMaterial) {
+      const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
+        height: selectMaterial.height,
+        width: selectMaterial.width,
+      })!;
+      dispatch({
+        type: ActionType.UpdateComponent,
+        payload: {
+          dsl: {
+            ...state.dsl,
+            content,
+          },
+        },
+      });
       setUrlVal(selectMaterial.url);
       onSelected(selectMaterial);
     }
-  }, [selectMaterial, isSuccess]);
+  }, [selectMaterial?.url, isSuccess]);
+
+  useEffect(() => {
+    setImgUrl();
+  }, [setImgUrl]);
 
   const value = useMemo(() => {
     return urlVal;
@@ -48,7 +66,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
     style: CSSProperties,
   ): DSLContent[] | undefined => {
     const list = content.map((i) => {
-      if (i.contentChild && i.contentChild.length) {
+      if (i.contentChild && i.contentChild.length && state.selectedContainerId === i.elementId) {
         let contentChild: DSLContent[] = [];
         i.contentChild.forEach((childItem, index) => {
           contentChild = i.contentChild!;
@@ -56,20 +74,22 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
             i.contentChild![index].contentProp.style = style;
           }
         });
+        console.log(contentChild, 'contentChild contentChild');
+
         if (contentChild) {
-          let maxHeightItem;
+          let maxHeightItem: DSLContent = {};
           let maxH = 0;
-          contentChild.forEach((contentChildItem) => {
-            if (contentChildItem?.contentProp?.style?.height > maxH) {
+          contentChild.forEach((contentChildItem: DSLContent) => {
+            if (contentChildItem!.contentProp?.style?.height > maxH) {
               maxHeightItem = contentChildItem;
-              maxH = contentChildItem.contentProp.style?.height;
+              maxH = (contentChildItem?.contentProp?.style?.height as number) || 0;
             }
           });
           let height = maxHeightItem?.contentProp?.style?.height;
-          if (maxHeightItem?.contentProp?.style?.width > 750) {
+          if (maxHeightItem && maxHeightItem?.contentProp?.style?.width >= 750) {
             const radio = maxHeightItem?.contentProp?.style?.width / 750;
             height /= radio;
-            console.log(height);
+            height /= 2;
           }
           i.contentProp.style = {
             ...i.contentProp.style,
@@ -92,9 +112,9 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       console.log(height, width);
 
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
-        height: height / 2,
-        width: width / 2,
-      });
+        height,
+        width,
+      })!;
       dispatch({
         type: ActionType.UpdateComponent,
         payload: {

@@ -4,6 +4,8 @@ import { useState } from 'react';
 interface Material {
   url: string;
   name: string;
+  width: number;
+  height: number;
 }
 
 export default function useMaterialModel() {

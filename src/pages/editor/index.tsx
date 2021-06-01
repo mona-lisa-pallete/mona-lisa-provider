@@ -75,6 +75,7 @@ export const initState: IState = {
   selectedElementId: undefined,
   formData: {},
   selectedElementMeta: undefined,
+  selectedContainerId: undefined,
 };
 
 /**
@@ -142,7 +143,9 @@ const Editor: React.FC = () => {
     const list = content.map((i) => {
       if (i.contentChild && i.contentChild.length) {
         i.contentChild.forEach((childItem, index) => {
-          i.contentChild![index].contentProp = merge(i.contentChild![index].contentProp, data);
+          if (id === childItem.elementId) {
+            i.contentChild![index].contentProp = merge(i.contentChild![index].contentProp, data);
+          }
         });
       }
       return i!;
@@ -226,6 +229,7 @@ const Editor: React.FC = () => {
           payload: {
             id: elementRefData.elementId,
             ref: elementRefData.elementRef,
+            containerId: res.data?.dsl?.content?.[0]?.elementId,
           },
         });
         dispatch({

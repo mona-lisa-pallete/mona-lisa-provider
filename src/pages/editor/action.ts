@@ -43,6 +43,7 @@ export interface ISetSelectedRefAction {
   payload: {
     ref: string;
     id: string;
+    containerId: string;
   };
 }
 

@@ -59,12 +59,13 @@ const Viewport: React.FC = () => {
     }
   }, [state.dsl.content]);
 
-  const handleSelect = (ref: string, id: string, data: any) => {
+  const handleSelect = (ref: string, id: string, data: any, containerId: string) => {
     dispatch({
       type: ActionType.SetSelectedRef,
       payload: {
         ref,
         id,
+        containerId,
       },
     });
     // const actionData = state.dsl.action;
@@ -125,7 +126,11 @@ const Viewport: React.FC = () => {
               >
                 {/* {(index + 1) % 2 === 0 && <InsetItem visible={isStart} index={index} />} */}
                 {i.contentType === 'container' && (
-                  <ViewportItem id={i.elementId} index={index}>
+                  <ViewportItem
+                    actionVisible={state.selectedContainerId === i.elementId}
+                    id={i.elementId}
+                    index={index}
+                  >
                     <DvContainer style={i.contentProp.style}>
                       {i?.contentChild &&
                         i.contentChild.map((childItem) => {
@@ -146,6 +151,7 @@ const Viewport: React.FC = () => {
                                   childItem.elementRef!,
                                   childItem.elementId!,
                                   childItem,
+                                  i.elementId!,
                                 );
                               }}
                             >

@@ -11,10 +11,12 @@ const MaterialLibraryContainer: React.FC = () => {
     <MaterialLibrary
       visible={materialVisible}
       type={materialType}
-      onSelect={(url: string, name: string) => {
+      onSelect={(i) => {
         setSelectData({
-          url,
-          name,
+          url: i.ossUrl,
+          name: i.materialName,
+          width: i.contentWidth,
+          height: i.contentHeight,
         });
       }}
       extra={extraData}
