@@ -26,6 +26,11 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         selectedElementMeta: action.payload.meta,
       };
+    case ActionType.SetPageName:
+      return {
+        ...state,
+        pageName: action.payload.name,
+      };
     default:
       return state;
   }

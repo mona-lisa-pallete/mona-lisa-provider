@@ -67,3 +67,10 @@ export interface ISetComponentMeta {
     meta: any;
   };
 }
+
+export interface ISetPageName {
+  type: ActionType.SetPageName;
+  payload: {
+    name: string;
+  };
+}

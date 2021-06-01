@@ -76,6 +76,7 @@ export const initState: IState = {
   formData: {},
   selectedElementMeta: undefined,
   selectedContainerId: undefined,
+  pageName: '',
 };
 
 /**
@@ -222,6 +223,12 @@ const Editor: React.FC = () => {
           dsl: res.data.dsl,
         },
       });
+      dispatch({
+        type: ReducerActionType.SetPageName,
+        payload: {
+          name: res.data.name,
+        },
+      });
       const elementRefData = res.data?.dsl?.content?.[0]?.contentChild?.[0];
       if (elementRefData) {
         dispatch({
@@ -273,12 +280,14 @@ const Editor: React.FC = () => {
                 <PageForm />
               </TabPane> */}
               <TabPane tab="组件配置" key="2">
-                <CompPropEditorLoader
-                  initialValues={state.formData}
-                  onChange={handleData}
-                  widgetMeta={widgetMeta}
-                  onChangeStyle={handleElementStyle}
-                />
+                {widgetMeta && (
+                  <CompPropEditorLoader
+                    initialValues={state.formData}
+                    onChange={handleData}
+                    widgetMeta={widgetMeta}
+                    onChangeStyle={handleElementStyle}
+                  />
+                )}
                 {state.selectedElementRef && (
                   <Form layout="vertical" onValuesChange={handleData}>
                     <ActionForm pageData={[]} modalData={[]} />

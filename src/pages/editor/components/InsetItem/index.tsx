@@ -147,7 +147,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           height: '100%',
         }}
       >
-        放在此处{`${visible}`}
+        放在此处
       </InsetItemBox>
     </div>
   );

@@ -84,6 +84,13 @@ export const ActionBox = styled.div`
   display: flex;
   justify-content: flex-end;
   flex: 1;
+  .ant-btn {
+    color: #1980ff;
+    border: 1px solid #1980ff;
+  }
+  .ant-btn-primary {
+    color: #fff;
+  }
 `;
 
 export const PageNameBox = styled.div`
@@ -103,5 +110,21 @@ export const PageHeaderCol = styled.div`
     height: auto;
     padding-right: 16px;
     border-right: 1px solid #dadbe1;
+  }
+`;
+
+export const SaveBtn = styled(Button)`
+  width: 84px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid #1980ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1980ff;
+  margin-right: 10px;
+  i {
+    height: 23px;
+    margin-left: 3px;
   }
 `;

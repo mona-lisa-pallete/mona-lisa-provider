@@ -15,11 +15,11 @@ import { getPage } from '@/services/editor';
 const { TextArea } = Input;
 
 const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
-  const { visible, onChangeVisible, id } = props;
+  const { visible, onChangeVisible, id, beforeSave, onlineVal = true } = props;
   const [form] = Form.useForm();
   const { setMaterialVisible } = useModel('useMaterialModel');
   const [imgField, setImgField] = useState('');
-  const [status, setStatus] = useState(true);
+  const [status, setStatus] = useState(false);
   const [online, setOline] = useState(false);
 
   const { selectMaterial, isSuccess } = useSelectMaterial();
@@ -32,7 +32,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
     });
   }
 
-  // miniappImmersion: string;
+  //  miniappImmersion: string;
   //   shareTitle: string;
   //   shareDescription: string;
   //   shareImage: string;
@@ -40,6 +40,10 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
   //   miniappShareDescription: string;
   //   miniappShareImage: string;
   const submit = async (values: any) => {
+    let pageId = id;
+    if (beforeSave) {
+      pageId = await beforeSave();
+    }
     let action = 'online';
     if (online) {
       action = 'online';
@@ -58,6 +62,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
       },
       miniappImmersion,
       platform,
+      name,
     } = values;
     const attributes: any = {
       shareTitle,
@@ -71,11 +76,12 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
     if (miniappImmersion) {
       attributes.miniappImmersion = miniappImmersion;
     }
-    const res = await updatePage(id, {
+    const res = await updatePage(pageId, {
       // @ts-ignore
       action,
       attributes,
       platform,
+      name,
     });
     if (res.code === 0) {
       onChangeVisible(false);
@@ -89,7 +95,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
   }, [form, visible]);
 
   useEffect(() => {
-    if (visible) {
+    if (visible && id) {
       const getData = async () => {
         const res = await getPage(id);
         if (res.code === 0) {
@@ -150,7 +156,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
           >
             保存
           </Button>
-          {!status && (
+          {!status && id && onlineVal && (
             <Button
               onClick={() => {
                 // onOk();

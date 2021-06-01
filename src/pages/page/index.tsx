@@ -383,15 +383,19 @@ const Page: React.FC = () => {
   // }, []);
 
   const goToEdit = (page: string | number) => {
-    window.open(`/davinciprovider/editor?pageId=${page}&type=${PageEdit.Edit}`);
+    window.open(
+      `/davinciprovider/editor?pageId=${page}&type=${PageEdit.Edit}&projectId=${query.projectId}`,
+    );
   };
 
   const addPage = () => {
-    window.open(`/davinciprovider/editor?type=${PageEdit.Add}`);
+    window.open(`/davinciprovider/editor?type=${PageEdit.Add}&projectId=${query.projectId}`);
   };
 
   const copyPage = (page: string | number) => {
-    window.open(`/davinciprovider/editor?type=${PageEdit.Add}&pageId=${page}`);
+    window.open(
+      `/davinciprovider/editor?type=${PageEdit.Add}&pageId=${page}&projectId=${query.projectId}`,
+    );
   };
 
   return (

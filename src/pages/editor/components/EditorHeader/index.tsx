@@ -13,11 +13,15 @@ import {
   PagePopover,
   PagePopoverBtn,
   PageHeaderCol,
+  SaveBtn,
 } from './index.style';
-import { useLocation } from 'umi';
+import { useHistory, useLocation } from 'umi';
 import EditorContext from '../../context';
 import { addPage, addPreviewPage } from '@/services/editor';
 import { DSL } from '../../types';
+import { updatePage } from '@/services/page';
+import { PagePopoverStyle, TableActionMenu } from '@/pages/page/index.style';
+import PageSettingModal from '@/pages/page/components/PageSettingModal';
 
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
@@ -25,11 +29,38 @@ const EditorHeader: React.FC = () => {
   const { state } = useContext(EditorContext);
   const [value, setValue] = useState('');
   const [visible, setVisible] = useState(false);
-  const query = location.query as { dev: string; pageId: string };
+  const query = location.query as {
+    dev: string;
+    pageId: string;
+    projectId: string;
+    type: 'edit' | 'add';
+  };
+  const [settingVisible, setSettingVisible] = useState(false);
+  const history = useHistory();
+  const [pageId, setPageId] = useState(query.pageId);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   useEffect(() => {
     setValue(JSON.stringify(state.dsl));
   }, [state.dsl]);
+
+  const handleAddPage = async () => {
+    if (query.type === 'edit') {
+      return Promise.resolve(query.pageId);
+    } else {
+      const page = await save(state.dsl);
+      setPageId(page);
+      history.replace({
+        pathname: '/editor',
+        query: {
+          ...query,
+          type: 'edit',
+          pageId: page,
+        },
+      });
+      return Promise.resolve(page);
+    }
+  };
 
   const TextArea = (
     <Input.TextArea
@@ -56,15 +87,27 @@ const EditorHeader: React.FC = () => {
   };
 
   const save = async (dsl: string | DSL = state.dsl) => {
+    setSaveLoading(true);
     const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
     const res = await addPage({
       dsl: dslData,
       page: query.pageId,
       name: 'ffff',
+      projectId: parseInt(query.projectId, 10),
     });
+    setSaveLoading(false);
     if (res.code === 0) {
       message.success('保存成功');
+      return Promise.resolve(res.data.page);
+    } else {
+      return Promise.reject();
     }
+  };
+
+  const online = async () => {
+    await updatePage(query.pageId, {
+      action: 'online',
+    });
   };
 
   const content = (
@@ -106,6 +149,20 @@ const EditorHeader: React.FC = () => {
     setExpendVal(val);
   };
 
+  const menu = (
+    <TableActionMenu>
+      <Button
+        type="text"
+        onClick={(e) => {
+          setSettingVisible(true);
+          e.stopPropagation();
+        }}
+      >
+        页面设置
+      </Button>
+    </TableActionMenu>
+  );
+
   return (
     <EditorHeaderContainer>
       <PagePopover />
@@ -146,7 +203,7 @@ const EditorHeader: React.FC = () => {
           </PagePopoverBtn>
         </Popover>
       </PageHeaderCol>
-      <PageNameBox>项目名称一</PageNameBox>
+      <PageNameBox>{state.pageName}</PageNameBox>
       <ActionBox>
         {query.dev && (
           <Button
@@ -170,13 +227,37 @@ const EditorHeader: React.FC = () => {
         >
           预览
         </Button>
-        <Button
-          type="primary"
+        <SaveBtn
+          onClick={() => {
+            save();
+          }}
+          loading={saveLoading}
+        >
+          保存 |
+          <Popover overlayClassName="table-action-menu" content={menu}>
+            <i className="icon-more iconfont" />
+          </Popover>
+        </SaveBtn>
+        {/* <Button
+          style={{
+            marginRight: '10px',
+            display: 'inline-flex',
+            alignItems: 'center',
+          }}
           onClick={() => {
             save();
           }}
         >
-          保存
+          保存 | <i className="icon-more iconfont" />
+        </Button> */}
+        <Button
+          type="primary"
+          onClick={async () => {
+            await save();
+            await online();
+          }}
+        >
+          保存并上线
         </Button>
       </ActionBox>
       <Modal
@@ -216,6 +297,16 @@ const EditorHeader: React.FC = () => {
       >
         {TextArea}
       </Modal>
+      <PagePopoverStyle />
+      <PageSettingModal
+        onlineVal={false}
+        visible={settingVisible}
+        onChangeVisible={(val: boolean) => {
+          setSettingVisible(val);
+        }}
+        id={pageId}
+        beforeSave={handleAddPage}
+      />
     </EditorHeaderContainer>
   );
 };

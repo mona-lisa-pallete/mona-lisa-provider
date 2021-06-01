@@ -41,7 +41,13 @@ const useWidgetMeta = (() => {
     }
     const [metaState, setMetaState] = useState(initState);
     useEffect(() => {
-      if (!elementRef || !elementRefMeta) return;
+      if (!elementRef || !elementRefMeta) {
+        setMetaState({
+          fetching: false,
+          metadata: null,
+        });
+        return;
+      }
       getCompMeta(elementRef).then(async (metaFromRemote) => {
         const isLocal = window.location.host.includes('localhost');
         const RefMeta = isLocal ? metaFromRemote : elementRefMeta;
