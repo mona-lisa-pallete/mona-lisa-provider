@@ -19,7 +19,6 @@ const ComponentTab: React.FC<PictureTabProps> = (props) => {
           src={img}
           style={{
             width: '168px',
-            height: '168px',
           }}
         />
       </ComponentDragItem>

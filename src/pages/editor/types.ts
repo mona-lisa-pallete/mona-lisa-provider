@@ -8,6 +8,7 @@ import {
   ISetFormData,
   ISetPageData,
   ISetComponentMeta,
+  ISetPageName,
 } from './action';
 
 import { CSSProperties } from 'react';
@@ -67,6 +68,7 @@ export interface IState {
   formData: any;
   selectedElementMeta: undefined | any;
   selectedContainerId: undefined | string;
+  pageName: string;
 }
 
 export type IAction =
@@ -78,7 +80,8 @@ export type IAction =
   | ISetSelectedRefAction
   | ISetFormData
   | ISetPageData
-  | ISetComponentMeta;
+  | ISetComponentMeta
+  | ISetPageName;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -90,4 +93,5 @@ export enum ActionType {
   SetFormData = 'SET_FORM_DATA',
   SetPageData = 'SET_PAGE_DATA',
   SetComponentMeta = 'SET_COMPONENT_META',
+  SetPageName = 'SET_PAGE_NAME',
 }

@@ -24,5 +24,10 @@ export const ActionBar = styled.div`
       color: #1980ff;
     }
   }
+  .action-bar__disabled {
+    &:hover {
+      color: #fff;
+    }
+  }
   /* justify-content: space-between; */
 `;

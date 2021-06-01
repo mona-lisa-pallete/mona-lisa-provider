@@ -13,9 +13,12 @@ export interface IAddPageRequest {
   page: string;
   dsl: any;
   name: string;
+  projectId: number;
 }
 
-export interface IAddPageReponse {}
+export interface IAddPageReponse {
+  page: string;
+}
 
 export interface IGetComponentsReponse {
   id: number;
