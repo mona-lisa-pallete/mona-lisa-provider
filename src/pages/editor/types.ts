@@ -66,6 +66,7 @@ export interface IState {
   selectedElementId: undefined | string;
   formData: any;
   selectedElementMeta: undefined | any;
+  selectedContainerId: undefined | string;
 }
 
 export type IAction =

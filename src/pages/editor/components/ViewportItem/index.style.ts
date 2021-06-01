@@ -1,0 +1,28 @@
+import styled from 'styled-components';
+
+export const ActionBar = styled.div`
+  width: 36px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  left: calc(100% + 10px);
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  i {
+    margin-bottom: 10px;
+    color: #fff;
+    cursor: pointer;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    &:hover {
+      color: #1980ff;
+    }
+  }
+  /* justify-content: space-between; */
+`;

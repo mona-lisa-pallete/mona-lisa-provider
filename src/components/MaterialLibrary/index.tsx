@@ -21,7 +21,7 @@ export interface MaterialLibraryProp {
   visible: boolean;
   drawProp?: DrawerProps;
   type: MaterialType;
-  onSelect: (url: string, name: string) => void;
+  onSelect: (data: IGetMaterialsResponseList) => void;
   onClose: () => void;
   beforeSelect?: (data: IGetMaterialsResponseList) => PromiseLike<void>;
   extra?: any;
@@ -95,7 +95,7 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
   };
 
   const handleSelect = (i: IGetMaterialsResponseList) => {
-    onSelect(i.ossUrl, i.materialName);
+    onSelect(i);
     onClose();
   };
 

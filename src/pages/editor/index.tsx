@@ -17,8 +17,9 @@ import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
-import { groupBy } from 'lodash';
+import { groupBy, merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
+import PlatformUploadTool from '@/_components/PlatformUploadTool';
 
 const { TabPane } = Tabs;
 
@@ -74,20 +75,7 @@ export const initState: IState = {
   selectedElementId: undefined,
   formData: {},
   selectedElementMeta: undefined,
-};
-
-const UploadTool = ({ onSelected }) => {
-  return (
-    <div
-      onClick={(e) => {
-        onSelected?.({
-          url: 'hhh',
-        });
-      }}
-    >
-      平台素材控件
-    </div>
-  );
+  selectedContainerId: undefined,
 };
 
 /**
@@ -95,21 +83,23 @@ const UploadTool = ({ onSelected }) => {
  */
 const PlatformContext = {
   ui: {
-    UploadTool,
+    UploadTool: PlatformUploadTool,
   },
 };
 
-const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, onChangeStyle }: any) => {
+const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValues }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
     : 'div';
+  console.log(initialValues, 'initialValues');
+
   return hasMeta ? (
     <FormComp
       onChange={onChange}
+      initialValues={initialValues}
       platformCtx={PlatformContext}
       actionRender={actionRender}
-      onChangeStyle={onChangeStyle}
     />
   ) : null;
 };
@@ -130,8 +120,6 @@ const Editor: React.FC = () => {
     state.selectedElementRef,
     selectedRefMeta,
   );
-  console.log(fetchingMeta, widgetMeta);
-
   useEffect(() => {
     if (widgetMeta) {
       dispatch({
@@ -155,7 +143,9 @@ const Editor: React.FC = () => {
     const list = content.map((i) => {
       if (i.contentChild && i.contentChild.length) {
         i.contentChild.forEach((childItem, index) => {
-          i.contentChild![index].contentProp = data;
+          if (id === childItem.elementId) {
+            i.contentChild![index].contentProp = merge(i.contentChild![index].contentProp, data);
+          }
         });
       }
       return i!;
@@ -193,16 +183,8 @@ const Editor: React.FC = () => {
     return list!;
   };
 
-  const handleData = (changeVal: any, allVal: any) => {
-    console.log(changeVal);
-
-    if (changeVal?.action) {
-      console.log(allVal);
-      // return;
-    }
+  const handleData = (allVal: any) => {
     const data = { ...state.formData.contentProp, ...allVal };
-
-    console.log(data, 'datadata');
 
     if (state.selectedElementId) {
       const content = changeElement(state.dsl.content, state.selectedElementId, data);
@@ -247,6 +229,13 @@ const Editor: React.FC = () => {
           payload: {
             id: elementRefData.elementId,
             ref: elementRefData.elementRef,
+            containerId: res.data?.dsl?.content?.[0]?.elementId,
+          },
+        });
+        dispatch({
+          type: ReducerActionType.SetFormData,
+          payload: {
+            data: elementRefData.contentProp,
           },
         });
       }
@@ -260,7 +249,6 @@ const Editor: React.FC = () => {
     const getComponentsData = async () => {
       const res = await getComponents();
       const group = groupBy(res.data, 'componentMeta.classification');
-      console.log(group);
       setComponentMap(group);
       setAllComponent(res.data);
     };
@@ -286,7 +274,7 @@ const Editor: React.FC = () => {
               </TabPane> */}
               <TabPane tab="组件配置" key="2">
                 <CompPropEditorLoader
-                  data={state.formData}
+                  initialValues={state.formData}
                   onChange={handleData}
                   widgetMeta={widgetMeta}
                   onChangeStyle={handleElementStyle}
