@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import EditorContext from '../../context';
 import { ActionType } from '../../types';
@@ -17,6 +17,7 @@ const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [, setDropName] = useState('');
+  const boxRef = useRef(null);
   const [{ isStart }, drag] = useDrop(
     {
       accept: 'box',
@@ -58,6 +59,20 @@ const Viewport: React.FC = () => {
     if (state.dsl.content) {
       setHasDropped(false);
     }
+  }, [state.dsl.content]);
+
+  useLayoutEffect(() => {
+    console.log(boxRef.current);
+
+    // const box = document.querySelector('.viewport-box');
+    setTimeout(() => {
+      const imgList = boxRef.current?.querySelectorAll('img');
+      console.log(boxRef.current);
+      for (let i = 0; i < imgList.length; i++) {
+        const dom = imgList[i] as HTMLImageElement;
+        dom.draggable = false;
+      }
+    }, 1000);
   }, [state.dsl.content]);
 
   const handleSelect = (ref: string, id: string, data: any, containerId: string) => {
@@ -111,9 +126,9 @@ const Viewport: React.FC = () => {
   const isLast = state.dsl.content.length > 0;
 
   return (
-    <ViewportContainer>
+    <ViewportContainer ref={boxRef}>
       <PhoneHeader src={PreviewHeader} />
-      <ViewportBox ref={drag}>
+      <ViewportBox className="viewport-box" ref={drag}>
         {isNullData && <InsetItem height="605px" visible={isStart} index={-1} />}
         {state?.dsl?.content?.map((i, index) => {
           return (
@@ -162,24 +177,15 @@ const Viewport: React.FC = () => {
                         i.contentChild.map((childItem) => {
                           return (
                             <Draggable bounds="parent">
-                              {/* <DragItem
-                                id={childItem.elementId!}
-                                key={childItem.elementId}
-                                active={childItem.elementId === state.selectedElementId}
-                                onSelect={(e) => {
-                                  e.stopPropagation();
-                                  handleSelect(
-                                    childItem.elementRef!,
-                                    childItem.elementId!,
-                                    childItem,
-                                    i.elementId!,
-                                  );
+                              <div
+                                style={{
+                                  display: 'inline-block',
                                 }}
-                              > */}
-                              <div>
+                              >
                                 <DragItem
                                   id={childItem.elementId!}
                                   key={childItem.elementId}
+                                  active={state.selectedElementId === childItem.elementId}
                                   onSelect={(e) => {
                                     e.stopPropagation();
                                     handleSelect(
