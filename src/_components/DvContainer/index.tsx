@@ -3,6 +3,7 @@ import { ActionType } from '@/pages/editor/types';
 import { nanoid } from 'nanoid';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { DvDiv, DvMask } from './index.style';
 import { DvContainerProps } from './types';
 
 const DvContainer: React.FC<DvContainerProps> = (props) => {
@@ -12,11 +13,12 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
   const [elementRef, setElementRef] = useState('');
   const dropRef = useRef(true);
 
-  const [{ isOverCurrent }, insetDrag] = useDrop({
+  const [{ isOverCurrent, isStart }, insetDrag] = useDrop({
     accept: 'box',
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       isOverCurrent: monitor.isOver({ shallow: true }),
+      isStart: monitor.canDrop(),
     }),
     drop(item: any, monitor) {
       const didDrop = monitor.didDrop();
@@ -27,9 +29,6 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
       setHasDropped(true);
     },
   });
-  console.log(index);
-
-  console.log(isOverCurrent);
 
   useEffect(() => {
     if (hasDropped && dropRef.current) {
@@ -43,7 +42,6 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
           style: {
             // position
           },
-          defaultPosition: {},
         },
         elementId,
         elementRef,
@@ -60,6 +58,14 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
           },
         },
       });
+      dispatch({
+        type: ActionType.SetSelectedRef,
+        payload: {
+          ref: elementRef,
+          id: elementId,
+          containerId: state.dsl.content[index].elementId,
+        },
+      });
       dropRef.current = false;
     }
   }, [hasDropped, index, elementRef, state.dsl.content]);
@@ -70,9 +76,10 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
   }, [state.dsl]);
 
   return (
-    <div ref={insetDrag} style={props.style}>
+    <DvDiv ref={insetDrag} style={props.style}>
       {props.children}
-    </div>
+      {isStart && <DvMask active={isOverCurrent}>放在此处</DvMask>}
+    </DvDiv>
   );
 };
 

@@ -131,7 +131,7 @@ const Page: React.FC = () => {
         const statusName = item.status === 1 ? '已上线' : '未上线';
         return (
           <StatusContainer>
-            <Point />
+            <Point online={item.status === 1} />
             {statusName}
           </StatusContainer>
         );

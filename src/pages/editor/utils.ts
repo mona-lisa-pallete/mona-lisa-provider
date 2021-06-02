@@ -32,6 +32,11 @@ const changeElementStyleById = (id: string, content: DSLContent[], data: CSSProp
       if (i.elementId === id && childStyle) {
         childStyle = merge(childStyle, data);
         // contentData[index].contentChild![childItem].contentProp.style = data;
+      } else if (i.elementId === id && !childStyle) {
+        contentData[index].contentChild![childItem].contentProp = {
+          ...contentData[index].contentChild?.[childItem].contentProp,
+          style: data,
+        };
       }
     });
   });

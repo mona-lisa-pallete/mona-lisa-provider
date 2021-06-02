@@ -16,6 +16,7 @@ import { getFileName, getFileType, isImgSize, isPic, isVideoSize, isMp4 } from '
 import type { RcFile } from 'antd/lib/upload';
 import './index.less';
 import { MessageType } from '@/utils/message';
+import { MIME } from '../components/File/types';
 
 enum FileType {
   Img = 'image',
@@ -141,13 +142,16 @@ const MaterialManageUpload: React.FC = () => {
         beforeUpload={async (file) => {
           const imgTypes = ['.png', '.jpeg', '.jpg'];
           const videoTypes = ['.mp4'];
+          const fileTypes = Object.keys(MIME);
           if (imgTypes.includes(getFileType(file.name))) {
             await validateImg(file);
           } else if (videoTypes.includes(getFileType(file.name))) {
             await validateVideo(file);
+          } else if (fileTypes.includes(getFileType(file.name))) {
+            //
           } else {
             message.warning({
-              content: '只支持.jpg / .png / .mp4',
+              content: '只支持.jpg / .png / .mp4 / 文档类型',
               style: {
                 marginTop: '210px',
               },
@@ -184,7 +188,7 @@ const MaterialManageUpload: React.FC = () => {
           <div className="upload-text">
             将文件拖到此处，或 <span>点击上传</span>
           </div>
-          <div className="upload-tips">支持扩展名：.jpg / .png / .mp4</div>
+          <div className="upload-tips">支持文件：.jpg / .png / .mp4 / 文档</div>
         </UploadButton>
       </OssUpload>
       <FileList>

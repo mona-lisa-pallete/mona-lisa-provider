@@ -92,8 +92,6 @@ const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValue
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
     : 'div';
-  console.log(initialValues, 'initialValues');
-
   return hasMeta ? (
     <FormComp
       onChange={onChange}
