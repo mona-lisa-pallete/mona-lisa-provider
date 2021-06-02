@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useMemo, useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ViewportBox from './components/Viewport';
@@ -9,10 +9,8 @@ import ComponentClassification from './components/ComponentClassification';
 import { useHideHeader, useWidgetMeta } from './hooks';
 import EditorHeader from './components/EditorHeader';
 import { ComponentData, ComponentType } from './data';
-import { EditorConfig, EditorMain } from './index.style';
-import { Form, Tabs } from 'antd';
-import PageForm from './components/PageForm';
-// import DvImageForm from '@/_components/DvImage/form';
+import { DelText, EditorConfig, EditorMain } from './index.style';
+import { Button, Form, Tabs } from 'antd';
 import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
@@ -20,8 +18,7 @@ import { useLocation } from 'react-router-dom';
 import { groupBy, merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
-import ContainerForm from './components/ContainerForm';
-import { changeElementStyleById, findElementById } from './utils';
+import { delElementById } from './utils';
 
 const { TabPane } = Tabs;
 
@@ -116,7 +113,8 @@ const Editor: React.FC = () => {
   const [allComponent, setAllComponent] = useState<any[]>([]);
   const [containerVal, setContainerVal] = useState<any>({});
 
-  useHideHeader();
+  useHideHeader(location);
+
   const selectedRefMeta = allComponent.find((i) => i.ref === state.selectedElementRef)
     ?.componentMeta;
 
@@ -282,28 +280,21 @@ const Editor: React.FC = () => {
     }
   }, [state.dsl?.content, state.selectedContainerId, state.selectedElementRef]);
 
-  const handleContainer = (height: number) => {
-    if (state.selectedContainerId && !state.selectedElementRef) {
-      const element = findElementById(state.selectedContainerId, state.dsl.content);
-      console.log(element);
-
-      if (element?.contentProp?.style?.height) {
-        // element.contentProp.style.height = height;
-        const content = changeElementStyleById(state.selectedContainerId, state.dsl.content, {
-          height,
-        });
-        dispatch({
-          type: ReducerActionType.UpdateComponent,
-          payload: {
-            dsl: {
-              content,
-              action: state.dsl.action,
-            },
-          },
-        });
-        console.log(element, 'element');
-      }
-    }
+  const handleDelElement = () => {
+    const { content, action } = delElementById(
+      state.selectedElementId!,
+      state.dsl.content,
+      state.dsl.action,
+    );
+    dispatch({
+      type: ReducerActionType.UpdateComponent,
+      payload: {
+        dsl: {
+          content,
+          action,
+        },
+      },
+    });
   };
 
   return (
@@ -320,14 +311,8 @@ const Editor: React.FC = () => {
           <ViewportBox />
           <EditorConfig>
             <Tabs defaultActiveKey="2">
-              {/* <TabPane tab="页面设置" key="1">
-                <PageForm />
-              </TabPane> */}
               <TabPane tab="组件配置" key="2">
-                {state.selectedContainerId && !state.selectedElementId && (
-                  <ContainerForm values={containerVal} onChange={handleContainer} />
-                )}
-                {/* {`${widgetMeta} ${state.selectedContainerId} ${state.selectedElementId}`} */}
+                {state.selectedElementId}
                 {widgetMeta && state.selectedContainerId && state.selectedElementId && (
                   <CompPropEditorLoader
                     initialValues={state.formData}
@@ -340,6 +325,11 @@ const Editor: React.FC = () => {
                   <Form layout="vertical" onValuesChange={handleData}>
                     <ActionForm pageData={[]} modalData={[]} />
                   </Form>
+                )}
+                {state.selectedElementRef && (
+                  <Button onClick={handleDelElement}>
+                    <DelText>删除组件</DelText>
+                  </Button>
                 )}
               </TabPane>
               <TabPane tab="页面交互" key="3" />

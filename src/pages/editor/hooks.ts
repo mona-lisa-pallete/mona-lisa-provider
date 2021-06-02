@@ -3,14 +3,14 @@ import { getDllApi } from '@/utils/host';
 import { useEffect, useState } from 'react';
 import { LoadScript } from './load-stuff';
 
-const useHideHeader = () => {
+const useHideHeader = (location: any) => {
   useEffect(() => {
-    window.onload = () => {
-      document.querySelector('aside')!.style.display = 'none';
-      (document.querySelector('.reset-antd') as HTMLElement).style.display = 'none';
-      (document.querySelector('.site-layout-background') as HTMLElement).style.margin = '0px';
-    };
-  }, []);
+    const style = location.pathname === '/editor' ? 'none' : 'block';
+    document.querySelector('aside')!.style.display = style;
+    (document.querySelector('.reset-antd') as HTMLElement).style.display = style;
+    (document.querySelector('.site-layout-background') as HTMLElement).style.margin =
+      location.pathname === '/editor' ? '0px' : '16px';
+  }, [location]);
 };
 
 /**

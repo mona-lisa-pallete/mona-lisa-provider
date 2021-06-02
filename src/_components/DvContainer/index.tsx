@@ -43,6 +43,7 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
           style: {
             // position
           },
+          defaultPosition: {},
         },
         elementId,
         elementRef,
@@ -59,14 +60,6 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
           },
         },
       });
-      // dispatch({
-      //   type: ActionType.SetSelectedRef,
-      //   payload: {
-      //     id: elementId,
-      //     ref: elementRef,
-      //     containerId,
-      //   },
-      // });
       dropRef.current = false;
     }
   }, [hasDropped, index, elementRef, state.dsl.content]);
@@ -74,13 +67,11 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
   useEffect(() => {
     setHasDropped(false);
     dropRef.current = true;
-    // setHasBoxDropped(false);
   }, [state.dsl]);
 
   return (
     <div ref={insetDrag} style={props.style}>
       {props.children}
-      {/* {index} */}
     </div>
   );
 };

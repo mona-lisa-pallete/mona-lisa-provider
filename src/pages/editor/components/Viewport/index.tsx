@@ -125,6 +125,11 @@ const Viewport: React.FC = () => {
   const isNullData = state.dsl.content.length === 0;
   const isLast = state.dsl.content.length > 0;
 
+  const handleItemEvent = (e, data) => {
+    console.log(data.deltaX, data.deltaY);
+    console.log(data.lastX, data.lastY);
+  };
+
   return (
     <ViewportContainer ref={boxRef}>
       <PhoneHeader src={PreviewHeader} />
@@ -147,16 +152,6 @@ const Viewport: React.FC = () => {
                     id={i.elementId}
                     index={index}
                     active={state.selectedContainerId === i.elementId}
-                    onClick={() => {
-                      dispatch({
-                        type: ActionType.SetSelectedRef,
-                        payload: {
-                          containerId: i.elementId!,
-                          id: undefined,
-                          ref: undefined,
-                        },
-                      });
-                    }}
                   >
                     {/* <Draggable
                       bounds="parent"
@@ -176,7 +171,14 @@ const Viewport: React.FC = () => {
                       {i?.contentChild &&
                         i.contentChild.map((childItem) => {
                           return (
-                            <Draggable bounds="parent">
+                            <Draggable
+                              bounds="parent"
+                              defaultPosition={{
+                                x: 0,
+                                y: 0,
+                              }}
+                              onStop={handleItemEvent}
+                            >
                               <div
                                 style={{
                                   display: 'inline-block',

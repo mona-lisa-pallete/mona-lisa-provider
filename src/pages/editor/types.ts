@@ -21,7 +21,7 @@ export const DSLActionType = {
   openModal: 'openModal',
 };
 
-interface DSLAction {
+export interface DSLAction {
   /** 行为 ID, 由后台自动生成 */
   [actionId: string]: {
     /** 行为类型 */

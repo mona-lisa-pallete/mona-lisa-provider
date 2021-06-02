@@ -42,7 +42,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         },
       },
       elementId: containerId,
-      elementRef: 'DavinciDiv',
+      elementRef: 'DvDiv',
       contentChild: [
         {
           contentType: 'element',
@@ -97,7 +97,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
             height: '200px',
           },
         },
-        elementRef: 'DavinciDiv',
+        elementRef: 'DvDiv',
         elementId: containerId,
         contentChild: [
           {

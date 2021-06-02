@@ -2,32 +2,21 @@
   "content": [
     {
       "contentType": "container",
-      "contentProp": { "style": { "position": "relative", "width": "100%" } },
-      "elementRef": "DavinciDiv",
-      "elementId": "SOzcQOxvAHZZ47Env5nrv",
+      "contentProp": { "style": { "position": "relative", "width": "100%", "height": "200px" } },
+      "elementId": "hRjYxR8I1P5vArlDijW0_",
+      "elementRef": "DvDiv",
       "contentChild": [
         {
           "contentType": "element",
           "contentProp": {},
-          "elementId": "tKppuxRXoXkcu_59KuFr3",
+          "elementId": "nKH3XK0t3oVy3GMTN2Bcl",
           "elementRef": "DvImage"
-        }
-      ]
-    },
-    {
-      "contentType": "container",
-      "contentProp": { "style": { "position": "relative", "width": "100%", "height": 347 } },
-      "elementId": "r6dD4VHLIgU5GjR-GbhfL",
-      "elementRef": "DavinciDiv",
-      "contentChild": [
+        },
         {
           "contentType": "element",
-          "contentProp": {
-            "style": { "height": 694, "width": 750 },
-            "url": "https://static.guorou.net/upload_collection/2021214/a3d3e5530d9a41615731278061.jpg"
-          },
-          "elementId": "BM9TkpKcJ0GxLXYr1eb4t",
-          "elementRef": "DvImage"
+          "contentProp": { "style": {} },
+          "elementId": "DVPjst9AWtoOMaQmF9DOd",
+          "elementRef": "DvButton"
         }
       ]
     }

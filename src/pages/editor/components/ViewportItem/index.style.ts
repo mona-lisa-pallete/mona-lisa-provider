@@ -31,3 +31,19 @@ export const ActionBar = styled.div`
   }
   /* justify-content: space-between; */
 `;
+
+export const ViewportItemContainer = styled.div`
+  /* .viewport-item--active {
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      display: block;
+      border: 2px solid #187ffe;
+      content: '';
+    }
+  } */
+`;
