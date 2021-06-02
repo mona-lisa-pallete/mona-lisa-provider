@@ -1,6 +1,6 @@
 import { merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
-import { DSLContent } from './types';
+import { DSLAction, DSLContent } from './types';
 
 const conversionActionData = () => {};
 
@@ -38,4 +38,38 @@ const changeElementStyleById = (id: string, content: DSLContent[], data: CSSProp
   return contentData;
 };
 
-export { conversionActionData, findElementById, changeElementStyleById };
+const delElementById = (id: string, content: DSLContent[], action: DSLAction) => {
+  const contentData: DSLContent[] = JSON.parse(JSON.stringify(content));
+  contentData.forEach((e, index) => {
+    e.contentChild?.forEach((i, childItemIndex) => {
+      if (i.elementId === id) {
+        contentData[index].contentChild?.splice(childItemIndex, 1);
+        if (contentData[index].contentChild?.length === 0) {
+          contentData.splice(index, 1);
+        }
+      }
+    });
+  });
+  const actionData = JSON.parse(JSON.stringify(action));
+  if (actionData[id]) {
+    delete actionData[id];
+  }
+  return { content: contentData, action: actionData };
+};
+
+const resizeStyleById = (containerId: string, content: DSLContent[]) => {
+  const contentData: DSLContent[] = JSON.parse(JSON.stringify(content));
+  contentData.forEach((e) => {
+    if (e.elementId === containerId) {
+      //
+    }
+  });
+};
+
+export {
+  conversionActionData,
+  findElementById,
+  changeElementStyleById,
+  delElementById,
+  resizeStyleById,
+};

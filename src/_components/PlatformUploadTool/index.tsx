@@ -88,9 +88,11 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
           let height = maxHeightItem?.contentProp?.style?.height;
           if (maxHeightItem && maxHeightItem?.contentProp?.style?.width >= 750) {
             const radio = maxHeightItem?.contentProp?.style?.width / 750;
+            console.log(radio, 'radio');
             height /= radio;
             height /= 2;
           }
+
           i.contentProp.style = {
             ...i.contentProp.style,
             height,

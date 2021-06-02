@@ -44,6 +44,14 @@ const EditorHeader: React.FC = () => {
     setValue(JSON.stringify(state.dsl));
   }, [state.dsl]);
 
+  const back = () => {
+    history.push({
+      pathname: '/page',
+      query: {
+        projectId: query.projectId,
+      },
+    });
+  };
   const handleAddPage = async () => {
     if (query.type === 'edit') {
       return Promise.resolve(query.pageId);
@@ -177,7 +185,7 @@ const EditorHeader: React.FC = () => {
       <PagePopover />
       <PageHeaderCol>
         <img src="https://static.guorou.net/course-static/22a23e8987c449708948925fab439ad3.svg" />
-        <BackBtn style={{ marginRight: '110px' }} type="text">
+        <BackBtn style={{ marginRight: '110px' }} type="text" onClick={back}>
           <i className="icon-left iconfont" />
           返回
         </BackBtn>

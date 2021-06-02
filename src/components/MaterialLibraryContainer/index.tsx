@@ -6,6 +6,10 @@ const MaterialLibraryContainer: React.FC = () => {
   const { materialVisible, materialType, setMaterialVisible, setSelectData, extraData } = useModel(
     'useMaterialModel',
   );
+  // const location = useLocation();
+  // console.log(location);
+
+  // useHideHeader(location);
 
   return (
     <MaterialLibrary

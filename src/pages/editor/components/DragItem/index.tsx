@@ -31,9 +31,7 @@ const DragItem: React.FC<DragItemProps> = (props) => {
         onSelect(e);
       }}
       active={active}
-      className={`drag-item-container drag-item-container--active ${
-        active ? 'drag-item-container--active' : ''
-      }`}
+      className={`drag-item-container ${active ? 'drag-item-container--active' : ''}`}
     >
       {props.children}
     </DragItemContainer>

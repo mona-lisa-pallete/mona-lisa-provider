@@ -28,6 +28,7 @@ import moment from 'moment';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { PageEdit } from './types';
 import PageSettingModal from './components/PageSettingModal/';
+import { useHideHeader } from '../editor/hooks';
 
 const { confirm } = Modal;
 
@@ -39,6 +40,8 @@ const Page: React.FC = () => {
   const [settingVisible, setSettingVisible] = useState(false);
   const [pageId, setPageId] = useState('');
   const tableRef = useRef<ActionType>();
+
+  useHideHeader(location);
 
   const columns: Array<ProColumns<PageItem>> = [
     {

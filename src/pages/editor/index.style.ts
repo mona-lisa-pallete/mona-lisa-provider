@@ -22,3 +22,7 @@ export const FormSubTitle = styled.div`
   color: rgba(5, 12, 50, 0.9);
   margin-bottom: 10px;
 `;
+
+export const DelText = styled.span`
+  color: #f5222d;
+`;

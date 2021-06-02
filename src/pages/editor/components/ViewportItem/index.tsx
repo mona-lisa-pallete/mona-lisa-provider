@@ -4,9 +4,10 @@ import { Modal } from 'antd';
 import React, { useContext } from 'react';
 import EditorContext from '../../context';
 import { ActionType } from '../../types';
-import { ActionBar } from './index.style';
+import { ActionBar, ViewportItemContainer } from './index.style';
 // import { useDrop, XYCoord } from 'react-dnd';
 // import EditorContext from '../../context';
+import './index.less';
 
 const { confirm } = Modal;
 
@@ -15,7 +16,7 @@ interface CardProps {
   index: number;
   actionVisible: boolean;
   active?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   // moveCard: (dragIndex: number, hoverIndex: number) => void;
 }
 
@@ -98,12 +99,13 @@ const ViewportItem: React.FC<CardProps> = (props) => {
     });
   };
   return (
-    <div
+    <ViewportItemContainer
       style={{
         position: 'relative',
         width: '100%',
-        border: active ? '2px solid #81b0ff' : 'none',
+        fontSize: '0',
       }}
+      className={`${active ? 'viewport-item--active' : ''}`}
       onClick={onClick}
     >
       {props.children}
@@ -138,7 +140,7 @@ const ViewportItem: React.FC<CardProps> = (props) => {
           <i className="icon-delete iconfont" onClick={handleDel} />
         </ActionBar>
       )}
-    </div>
+    </ViewportItemContainer>
   );
 };
 export default ViewportItem;
