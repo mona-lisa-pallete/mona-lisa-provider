@@ -78,7 +78,7 @@ const EditorHeader: React.FC = () => {
     const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
     const res = await addPreviewPage({
       dsl: dslData,
-      page: query.pageId,
+      page: pageId,
     });
     if (res.code === 0) {
       // message.success('保存成功');
@@ -91,12 +91,21 @@ const EditorHeader: React.FC = () => {
     const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
     const res = await addPage({
       dsl: dslData,
-      page: query.pageId,
+      page: pageId,
       name: 'ffff',
       projectId: parseInt(query.projectId, 10),
     });
     setSaveLoading(false);
     if (res.code === 0) {
+      setPageId(res.data.page);
+      history.replace({
+        pathname: '/editor',
+        query: {
+          ...query,
+          type: 'edit',
+          pageId: res.data.page,
+        },
+      });
       message.success('保存成功');
       return Promise.resolve(res.data.page);
     } else {
