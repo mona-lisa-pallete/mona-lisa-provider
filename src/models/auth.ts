@@ -5,9 +5,9 @@
 import { Reducer } from 'umi';
 import { UserInfo } from '@grfe/micro-layout/lib/typings/typing';
 
-export type UserInfoModelState = {
+export interface UserInfoModelState {
   userInfo: UserInfo | null;
-};
+}
 export interface IUserInfoModel {
   state: UserInfoModelState;
   reducers: {
@@ -23,7 +23,6 @@ const userInfoModel: IUserInfoModel = {
   state: defaultState,
   reducers: {
     setUserInfo: (state, action) => {
-      console.log('%celelee test:', 'background:#000;color:#fff', action);
       return {
         ...state,
         ...action.payload,

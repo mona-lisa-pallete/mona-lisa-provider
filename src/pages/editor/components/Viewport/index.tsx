@@ -11,7 +11,8 @@ import DvContainer from '@/_components/DvContainer';
 import PreviewHeader from '@/assets/img/common/preview-header.png';
 // import { ActionType as ActionFormType } from '../ActionForm/types';
 import { CompLoader } from './comp-loader';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableData } from 'react-draggable';
+import { changeElementStyleById } from '../../utils';
 
 const Viewport: React.FC = () => {
   const { state, dispatch } = useContext(EditorContext);
@@ -61,16 +62,14 @@ const Viewport: React.FC = () => {
     }
   }, [state.dsl.content]);
 
-  useLayoutEffect(() => {
-    console.log(boxRef.current);
-
-    // const box = document.querySelector('.viewport-box');
+  useEffect(() => {
     setTimeout(() => {
       const imgList = boxRef.current?.querySelectorAll('img');
-      console.log(boxRef.current);
-      for (let i = 0; i < imgList.length; i++) {
-        const dom = imgList[i] as HTMLImageElement;
-        dom.draggable = false;
+      if (imgList?.length) {
+        for (let i = 0; i < imgList.length; i++) {
+          const dom = imgList[i] as HTMLImageElement;
+          dom.draggable = false;
+        }
       }
     }, 1000);
   }, [state.dsl.content]);
@@ -125,9 +124,23 @@ const Viewport: React.FC = () => {
   const isNullData = state.dsl.content.length === 0;
   const isLast = state.dsl.content.length > 0;
 
-  const handleItemEvent = (e, data) => {
-    console.log(data.deltaX, data.deltaY);
-    console.log(data.lastX, data.lastY);
+  const handleItemEvent = (_: any, data: DraggableData, id: string) => {
+    const content = changeElementStyleById(id, state.dsl.content, {
+      left: data.lastX * 2,
+      top: data.lastY * 2,
+    });
+    dispatch({
+      type: ActionType.UpdateComponent,
+      payload: {
+        dsl: {
+          content,
+          action: state.dsl.action,
+        },
+      },
+    });
+    // console.log(data.lastX, data.lastY);
+    // console.log(data.deltaX, data.deltaY);
+    // console.log(data.x, data.y);
   };
 
   return (
@@ -173,15 +186,14 @@ const Viewport: React.FC = () => {
                           return (
                             <Draggable
                               bounds="parent"
-                              defaultPosition={{
-                                x: 0,
-                                y: 0,
+                              onStop={(e, data) => {
+                                handleItemEvent(e, data, childItem.elementId!);
                               }}
-                              onStop={handleItemEvent}
                             >
                               <div
                                 style={{
                                   display: 'inline-block',
+                                  position: 'absolute',
                                 }}
                               >
                                 <DragItem

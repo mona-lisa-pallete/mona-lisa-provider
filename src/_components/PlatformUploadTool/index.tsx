@@ -74,7 +74,6 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
             i.contentChild![index].contentProp.style = style;
           }
         });
-        console.log(contentChild, 'contentChild contentChild');
 
         if (contentChild) {
           let maxHeightItem: DSLContent = {};
@@ -88,7 +87,6 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
           let height = maxHeightItem?.contentProp?.style?.height;
           if (maxHeightItem && maxHeightItem?.contentProp?.style?.width >= 750) {
             const radio = maxHeightItem?.contentProp?.style?.width / 750;
-            console.log(radio, 'radio');
             height /= radio;
             height /= 2;
           }
@@ -111,7 +109,6 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       const url = window.URL || window.webkitURL;
       img.src = url.createObjectURL(file.originFileObj); // 创建Image的对象的url
       const { height, width } = await getImageSize(img);
-      console.log(height, width);
 
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
         height,

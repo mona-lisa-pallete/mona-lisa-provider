@@ -16,8 +16,6 @@ const DragItem: React.FC<DragItemProps> = (props) => {
   //   }),
   //   [left, top, id],
   // );
-  console.log(active);
-
   return (
     <DragItemContainer
       // ref={drag}

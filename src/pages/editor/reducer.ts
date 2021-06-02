@@ -5,8 +5,6 @@ const reducer = (state: IState, action: IAction) => {
     case ActionType.UpdateComponent:
       return { ...state, dsl: action.payload.dsl };
     case ActionType.SetSelectedRef:
-      console.log(action.payload.id, 'action.payload.id');
-
       return {
         ...state,
         selectedElementRef: action.payload.ref,

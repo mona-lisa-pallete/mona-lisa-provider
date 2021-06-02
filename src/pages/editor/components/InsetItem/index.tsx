@@ -84,8 +84,6 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         dropRef.current = false;
         return;
       }
-      console.log(index);
-
       const elementId = nanoid();
       const containerId = nanoid();
       list.splice(index, 0, {
@@ -117,14 +115,14 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           },
         },
       });
-      // dispatch({
-      //   type: ActionType.SetSelectedRef,
-      //   payload: {
-      //     id: elementId,
-      //     ref: elementRef,
-      //     containerId,
-      //   },
-      // });
+      dispatch({
+        type: ActionType.SetSelectedRef,
+        payload: {
+          id: elementId,
+          ref: elementRef,
+          containerId,
+        },
+      });
       dropRef.current = false;
     }
   }, [hasDropped, index, elementRef, state.dsl.content]);
