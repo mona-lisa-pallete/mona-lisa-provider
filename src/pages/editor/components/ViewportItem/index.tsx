@@ -14,12 +14,14 @@ interface CardProps {
   id: any;
   index: number;
   actionVisible: boolean;
+  active?: boolean;
+  onClick: () => void;
   // moveCard: (dragIndex: number, hoverIndex: number) => void;
 }
 
 const ViewportItem: React.FC<CardProps> = (props) => {
   // const ref = useRef<HTMLDivElement>(null);
-  const { actionVisible = false, index } = props;
+  const { actionVisible = false, index, active, onClick } = props;
   const { state, dispatch } = useContext(EditorContext);
   // const { state } = useContext(EditorContext);
 
@@ -100,7 +102,9 @@ const ViewportItem: React.FC<CardProps> = (props) => {
       style={{
         position: 'relative',
         width: '100%',
+        border: active ? '2px solid #81b0ff' : 'none',
       }}
+      onClick={onClick}
     >
       {props.children}
       {actionVisible && (

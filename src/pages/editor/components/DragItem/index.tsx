@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragItemContainer } from './index.style';
 import { DragItemProps } from './types';
+import './index.less';
 
 const DragItem: React.FC<DragItemProps> = (props) => {
   const { left, top, style, onSelect, active } = props;
@@ -15,6 +16,7 @@ const DragItem: React.FC<DragItemProps> = (props) => {
   //   }),
   //   [left, top, id],
   // );
+  console.log(active);
 
   return (
     <DragItemContainer
@@ -25,8 +27,13 @@ const DragItem: React.FC<DragItemProps> = (props) => {
         top: `${top}px`,
         // border: active ? '3px solid #187FFE' : '3px solid rgba(0,0,0,0)',
       }}
-      onClick={onSelect}
+      onClick={(e) => {
+        onSelect(e);
+      }}
       active={active}
+      className={`drag-item-container drag-item-container--active ${
+        active ? 'drag-item-container--active' : ''
+      }`}
     >
       {props.children}
     </DragItemContainer>
