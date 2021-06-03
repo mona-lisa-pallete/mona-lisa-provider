@@ -74,3 +74,10 @@ export interface ISetPageName {
     name: string;
   };
 }
+
+export interface ISetComponentData {
+  type: ActionType.SetComponentData;
+  payload: {
+    componentData: any[];
+  };
+}

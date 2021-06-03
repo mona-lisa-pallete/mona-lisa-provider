@@ -4,6 +4,8 @@ import { getActionDllApi, getDllApi } from '@/utils/host';
 import { useEffect, useState } from 'react';
 import { LoadScript } from './load-stuff';
 
+const isLocal = window.location.host.includes('localhost');
+
 const useHideHeader = (location: any) => {
   useEffect(() => {
     const style = location.pathname === '/editor' ? 'none' : 'block';
@@ -50,7 +52,6 @@ const useWidgetMeta = (() => {
         return;
       }
       getCompMeta(elementRef).then(async (metaFromRemote) => {
-        const isLocal = window.location.host.includes('localhost');
         const RefMeta = isLocal ? metaFromRemote : elementRefMeta;
         const {
           propFormConfig: { customFormRef },
@@ -110,7 +111,7 @@ const useActions = () => {
 const useActionMeta = (() => {
   const metaCache: Record<string, any> = {}; // meta 缓存
 
-  return (elementRef: string) => {
+  return (elementRef: string, cdnUrl?: string) => {
     const [metaState, setMetaState] = useState<{ fetching: boolean; metadata?: any }>({
       fetching: false,
       metadata: metaCache[elementRef],
@@ -119,7 +120,10 @@ const useActionMeta = (() => {
       async function request() {
         // getActionsByTypes // 简单版本管理，没有调用此接口
         setMetaState({ fetching: true });
-        await LoadScript({ src: `${getActionDllApi()}/${elementRef}.js` });
+        const host = isLocal ? getActionDllApi() : cdnUrl;
+
+        const path = isLocal ? elementRef : 'index';
+        await LoadScript({ src: `${host}/${path}.js` });
         metaCache[elementRef] = true; // TODO 简化为 true，没有从json中获取实际meta数据
         setMetaState({
           fetching: false,

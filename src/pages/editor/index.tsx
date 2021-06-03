@@ -76,6 +76,7 @@ export const initState: IState = {
   selectedElementMeta: undefined,
   selectedContainerId: undefined,
   pageName: '',
+  componentData: [],
 };
 
 /**
@@ -261,6 +262,12 @@ const Editor: React.FC = () => {
       const group = groupBy(res.data, 'componentMeta.classification');
       setComponentMap(group);
       setAllComponent(res.data);
+      dispatch({
+        type: ReducerActionType.SetComponentData,
+        payload: {
+          componentData: res.data,
+        },
+      });
     };
     getComponentsData();
   }, []);
@@ -275,9 +282,9 @@ const Editor: React.FC = () => {
         if (typeof height === 'string' && height.includes('px')) {
           height = height.replace('px', '');
         }
-        setContainerVal({
-          height,
-        });
+        // setContainerVal({
+        //   height,
+        // });
       }
     }
   }, [state.dsl?.content, state.selectedContainerId, state.selectedElementRef]);

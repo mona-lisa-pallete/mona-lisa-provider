@@ -31,6 +31,11 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         pageName: action.payload.name,
       };
+    case ActionType.SetComponentData:
+      return {
+        ...state,
+        componentData: action.payload.componentData,
+      };
     default:
       return state;
   }
