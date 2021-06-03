@@ -18,7 +18,7 @@ import {
 import { useHistory, useLocation } from 'umi';
 import EditorContext from '../../context';
 import { addPage, addPreviewPage } from '@/services/editor';
-import { DSL } from '../../types';
+import { ActionType, DSL } from '../../types';
 import { updatePage } from '@/services/page';
 import { PagePopoverStyle, TableActionMenu } from '@/pages/page/index.style';
 import PageSettingModal from '@/pages/page/components/PageSettingModal';
@@ -26,7 +26,7 @@ import PageSettingModal from '@/pages/page/components/PageSettingModal';
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
   const location: any = useLocation();
-  const { state } = useContext(EditorContext);
+  const { state, dispatch } = useContext(EditorContext);
   const [value, setValue] = useState('');
   const [visible, setVisible] = useState(false);
   const query = location.query as {
@@ -39,6 +39,7 @@ const EditorHeader: React.FC = () => {
   const history = useHistory();
   const [pageId, setPageId] = useState(query.pageId);
   const [saveLoading, setSaveLoading] = useState(false);
+  // const [pageName, setPageName] = useState(state.pageName);
 
   useEffect(() => {
     setValue(JSON.stringify(state.dsl));
@@ -57,7 +58,7 @@ const EditorHeader: React.FC = () => {
       return Promise.resolve(query.pageId);
     } else {
       const page = await save(state.dsl);
-      setPageId(page);
+      setPageId(page!);
       history.replace({
         pathname: '/editor',
         query: {
@@ -66,7 +67,7 @@ const EditorHeader: React.FC = () => {
           pageId: page,
         },
       });
-      return Promise.resolve(page);
+      return Promise.resolve(page!);
     }
   };
 
@@ -95,12 +96,16 @@ const EditorHeader: React.FC = () => {
   };
 
   const save = async (dsl: string | DSL = state.dsl) => {
+    if (!state.pageName) {
+      message.warning('请输入页面名称');
+      return;
+    }
     setSaveLoading(true);
     const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
     const res = await addPage({
       dsl: dslData,
       page: pageId,
-      name: 'ffff',
+      name: state.pageName,
       projectId: parseInt(query.projectId, 10),
     });
     setSaveLoading(false);
@@ -220,7 +225,26 @@ const EditorHeader: React.FC = () => {
           </PagePopoverBtn>
         </Popover>
       </PageHeaderCol>
-      <PageNameBox>{state.pageName}</PageNameBox>
+      <PageNameBox>
+        <Input
+          bordered={false}
+          value={state.pageName}
+          style={{
+            width: '200px',
+            textAlign: 'center',
+          }}
+          maxLength={30}
+          onChange={(e) => {
+            dispatch({
+              type: ActionType.SetPageName,
+              payload: {
+                name: e.target.value,
+              },
+            });
+          }}
+        />
+        <i className="icon-edit iconfont" />
+      </PageNameBox>
       <ActionBox>
         {query.dev && (
           <Button

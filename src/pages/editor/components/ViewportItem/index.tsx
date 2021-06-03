@@ -22,7 +22,7 @@ interface CardProps {
 
 const ViewportItem: React.FC<CardProps> = (props) => {
   // const ref = useRef<HTMLDivElement>(null);
-  const { actionVisible = false, index, active, onClick } = props;
+  const { actionVisible = false, index, active, onClick, id } = props;
   const { state, dispatch } = useContext(EditorContext);
   // const { state } = useContext(EditorContext);
 
@@ -107,6 +107,7 @@ const ViewportItem: React.FC<CardProps> = (props) => {
       }}
       className={`${active ? 'viewport-item--active' : ''}`}
       onClick={onClick}
+      id={id}
     >
       {props.children}
       {actionVisible && (
