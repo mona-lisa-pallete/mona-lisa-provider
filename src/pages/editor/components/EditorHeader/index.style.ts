@@ -99,6 +99,10 @@ export const PageNameBox = styled.div`
   flex: 1;
   text-align: center;
   font-weight: 500;
+  .ant-input {
+    border: none;
+    border-bottom: 1px solid #d9d9d9;
+  }
 `;
 
 export const PageHeaderCol = styled.div`

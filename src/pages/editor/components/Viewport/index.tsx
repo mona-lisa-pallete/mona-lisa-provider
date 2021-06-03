@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import EditorContext from '../../context';
 import { ActionType } from '../../types';
@@ -195,6 +195,7 @@ const Viewport: React.FC = () => {
                                   display: 'inline-block',
                                   position: 'absolute',
                                 }}
+                                id={childItem.elementId}
                               >
                                 <DragItem
                                   id={childItem.elementId!}
