@@ -117,7 +117,6 @@ const Editor: React.FC = () => {
   const seleComponent = allComponent.find((i) => i.ref === state.selectedElementRef);
   const selectedRefMeta = seleComponent?.componentMeta;
   const cdnUrl = seleComponent?.cdnPath;
-  console.log(seleComponent);
 
   const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(
     state.selectedElementRef!,
@@ -189,6 +188,8 @@ const Editor: React.FC = () => {
   };
 
   const handleData = (allVal: any) => {
+    console.log(allVal);
+
     const data = { ...state.formData.contentProp, ...allVal };
 
     if (state.selectedElementId) {
@@ -306,8 +307,6 @@ const Editor: React.FC = () => {
     });
   };
 
-  console.log(widgetMeta, 'widgetMeta');
-
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
       <DndProvider backend={HTML5Backend}>
@@ -323,6 +322,7 @@ const Editor: React.FC = () => {
           <EditorConfig>
             <Tabs defaultActiveKey="2">
               <TabPane tab="组件配置" key="2">
+                {state.selectedElementId && '组件ID：'}
                 {state.selectedElementId}
                 {widgetMeta && state.selectedContainerId && state.selectedElementId && (
                   <CompPropEditorLoader
@@ -333,7 +333,12 @@ const Editor: React.FC = () => {
                   />
                 )}
                 {state.selectedElementRef && widgetMeta?.propFormConfig?.useActionForm && (
-                  <Form layout="vertical" onValuesChange={handleData}>
+                  <Form
+                    layout="vertical"
+                    onValuesChange={(changedValues: any, values: any) => {
+                      handleData(values);
+                    }}
+                  >
                     <ActionForm pageData={[]} modalData={[]} />
                   </Form>
                 )}

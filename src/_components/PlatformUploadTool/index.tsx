@@ -34,9 +34,16 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
 
   const setImgUrl = useCallback(() => {
     if (isSuccess && selectMaterial) {
+      const selectMaterialData = { ...selectMaterial };
+
+      if (selectMaterialData.width < 750) {
+        console.log(selectMaterialData.width, 'selectMaterialData.width');
+        selectMaterialData.width /= 2;
+        selectMaterialData.height /= 2;
+      }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
-        height: selectMaterial.height,
-        width: selectMaterial.width,
+        height: selectMaterialData.height / 2,
+        width: selectMaterialData.width / 2,
       })!;
       dispatch({
         type: ActionType.UpdateComponent,
@@ -88,9 +95,8 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
           if (maxHeightItem && maxHeightItem?.contentProp?.style?.width >= 750) {
             const radio = maxHeightItem?.contentProp?.style?.width / 750;
             height /= radio;
-            height /= 2;
+            // height /= 2;
           }
-
           i.contentProp.style = {
             ...i.contentProp.style,
             height,
@@ -108,8 +114,12 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       const img = new Image(); // 手动创建一个Image对象
       const url = window.URL || window.webkitURL;
       img.src = url.createObjectURL(file.originFileObj); // 创建Image的对象的url
-      const { height, width } = await getImageSize(img);
+      let { height, width } = await getImageSize(img);
 
+      if (width < 750) {
+        width /= 2;
+        height /= 2;
+      }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
         height,
         width,

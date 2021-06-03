@@ -210,6 +210,7 @@ const Viewport: React.FC = () => {
                                       i.elementId!,
                                     );
                                   }}
+                                  style={childItem.contentProp.style}
                                 >
                                   <CompLoader
                                     elementRef={childItem.elementRef!}

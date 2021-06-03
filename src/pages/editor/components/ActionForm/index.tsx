@@ -1,10 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Select } from 'antd';
 import React from 'react';
 import { ActionFormBox } from './index.style';
 import { ActionFormProps } from './types';
 import { FormSubTitle } from '../../index.style';
-
+import nzh from 'nzh';
 import { useActionMeta, useActions } from '../../hooks';
 
 function WithActionForm(props: { actionType: string; index: number }) {
@@ -29,8 +29,8 @@ const ActionForm: React.FC<ActionFormProps> = () => {
   const actions = useActions();
   return (
     <>
-      <FormSubTitle>组件布局</FormSubTitle>
-      <Form.Item label="所处位置">
+      {/* <FormSubTitle>组件布局</FormSubTitle> */}
+      {/* <Form.Item label="所处位置">
         <Form.Item noStyle name={['style', 'left']}>
           <Input
             style={{
@@ -50,7 +50,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
             suffix="Y"
           />
         </Form.Item>
-      </Form.Item>
+      </Form.Item> */}
       <FormSubTitle>交互配置</FormSubTitle>
       <Form.List name="action">
         {(fields, { add }) => (
@@ -60,7 +60,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                 <div className="dv-action-item">
                   <div className="dv-action-name">
                     <i className="iconicon_drag iconfont" />
-                    交互一
+                    交互{nzh.cn.encodeS(index + 1)}
                   </div>
                   <Form.Item name={[index, 'actionType']}>
                     <Select options={actions} />
