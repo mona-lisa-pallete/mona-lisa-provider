@@ -1,5 +1,6 @@
+import { getAllActions } from '@/services/action';
 import { getCompMeta } from '@/services/editor';
-import { getDllApi } from '@/utils/host';
+import { getActionDllApi, getDllApi } from '@/utils/host';
 import { useEffect, useState } from 'react';
 import { LoadScript } from './load-stuff';
 
@@ -79,4 +80,57 @@ const useWidgetMeta = (() => {
   };
 })();
 
-export { useHideHeader, useWidgetMeta };
+const useActions = () => {
+  const [actions, setActions] = useState<any>([]);
+  useEffect(() => {
+    async function request() {
+      const { code, data } = await getAllActions();
+      if (code === 0) {
+        setActions(
+          data.map((v) => ({
+            label: v.label,
+            value: v.type,
+          })),
+        );
+      }
+    }
+    request();
+  }, []);
+  return actions;
+};
+
+/**
+ * 简化，直接根据type来下载特定oss目录路径下dll.js
+ */
+const useActionMeta = (() => {
+  const metaCache: Record<string, any> = {}; // meta 缓存
+
+  return (elementRef: string) => {
+    const [metaState, setMetaState] = useState<{ fetching: boolean; metadata?: any }>({
+      fetching: false,
+      metadata: metaCache[elementRef],
+    });
+    useEffect(() => {
+      async function request() {
+        // getActionsByTypes // 简单版本管理，没有调用此接口
+        setMetaState({ fetching: true });
+        await LoadScript({ src: `${getActionDllApi()}/${elementRef}.js` });
+        metaCache[elementRef] = true; // TODO 简化为 true，没有从json中获取实际meta数据
+        setMetaState({
+          fetching: false,
+          metadata: metaCache[elementRef],
+        });
+      }
+
+      if (!elementRef) {
+        setMetaState({ fetching: false });
+      } else {
+        request();
+      }
+    }, [elementRef]);
+
+    return metaState;
+  };
+})();
+
+export { useHideHeader, useWidgetMeta, useActionMeta, useActions };

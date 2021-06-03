@@ -1,15 +1,32 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Radio, Select } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import React from 'react';
 import { ActionFormBox } from './index.style';
-import { ActionFormProps, ActionType, PageType } from './types';
-import { RadioGroup } from '../PageForm/index.style';
+import { ActionFormProps } from './types';
 import { FormSubTitle } from '../../index.style';
 
-const { TextArea } = Input;
+import { useActionMeta, useActions } from '../../hooks';
 
-const ActionForm: React.FC<ActionFormProps> = (props) => {
-  const { pageData = [], modalData = [] } = props;
+function WithActionForm(props: { actionType: string; index: number }) {
+  const { actionType, index } = props;
+
+  const { fetching } = useActionMeta(actionType);
+  const UI_DLL = (window as any)[actionType]?.default;
+  if (fetching) {
+    return <div>加载中..</div>;
+  }
+  if (!UI_DLL) {
+    return null;
+  }
+  return (
+    <Form.Item name={[index, 'data']}>
+      <UI_DLL />
+    </Form.Item>
+  );
+}
+
+const ActionForm: React.FC<ActionFormProps> = () => {
+  const actions = useActions();
   return (
     <>
       <FormSubTitle>组件布局</FormSubTitle>
@@ -46,22 +63,7 @@ const ActionForm: React.FC<ActionFormProps> = (props) => {
                     交互一
                   </div>
                   <Form.Item name={[index, 'actionType']}>
-                    <Select
-                      options={[
-                        {
-                          label: 'toast提示',
-                          value: ActionType.Toast,
-                        },
-                        {
-                          label: '跳转链接',
-                          value: ActionType.Page,
-                        },
-                        {
-                          label: '调起弹窗',
-                          value: ActionType.Modal,
-                        },
-                      ]}
-                    />
+                    <Select options={actions} />
                   </Form.Item>
                   <Form.Item
                     shouldUpdate={(prevValues, curValues) => {
@@ -74,85 +76,7 @@ const ActionForm: React.FC<ActionFormProps> = (props) => {
                   >
                     {({ getFieldValue }) => {
                       const actionType = getFieldValue(['action', index, 'actionType']);
-                      const isPage = actionType === ActionType.Page;
-                      const isToast = actionType === ActionType.Toast;
-                      const isModal = actionType === ActionType.Modal;
-                      return (
-                        <>
-                          {isPage && (
-                            <>
-                              <Form.Item name={[index, 'pageType']}>
-                                <RadioGroup>
-                                  <Radio.Button value={PageType.WebPage}>跳转页面</Radio.Button>
-                                  <Radio.Button value={PageType.H5}>跳转H5</Radio.Button>
-                                  <Radio.Button value={PageType.Mini}>跳转小程序</Radio.Button>
-                                </RadioGroup>
-                              </Form.Item>
-                              <Form.Item
-                                shouldUpdate={(prevValues, curValues) => {
-                                  return (
-                                    prevValues?.action[index]?.pageType !==
-                                    curValues?.action[index]?.pageType
-                                  );
-                                }}
-                              >
-                                {() => {
-                                  const pageType = getFieldValue(['action', index, 'pageType']);
-                                  const isWebPage = pageType === PageType.WebPage;
-                                  const isH5 = pageType === PageType.H5;
-                                  const isMini = pageType === PageType.Mini;
-                                  return (
-                                    <>
-                                      {isWebPage && (
-                                        <Form.Item name={[index, 'url']}>
-                                          <Select>
-                                            {pageData.map((i) => {
-                                              return (
-                                                <Select.Option value={i.value}>
-                                                  {i.name}
-                                                </Select.Option>
-                                              );
-                                            })}
-                                          </Select>
-                                        </Form.Item>
-                                      )}
-                                      {isH5 && (
-                                        <Form.Item name={[index, 'url']}>
-                                          <TextArea />
-                                        </Form.Item>
-                                      )}
-                                      {isMini && (
-                                        <>
-                                          <Form.Item name={[index, 'id']}>
-                                            <Input />
-                                          </Form.Item>
-                                          <Form.Item name={[index, 'url']}>
-                                            <Input />
-                                          </Form.Item>
-                                        </>
-                                      )}
-                                    </>
-                                  );
-                                }}
-                              </Form.Item>
-                            </>
-                          )}
-                          {isToast && (
-                            <Form.Item name={[index, 'toast']}>
-                              <Input />
-                            </Form.Item>
-                          )}
-                          {isModal && (
-                            <Form.Item name={[index, 'modal']}>
-                              <Select>
-                                {modalData.map((i) => {
-                                  return <Select.Option value={i.value}>{i.name}</Select.Option>;
-                                })}
-                              </Select>
-                            </Form.Item>
-                          )}
-                        </>
-                      );
+                      return <WithActionForm index={index} actionType={actionType} />;
                     }}
                   </Form.Item>
                 </div>
