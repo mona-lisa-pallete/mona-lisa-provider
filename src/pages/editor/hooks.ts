@@ -23,7 +23,7 @@ const useHideHeader = (location: any) => {
 const useWidgetMeta = (() => {
   /** meta 缓存 */
   const metaCache: Record<string, any> = {};
-  return (elementRef: string, elementRefMeta?: any) => {
+  return (elementRef: string, elementRefMeta?: any, cdnUrl?: string) => {
     let initState = {
       fetching: false,
       metadata: null,
@@ -55,12 +55,17 @@ const useWidgetMeta = (() => {
         const {
           propFormConfig: { customFormRef },
         } = RefMeta;
+        const host = isLocal ? getDllApi() : cdnUrl;
+
+        const path = isLocal ? elementRef : 'index';
+        // console.log(cdnUrl, 'cdnUrlcdnUrlcdnUrl');
+
         await Promise.all([
           // LoadScript({ src: `http://127.0.0.1:22110/zxj/main.js` }),
           // 加载组件实例
-          LoadScript({ src: `${getDllApi()}/${elementRef}.js` }),
+          LoadScript({ src: `${host}/${path}.js` }),
           // // 加载组件的表单实例
-          LoadScript({ src: `${getDllApi()}/${customFormRef}.js` }),
+          LoadScript({ src: `${host}/${customFormRef}.js` }),
         ]);
 
         setMetaState({

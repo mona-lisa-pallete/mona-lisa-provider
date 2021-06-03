@@ -41,9 +41,10 @@ function ComponentClassification(props: ComponentClassificationProps<ComponentTy
         })}
       </ComponentClassificationList>
       <ComponentTabs>
-        {tabData.map((i) => {
+        {tabData.map((i, index) => {
           return (
             <ComponentTab
+              key={index}
               img={i.componentMeta.logo}
               label={i.componentMeta.label}
               name={i.componentMeta.elementRef}

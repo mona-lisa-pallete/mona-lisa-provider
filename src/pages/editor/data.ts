@@ -4,6 +4,8 @@ enum ComponentType {
   Picture = 'Image',
   Button = 'Button',
   Text = 'Text',
+  Video = 'video',
+  Document = 'document',
 }
 
 // interface ComponentInfo {
@@ -35,6 +37,20 @@ const ComponentMap = new Map<ComponentType, any>([
       icon: 'icon-Typography',
     },
   ],
+  [
+    ComponentType.Video,
+    {
+      name: '视频',
+      icon: 'icon-video',
+    },
+  ],
+  [
+    ComponentType.Document,
+    {
+      name: '文档',
+      icon: 'icon-file',
+    },
+  ],
 ]);
 
 const ComponentData = [
@@ -48,6 +64,14 @@ const ComponentData = [
   },
   {
     type: ComponentType.Text,
+    node: 2,
+  },
+  {
+    type: ComponentType.Video,
+    node: 2,
+  },
+  {
+    type: ComponentType.Document,
     node: 2,
   },
 ];

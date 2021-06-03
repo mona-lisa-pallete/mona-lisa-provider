@@ -113,13 +113,17 @@ const Editor: React.FC = () => {
 
   useHideHeader(location);
 
-  const selectedRefMeta = allComponent.find((i) => i.ref === state.selectedElementRef)
-    ?.componentMeta;
+  const seleComponent = allComponent.find((i) => i.ref === state.selectedElementRef);
+  const selectedRefMeta = seleComponent?.componentMeta;
+  const cdnUrl = seleComponent?.cdnPath;
+  console.log(seleComponent);
 
   const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(
-    state.selectedElementRef,
+    state.selectedElementRef!,
     selectedRefMeta,
+    cdnUrl,
   );
+
   useEffect(() => {
     if (widgetMeta) {
       dispatch({
@@ -295,6 +299,8 @@ const Editor: React.FC = () => {
     });
   };
 
+  console.log(widgetMeta, 'widgetMeta');
+
   return (
     <EditorContext.Provider value={{ dispatch, state }}>
       <DndProvider backend={HTML5Backend}>
@@ -319,7 +325,7 @@ const Editor: React.FC = () => {
                     onChangeStyle={handleElementStyle}
                   />
                 )}
-                {state.selectedElementRef && (
+                {state.selectedElementRef && widgetMeta?.propFormConfig?.useActionForm && (
                   <Form layout="vertical" onValuesChange={handleData}>
                     <ActionForm pageData={[]} modalData={[]} />
                   </Form>
@@ -330,7 +336,7 @@ const Editor: React.FC = () => {
                   </Button>
                 )}
               </TabPane>
-              <TabPane tab="页面交互" key="3" />
+              {/* <TabPane tab="页面交互" key="3" /> */}
             </Tabs>
           </EditorConfig>
         </EditorMain>

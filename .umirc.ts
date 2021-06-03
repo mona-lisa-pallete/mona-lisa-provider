@@ -45,7 +45,7 @@ const config = defineConfig({
     antd: 'antd',
   },
   styles: [
-    '//at.alicdn.com/t/font_2395081_9sik77mosu5.css',
+    '//at.alicdn.com/t/font_2395081_16jfjqg5z1d.css',
     'https://static.guorou.net/course-static/8b5e1c66cad44947aa14258d1220678d.css',
   ],
   favicon: 'https://static.guorou.net/portal/logo-simple.svg',

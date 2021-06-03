@@ -200,7 +200,7 @@ const EditorHeader: React.FC = () => {
           trigger="click"
           content={content}
         >
-          <PagePopoverBtn>
+          <PagePopoverBtn style={{ display: 'none' }}>
             <i
               className="icon-navigation iconfont"
               style={{
