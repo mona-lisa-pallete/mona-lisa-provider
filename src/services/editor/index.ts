@@ -45,7 +45,7 @@ const getPage = async (id: string | number) =>
 const getCompMeta = async (elementRef: string) => {
   const isLocal = window.location.host.includes('localhost');
   if (isLocal) {
-    return fetch(`${getDllApi()}/${elementRef}.json`).then((res) => res.json());
+    return fetch(`${getDllApi()}${elementRef}.json`).then((res) => res.json());
   } else {
     return Promise.resolve();
   }

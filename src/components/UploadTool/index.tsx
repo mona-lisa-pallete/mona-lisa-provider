@@ -15,7 +15,7 @@ const getFileName = (fileName: string, uid: string) => {
 };
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
-  const { value, onChange, onSelectMaterial, onChangeFile } = props;
+  const { value, onChange, onSelectMaterial, onChangeFile, uploadText, uploadContent } = props;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -68,10 +68,11 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         {!value && (
           <UploadButton>
             <PlusOutlined style={{ color: '#8E91A3', fontSize: '20px', marginBottom: '6px' }} />
-            添加图片
+            {uploadText || '添加图片'}
           </UploadButton>
         )}
-        {value && (
+        {value && uploadContent}
+        {value && !uploadContent && (
           <img
             style={{
               margin: '0 auto',

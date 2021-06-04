@@ -90,9 +90,25 @@ const Page: React.FC = () => {
     },
     {
       title: '页面类型',
-      dataIndex: 'state',
-      hideInSearch: true,
+      dataIndex: 'platform',
       width: 150,
+      formItemProps: {
+        label: '页面类型',
+        colon: false,
+      },
+      valueType: 'select',
+      valueEnum: {
+        WEB: {
+          text: 'H5',
+        },
+        MINIAPP: {
+          text: '小程序',
+        },
+      },
+      fieldProps: {
+        mode: 'multiple',
+        maxTagCount: 'responsive',
+      },
       render(_, item) {
         return (
           <PageTag>
@@ -126,7 +142,19 @@ const Page: React.FC = () => {
       title: '页面状态',
       dataIndex: 'status',
       width: 100,
-      hideInSearch: true,
+      formItemProps: {
+        label: '页面状态',
+        colon: false,
+      },
+      valueType: 'select',
+      valueEnum: {
+        0: {
+          text: '未上线',
+        },
+        1: {
+          text: '已上线',
+        },
+      },
       render(_, item) {
         const statusName = item.status === 1 ? '已上线' : '未上线';
         return (
@@ -330,6 +358,7 @@ const Page: React.FC = () => {
       projectId: query.projectId,
       currentPage: params.current,
       limit: params.pageSize,
+      platform: params?.platform?.toString() || '',
     });
     return {
       data: res.data.list,
