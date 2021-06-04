@@ -12,14 +12,16 @@ function WithActionForm(props: { actionType: string; index: number }) {
 
   const { fetching } = useActionMeta(actionType);
   const UI_DLL = (window as any)[actionType]?.default;
+
   if (fetching) {
     return <div>加载中..</div>;
   }
   if (!UI_DLL) {
     return null;
   }
+
   return (
-    <Form.Item name={[index, 'data']}>
+    <Form.Item key={index} name={[index, 'data']}>
       <UI_DLL />
     </Form.Item>
   );
@@ -84,6 +86,9 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                   >
                     {({ getFieldValue }) => {
                       const actionType = getFieldValue(['action', index, 'actionType']);
+                      if (!actionType) {
+                        return;
+                      }
                       return <WithActionForm index={index} actionType={actionType} />;
                     }}
                   </Form.Item>

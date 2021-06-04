@@ -212,11 +212,14 @@ const Editor: React.FC = () => {
   };
 
   const handleActionData = (val: any) => {
-    console.log(val);
-
+    if (!val) {
+      return;
+    }
+    const actionData = JSON.parse(JSON.stringify(val));
     const list =
-      val?.action?.filter((i: any) => !!i?.actionType && !!i.data && Object.keys(i.data).length) ||
-      undefined;
+      actionData?.action?.filter(
+        (i: any) => !!i?.actionType && !!i.data && Object.keys(i.data).length,
+      ) || undefined;
     if (list.length) {
       const onClickData: string[] = list.map((i: any, index: number) => {
         return state.selectedElementId + index;
@@ -239,7 +242,6 @@ const Editor: React.FC = () => {
           },
         },
       });
-      console.log(obj);
     }
   };
 
