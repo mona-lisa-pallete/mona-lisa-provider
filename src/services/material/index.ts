@@ -32,7 +32,7 @@ const setMaterial = (id: number, data: ISetMaterialRequest) => {
   });
 };
 
-const addMaterials = (data: IAddMaterialsRequest[]) => {
+const addMaterials = (data: { materials: IAddMaterialsRequest[] }) => {
   return instance.request<IAddMaterialsResponse, IResponse<IAddMaterialsResponse>>({
     method: 'POST',
     url: `/davinciapi/api/1/provider/material`,

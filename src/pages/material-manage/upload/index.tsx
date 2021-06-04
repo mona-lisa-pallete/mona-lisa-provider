@@ -62,7 +62,9 @@ const MaterialManageUpload: React.FC = () => {
       };
     });
 
-    const res = await addMaterials(list);
+    const res = await addMaterials({
+      materials: list,
+    });
     if (res.code === 0) {
       setSubmitLoading(false);
       message.success({
