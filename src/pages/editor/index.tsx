@@ -10,7 +10,7 @@ import { useHideHeader, useWidgetMeta } from './hooks';
 import EditorHeader from './components/EditorHeader';
 import { ComponentData, ComponentType } from './data';
 import { DelText, EditorConfig, EditorMain } from './index.style';
-import { Button, Form, Tabs } from 'antd';
+import { Button, Form, Modal, Tabs } from 'antd';
 import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
@@ -20,8 +20,11 @@ import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
 import PlatformColorPicker from '@/_components/PlatformColorPicker/';
 import { delElementById } from './utils';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { nanoid } from 'nanoid';
 
 const { TabPane } = Tabs;
+const { confirm } = Modal;
 
 export const initState: IState = {
   dsl: {
@@ -208,6 +211,36 @@ const Editor: React.FC = () => {
     }
   };
 
+  const handleActionData = (val: any) => {
+    const list =
+      val?.action?.filter((i: any) => !!i?.actionType && !!i.data && Object.keys(i.data).length) ||
+      undefined;
+    if (list.length) {
+      const onClickData: string[] = list.map((i: any, index: number) => {
+        return state.selectedElementId + index;
+      });
+      const obj: any = {};
+      onClickData.forEach((i, index) => {
+        obj[i] = {
+          actionType: list[index]?.actionType,
+          actionProp: {
+            ...list[index].data,
+          },
+        };
+      });
+      dispatch({
+        type: ReducerActionType.UpdateComponent,
+        payload: {
+          dsl: {
+            content: state.dsl.content,
+            action: merge(state.dsl.action, obj),
+          },
+        },
+      });
+      console.log(obj);
+    }
+  };
+
   const handleElementStyle = (style: CSSProperties) => {
     const content = changeElementStyle(state.dsl.content, state.selectedElementId!, style);
     dispatch({
@@ -293,18 +326,37 @@ const Editor: React.FC = () => {
   }, [state.dsl?.content, state.selectedContainerId, state.selectedElementRef]);
 
   const handleDelElement = () => {
-    const { content, action } = delElementById(
-      state.selectedElementId!,
-      state.dsl.content,
-      state.dsl.action,
-    );
-    dispatch({
-      type: ReducerActionType.UpdateComponent,
-      payload: {
-        dsl: {
-          content,
-          action,
-        },
+    confirm({
+      title: '提示',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除之后暂时无法找回，是否确认删除？',
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      async onOk() {
+        const { content, action } = delElementById(
+          state.selectedElementId!,
+          state.dsl.content,
+          state.dsl.action,
+        );
+        dispatch({
+          type: ReducerActionType.SetSelectedRef,
+          payload: {
+            id: undefined,
+            containerId: undefined,
+            ref: undefined,
+          },
+        });
+        dispatch({
+          type: ReducerActionType.UpdateComponent,
+          payload: {
+            dsl: {
+              content,
+              action,
+            },
+          },
+        });
       },
     });
   };
@@ -338,7 +390,7 @@ const Editor: React.FC = () => {
                   <Form
                     layout="vertical"
                     onValuesChange={(changedValues: any, values: any) => {
-                      handleData(values);
+                      handleActionData(values);
                     }}
                   >
                     <ActionForm pageData={[]} modalData={[]} />

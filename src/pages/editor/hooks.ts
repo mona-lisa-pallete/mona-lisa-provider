@@ -111,7 +111,7 @@ const useActions = () => {
 const useActionMeta = (() => {
   const metaCache: Record<string, any> = {}; // meta 缓存
 
-  return (elementRef: string, cdnUrl?: string) => {
+  return (elementRef: string) => {
     const [metaState, setMetaState] = useState<{ fetching: boolean; metadata?: any }>({
       fetching: false,
       metadata: metaCache[elementRef],
@@ -120,7 +120,9 @@ const useActionMeta = (() => {
       async function request() {
         // getActionsByTypes // 简单版本管理，没有调用此接口
         setMetaState({ fetching: true });
-        const host = isLocal ? getActionDllApi() : cdnUrl;
+        const host = isLocal
+          ? getActionDllApi()
+          : `https://static.guorou.net/davinci/component/${elementRef}`;
 
         const path = isLocal ? elementRef : 'index';
         await LoadScript({ src: `${host}/${path}.js` });

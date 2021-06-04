@@ -6,3 +6,9 @@ declare module '*.svg' {
   const url: string;
   export default url;
 }
+
+declare module 'nzh' {
+  const cn: {
+    encodeS: (index: number) => void;
+  };
+}

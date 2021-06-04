@@ -53,14 +53,22 @@ const ActionForm: React.FC<ActionFormProps> = () => {
       </Form.Item> */}
       <FormSubTitle>交互配置</FormSubTitle>
       <Form.List name="action">
-        {(fields, { add }) => (
+        {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (
               <ActionFormBox>
                 <div className="dv-action-item">
                   <div className="dv-action-name">
-                    <i className="iconicon_drag iconfont" />
-                    交互{nzh.cn.encodeS(index + 1)}
+                    <div>
+                      <i className="iconicon_drag iconfont" />
+                      交互{nzh.cn.encodeS(index + 1)}
+                    </div>
+                    <i
+                      className="icon-delete iconfont"
+                      onClick={() => {
+                        remove(index);
+                      }}
+                    />
                   </div>
                   <Form.Item name={[index, 'actionType']}>
                     <Select options={actions} />
