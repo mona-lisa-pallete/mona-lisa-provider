@@ -6,4 +6,5 @@ export interface PlatformUploadToolProps {
   value: string;
   uploadText?: ReactNode | React.Component;
   uploadContent?: ReactNode | React.Component;
+  accept?: string;
 }

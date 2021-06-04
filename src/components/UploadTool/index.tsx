@@ -15,7 +15,15 @@ const getFileName = (fileName: string, uid: string) => {
 };
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
-  const { value, onChange, onSelectMaterial, onChangeFile, uploadText, uploadContent } = props;
+  const {
+    value,
+    onChange,
+    onSelectMaterial,
+    onChangeFile,
+    uploadText,
+    uploadContent,
+    accept,
+  } = props;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -62,6 +70,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         onChange={handleChange}
         action={ossPath}
         data={getData}
+        accept={accept}
         showUploadList={false}
         beforeUpload={handleBeforeUpload}
       >

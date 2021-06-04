@@ -1,3 +1,7 @@
 import styled from 'styled-components';
 
-export const DragItemContainer = styled.div<{ active?: boolean }>``;
+export const DragItemContainer = styled.div<{ active?: boolean }>`
+  * {
+    pointer-events: none;
+  }
+`;

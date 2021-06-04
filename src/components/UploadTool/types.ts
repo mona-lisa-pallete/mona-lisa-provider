@@ -8,4 +8,5 @@ export interface UploadToolProps {
   onChangeFile?: (file: UploadFile<any>) => void;
   uploadText?: ReactNode | React.Component;
   uploadContent?: ReactNode | React.Component;
+  accept?: string;
 }

@@ -18,7 +18,7 @@ import { UploadFile } from 'antd/lib/upload/interface';
 import { ActionType, DSL, DSLContent } from '@/pages/editor/types';
 
 const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
-  const { onSelected, uploadContent, uploadText } = props;
+  const { onSelected, uploadContent, uploadText, accept } = props;
   const { setMaterialVisible } = useModel('useMaterialModel');
   const { selectMaterial, isSuccess } = useSelectMaterial();
   const [urlVal, setUrlVal] = useState('');
@@ -142,6 +142,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
         setMaterialVisible(true);
       }}
       uploadContent={uploadContent}
+      accept={accept}
       uploadText={uploadText}
       onChange={(url) => {
         setUrlVal(url);
