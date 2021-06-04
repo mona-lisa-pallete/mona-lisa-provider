@@ -212,6 +212,8 @@ const Editor: React.FC = () => {
   };
 
   const handleActionData = (val: any) => {
+    console.log(val);
+
     const list =
       val?.action?.filter((i: any) => !!i?.actionType && !!i.data && Object.keys(i.data).length) ||
       undefined;

@@ -56,7 +56,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => (
-              <ActionFormBox>
+              <ActionFormBox key={field.name}>
                 <div className="dv-action-item">
                   <div className="dv-action-name">
                     <div>
@@ -66,7 +66,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                     <i
                       className="icon-delete iconfont"
                       onClick={() => {
-                        remove(index);
+                        remove(field.name);
                       }}
                     />
                   </div>

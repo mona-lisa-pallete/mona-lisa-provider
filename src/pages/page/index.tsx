@@ -73,16 +73,18 @@ const Page: React.FC = () => {
             </PageImg>
             <PageDetail>
               <PageName>{record.name}</PageName>
-              <PageAction>
-                <Button type="link" style={{ marginRight: '40px' }}>
-                  <i className="iconicon-copy iconfont" />
-                  复制链接
-                </Button>
-                <Button type="link">
-                  <i className="iconicon-copy iconfont" />
-                  复制小程序路径
-                </Button>
-              </PageAction>
+              {record.releaseBatch && (
+                <PageAction>
+                  <Button type="link" style={{ marginRight: '40px' }}>
+                    <i className="iconicon-copy iconfont" />
+                    复制链接
+                  </Button>
+                  <Button type="link">
+                    <i className="iconicon-copy iconfont" />
+                    复制小程序路径
+                  </Button>
+                </PageAction>
+              )}
             </PageDetail>
           </PageInfo>
         );
@@ -308,14 +310,16 @@ const Page: React.FC = () => {
             >
               编辑
             </Button>
-            <Button
-              type="link"
-              onClick={() => {
-                setPreviewVisible(true);
-              }}
-            >
-              预览
-            </Button>
+            {item.releaseBatch && (
+              <Button
+                type="link"
+                onClick={() => {
+                  setPreviewVisible(true);
+                }}
+              >
+                预览
+              </Button>
+            )}
             {item.status === 0 && (
               <Button
                 type="link"

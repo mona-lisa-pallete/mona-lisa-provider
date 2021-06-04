@@ -34,6 +34,7 @@ export interface PageItem {
   releaseTime: string;
   thumbnailUrl: string;
   platform: PlatformType[];
+  releaseBatch: string;
 }
 
 export interface IGetPagesReponse {
