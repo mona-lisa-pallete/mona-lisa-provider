@@ -37,12 +37,16 @@ const config = defineConfig({
     '//course-static.oss-cn-hangzhou.aliyuncs.com/browser.min.js',
     '//course-static.oss-cn-hangzhou.aliyuncs.com/moment.js',
     'https://static.guorou.net/davinci/lib/antd.min.dll.js',
+    'https://static.guorou.net/davinci/lib/axios.min.dll.js',
+    'https://static.guorou.net/davinci/lib/davinciCore.dll.js',
     '//at.alicdn.com/t/font_2395081_9sik77mosu5.js',
   ],
   externals: {
     react: 'reactVendor.React',
     'react-dom': 'reactVendor.ReactDOM',
+    '@davinci/core': 'davinciCore',
     antd: 'antd',
+    axios: 'axios',
   },
   styles: [
     '//at.alicdn.com/t/font_2395081_16jfjqg5z1d.css',
