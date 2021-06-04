@@ -50,6 +50,7 @@
     "@types/qrcode": "^1.4.0",
     "@types/react-infinite-scroller": "^1.2.1",
     "@types/styled-components": "^5.1.9",
+    "@types/react-color": "^3.0.4",
     "@umijs/fabric": "^2.3.1",
     "@umijs/test": "^3.2.24",
     "cross-env": "^7.0.3",

@@ -71,7 +71,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
             {uploadText || '添加图片'}
           </UploadButton>
         )}
-        {value && uploadContent}
+        {uploadContent}
         {value && !uploadContent && (
           <img
             style={{

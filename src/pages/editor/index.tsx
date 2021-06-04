@@ -18,6 +18,7 @@ import { useLocation } from 'react-router-dom';
 import { groupBy, merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
+import PlatformColorPicker from '@/_components/PlatformColorPicker/';
 import { delElementById } from './utils';
 
 const { TabPane } = Tabs;
@@ -85,6 +86,7 @@ export const initState: IState = {
 const PlatformContext = {
   ui: {
     UploadTool: PlatformUploadTool,
+    ColorPicker: PlatformColorPicker,
   },
 };
 

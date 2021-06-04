@@ -2117,6 +2117,14 @@
   dependencies:
     "@types/node" "*"
 
+"@types/react-color@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.nlark.com/@types/react-color/download/@types/react-color-3.0.4.tgz?cache=0&sync_timestamp=1621242327781&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Freact-color%2Fdownload%2F%40types%2Freact-color-3.0.4.tgz#c63daf012ad067ac0127bdd86725f079d02082bd"
+  integrity sha1-xj2vASrQZ6wBJ73YZyXwedAggr0=
+  dependencies:
+    "@types/react" "*"
+    "@types/reactcss" "*"
+
 "@types/react-dom@^16.9.8":
   version "16.9.12"
   resolved "https://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.9.12.tgz?cache=0&sync_timestamp=1616460042315&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Freact-dom%2Fdownload%2F%40types%2Freact-dom-16.9.12.tgz#55cd6b17e73922edb9545e5355a0016c1734e6f4"
@@ -2199,6 +2207,13 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
+
+"@types/reactcss@*":
+  version "1.2.3"
+  resolved "https://registry.nlark.com/@types/reactcss/download/@types/reactcss-1.2.3.tgz?cache=0&sync_timestamp=1621242490186&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Freactcss%2Fdownload%2F%40types%2Freactcss-1.2.3.tgz#af28ae11bbb277978b99d04d1eedfd068ca71834"
+  integrity sha1-ryiuEbuyd5eLmdBNHu39BoynGDQ=
+  dependencies:
+    "@types/react" "*"
 
 "@types/scheduler@*":
   version "0.16.1"
