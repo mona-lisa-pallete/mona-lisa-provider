@@ -65,7 +65,13 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         },
       },
     });
-    if (index === -1) {
+    dispatch({
+      type: ActionType.SetFormData,
+      payload: {
+        data: {},
+      },
+    });
+    if (index === -1 || index === -2) {
       dispatch({
         type: ActionType.SetSelectedRef,
         payload: {
@@ -123,12 +129,20 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           },
         },
       });
+      console.log(elementId, elementRef, containerId);
+
       dispatch({
         type: ActionType.SetSelectedRef,
         payload: {
           id: elementId,
           ref: elementRef,
           containerId,
+        },
+      });
+      dispatch({
+        type: ActionType.SetFormData,
+        payload: {
+          data: {},
         },
       });
       dropRef.current = false;

@@ -83,34 +83,6 @@ const Viewport: React.FC = () => {
         containerId,
       },
     });
-    // const actionData = state.dsl.action;
-    // const actionFormData: any = [];
-    // // eslint-disable-next-line guard-for-in
-    // for (const eventKey in data.contentProp.event) {
-    //   data.contentProp.event[eventKey].forEach((i) => {
-    //     const isOpen = [
-    //       DSLActionType.openH5,
-    //       DSLActionType.openMini,
-    //       DSLActionType.openPage,
-    //     ].includes(actionData[i].actionType);
-    //     const isModal = actionData[i].actionType === DSLActionType.openModal;
-    //     const obj: any = {
-    //       actionType: '',
-    //     };
-    //     if (isOpen) {
-    //       obj.actionType = ActionFormType.Page;
-    //       obj.pageType = actionData[i].actionType;
-    //     } else if (isModal) {
-    //       obj.actionType = ActionFormType.Modal;
-    //     } else {
-    //       obj.actionType = ActionFormType.Toast;
-    //     }
-    //     actionFormData.push({
-    //       ...obj,
-    //       ...actionData[i].actionProp,
-    //     });
-    //   });
-    // }
     dispatch({
       type: ActionType.SetFormData,
       payload: {
