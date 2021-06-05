@@ -15,16 +15,18 @@ import { Button, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import QRCode from 'qrcode';
 import copy from 'copy-to-clipboard';
+import downloadjs from 'downloadjs';
 
 interface PreviewModalProp {
   onChange: () => void;
   h5Url: string;
+  miniappCodeUrl: string;
+  miniappUrl: string;
 }
 
 const PreviewModal: React.FC<PreviewModalProp> = (props) => {
-  const { onChange, h5Url = 'http://www.baidu.com' } = props;
+  const { onChange, h5Url = 'http://www.baidu.com', miniappCodeUrl, miniappUrl } = props;
   const [h5QRCode, setH5QRCode] = useState('');
-  const [miniQRCode] = useState('');
 
   useEffect(() => {
     QRCode.toDataURL(h5Url, {
@@ -32,7 +34,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
     }).then((url) => {
       setH5QRCode(url);
     });
-  }, []);
+  }, [h5Url]);
 
   return (
     <>
@@ -41,7 +43,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
           <CloseOutlined className="preview-close" onClick={onChange} style={{ color: '#fff' }} />
           <PreviewPhoneContainer>
             <PreviewPhone src={phone} />
-            <iframe frameBorder={0} src="https://www.baidu.com" />
+            <iframe frameBorder={0} src={h5Url} />
           </PreviewPhoneContainer>
           <PreviewQRContainer>
             <PreviewQRItem>
@@ -58,18 +60,30 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
                   >
                     复制链接
                   </Button>
-                  <Button onClick={() => {}}>下载二维码</Button>
+                  <Button
+                    onClick={() => {
+                      downloadjs(h5QRCode);
+                    }}
+                  >
+                    下载二维码
+                  </Button>
                 </PreviewQRAction>
               </PreviewQRInfo>
             </PreviewQRItem>
             <PreviewQRItem>
-              <img src={miniQRCode} />
+              <img src={miniappCodeUrl} />
               <PreviewQRInfo>
                 <PreviewQRName>小程序链接</PreviewQRName>
-                <PreviewQRLink>https://ant.design/components/overview-cn/</PreviewQRLink>
+                <PreviewQRLink>{miniappUrl}</PreviewQRLink>
                 <PreviewQRAction>
                   <Button>复制链接</Button>
-                  <Button>下载二维码</Button>
+                  <Button
+                    onClick={() => {
+                      downloadjs(miniappCodeUrl);
+                    }}
+                  >
+                    下载二维码
+                  </Button>
                 </PreviewQRAction>
               </PreviewQRInfo>
             </PreviewQRItem>

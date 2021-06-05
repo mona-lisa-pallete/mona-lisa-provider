@@ -18,9 +18,17 @@ export enum MiniPageStyle {
 }
 
 export interface PageItem {
+  id: number;
   projectId: number;
   page: string;
   name: string;
+  thumbnailUrl: string;
+  webUrl: string;
+  miniappCodeUrl: string;
+  miniappUrl: string;
+  releaseBatch: string;
+  templateId: string;
+  platform: string[];
   createUserId: number;
   createUserName: string;
   updateUserId: number;
@@ -32,9 +40,6 @@ export interface PageItem {
   releaseVersion: number;
   releaseUsername: string;
   releaseTime: string;
-  thumbnailUrl: string;
-  platform: PlatformType[];
-  releaseBatch: string;
 }
 
 export interface IGetPagesReponse {

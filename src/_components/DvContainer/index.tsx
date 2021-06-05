@@ -39,7 +39,9 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
       element.contentChild?.push({
         contentType: 'element',
         contentProp: {
-          style: {},
+          style: {
+            position: 'absolute',
+          },
         },
         elementId,
         elementRef,

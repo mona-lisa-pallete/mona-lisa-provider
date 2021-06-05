@@ -7,6 +7,8 @@ interface PreviewModalProp {
   onChange: () => void;
   visible: boolean;
   h5Url: string;
+  miniappCodeUrl: string;
+  miniappUrl: string;
 }
 const PreviewModal: React.FC<PreviewModalProp> = (props) => {
   const { visible } = props;

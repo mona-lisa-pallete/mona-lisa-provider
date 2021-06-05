@@ -47,7 +47,9 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         {
           contentType: 'element',
           contentProp: {
-            style: {},
+            style: {
+              position: 'absolute',
+            },
           },
           elementId,
           elementRef,
@@ -103,7 +105,9 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           {
             contentType: 'element',
             contentProp: {
-              style: {},
+              style: {
+                position: 'absolute',
+              },
             },
             elementId,
             elementRef,

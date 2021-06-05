@@ -29,6 +29,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { PageEdit } from './types';
 import PageSettingModal from './components/PageSettingModal/';
 import { useHideHeader } from '../editor/hooks';
+import copy from 'copy-to-clipboard';
 
 const { confirm } = Modal;
 
@@ -40,6 +41,9 @@ const Page: React.FC = () => {
   const [settingVisible, setSettingVisible] = useState(false);
   const [pageId, setPageId] = useState('');
   const tableRef = useRef<ActionType>();
+  const [h5Url, setH5Url] = useState('');
+  const [miniappCodeUrl, setMiniappCodeUrl] = useState('');
+  const [miniappUrl, setMiniappUrl] = useState('');
 
   useHideHeader(location);
 
@@ -75,11 +79,22 @@ const Page: React.FC = () => {
               <PageName>{record.name}</PageName>
               {record.releaseBatch && (
                 <PageAction>
-                  <Button type="link" style={{ marginRight: '40px' }}>
+                  <Button
+                    onClick={() => {
+                      copy(record.webUrl);
+                    }}
+                    type="link"
+                    style={{ marginRight: '40px' }}
+                  >
                     <i className="iconicon-copy iconfont" />
                     复制链接
                   </Button>
-                  <Button type="link">
+                  <Button
+                    onClick={() => {
+                      copy(record.miniappUrl);
+                    }}
+                    type="link"
+                  >
                     <i className="iconicon-copy iconfont" />
                     复制小程序路径
                   </Button>
@@ -314,6 +329,9 @@ const Page: React.FC = () => {
               <Button
                 type="link"
                 onClick={() => {
+                  setH5Url(item.webUrl);
+                  setMiniappUrl(item.miniappUrl);
+                  setMiniappCodeUrl(item.miniappCodeUrl);
                   setPreviewVisible(true);
                 }}
               >
@@ -464,10 +482,12 @@ const Page: React.FC = () => {
         />
       </PageMain>
       <PreviewModal
-        h5Url=""
+        h5Url={h5Url}
         onChange={() => {
           setPreviewVisible(false);
         }}
+        miniappCodeUrl={miniappCodeUrl}
+        miniappUrl={miniappUrl}
         visible={previewVisible}
       />
       <PageSettingModal
