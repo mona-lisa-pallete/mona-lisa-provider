@@ -121,7 +121,7 @@ const useActionMeta = (() => {
         setMetaState({ fetching: true });
         const host = isLocal
           ? getActionDllApi()
-          : `https://static.guorou.net/davinci/component/${elementRef}`;
+          : `https://static.guorou.net/davinci/action/${elementRef}/form.js`;
 
         const path = isLocal ? elementRef : 'index';
         await LoadScript({ src: `${host}/${path}.js` });
