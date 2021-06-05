@@ -1,6 +1,5 @@
 import instance from '@/lib/request';
 import { IResponse } from '@/lib/request.types';
-import { getDllApi } from '@/utils/host';
 import {
   IAddPreviewRequest,
   IAddPreviewReponse,
@@ -42,10 +41,10 @@ const getPage = async (id: string | number) =>
  * @param elementRef
  * @returns
  */
-const getCompMeta = async (elementRef: string) => {
+const getCompMeta = async (url: string) => {
   const isLocal = window.location.host.includes('localhost');
   if (isLocal) {
-    return fetch(`${getDllApi()}${elementRef}.json`).then((res) => res.json());
+    return fetch(url).then((res) => res.json());
   } else {
     return Promise.resolve();
   }

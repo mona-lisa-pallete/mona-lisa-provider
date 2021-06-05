@@ -150,15 +150,13 @@ const Viewport: React.FC = () => {
         {isNullData && <InsetItem height="605px" visible={isStart} index={-1} />}
         {state?.dsl?.content?.map((i, index) => {
           return (
-            <>
-              <InsetItem visible={isStart} index={index} />
+            <div key={i.elementId}>
+              <InsetItem key={`${i.elementId}inset`} visible={isStart} index={index} />
               <div
                 style={{
                   width: '100%',
                 }}
-                key={index}
               >
-                {/* {(index + 1) % 2 === 0 && <InsetItem visible={isStart} index={index} />} */}
                 {i.contentType === 'container' && (
                   <ViewportItem
                     actionVisible={state.selectedContainerId === i.elementId}
@@ -172,20 +170,6 @@ const Viewport: React.FC = () => {
                       }
                     }}
                   >
-                    {/* <Draggable
-                      bounds="parent"
-                      onStart={() => {
-                        console.log(222222);
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'inline-block',
-                        }}
-                      >
-                        222
-                      </div>
-                    </Draggable> */}
                     <DvContainer index={index} style={i.contentProp.style}>
                       {i?.contentChild &&
                         i.contentChild.map((childItem) => {
@@ -195,17 +179,18 @@ const Viewport: React.FC = () => {
                               onStop={(e, data) => {
                                 handleItemEvent(e, data, childItem.elementId!);
                               }}
+                              key={childItem.elementId}
                             >
                               <div
                                 style={{
                                   display: 'inline-block',
                                   position: 'absolute',
                                 }}
+                                key={childItem.elementId}
                                 id={childItem.elementId}
                               >
                                 <DragItem
                                   id={childItem.elementId!}
-                                  key={childItem.elementId}
                                   active={state.selectedElementId === childItem.elementId}
                                   onSelect={(e) => {
                                     e.stopPropagation();
@@ -224,7 +209,6 @@ const Viewport: React.FC = () => {
                                   />
                                 </DragItem>
                               </div>
-                              {/* </DragItem> */}
                             </Draggable>
                           );
                         })}
@@ -232,25 +216,11 @@ const Viewport: React.FC = () => {
                   </ViewportItem>
                 )}
               </div>
-            </>
+            </div>
           );
         })}
         {isLast && <InsetItem style={{ flex: 1 }} visible={isStart} index={-2} />}
       </ViewportBox>
-      {/* <div
-        style={{
-          width: '168px',
-          height: '32px',
-          background: '#429eff',
-          borderRadius: '16px',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-        }}
-      >
-        按钮
-      </div> */}
     </ViewportContainer>
   );
 };

@@ -95,6 +95,30 @@ const changeElementActionById = (id: string, content: DSLContent[], action: any)
   return contentData;
 };
 
+const reizeElementStyle = (
+  content: DSLContent[],
+  id: string,
+  style: CSSProperties,
+  top: number,
+): DSLContent[] | undefined => {
+  const list = content.map((i) => {
+    if (i.contentChild && i.contentChild.length) {
+      if (i.elementId === id) {
+        i.contentProp.style = merge(i.contentProp.style, style);
+        i.contentChild.forEach((childItem, index) => {
+          i.contentChild[index].contentProp.style = {
+            ...i.contentChild[index].contentProp.style,
+            top,
+          };
+        });
+        return i;
+      }
+    }
+    return i!;
+  });
+  return list!;
+};
+
 export {
   conversionActionData,
   findElementById,
@@ -102,4 +126,5 @@ export {
   delElementById,
   resizeStyleById,
   changeElementActionById,
+  reizeElementStyle,
 };

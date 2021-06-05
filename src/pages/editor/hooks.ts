@@ -25,7 +25,7 @@ const useHideHeader = (location: any) => {
 const useWidgetMeta = (() => {
   /** meta 缓存 */
   const metaCache: Record<string, any> = {};
-  return (elementRef: string, elementRefMeta?: any, cdnUrl?: string) => {
+  return (elementRef: string, meta?: any, comp?: string, form?: string) => {
     let initState = {
       fetching: false,
       metadata: null,
@@ -44,34 +44,33 @@ const useWidgetMeta = (() => {
     }
     const [metaState, setMetaState] = useState(initState);
     useEffect(() => {
-      if (!elementRef || !elementRefMeta) {
+      if (!elementRef || !meta) {
         setMetaState({
           fetching: false,
           metadata: null,
         });
         return;
       }
-      getCompMeta(elementRef).then(async (metaFromRemote) => {
-        const RefMeta = isLocal ? metaFromRemote : elementRefMeta;
+      const metaUrl = isLocal ? `${getDllApi()}${elementRef}.json` : meta;
+      getCompMeta(metaUrl).then(async (metaFromRemote) => {
         const {
           propFormConfig: { customFormRef },
-        } = RefMeta;
-        const host = isLocal ? getDllApi() : cdnUrl;
+        } = metaFromRemote;
 
-        const path = isLocal ? elementRef : 'index';
-        // console.log(cdnUrl, 'cdnUrlcdnUrlcdnUrl');
+        const compUrl = isLocal ? `${getDllApi() + elementRef}.js` : comp;
+        const formUrl = isLocal ? `${getDllApi() + customFormRef}.js` : form;
 
         await Promise.all([
           // LoadScript({ src: `http://127.0.0.1:22110/zxj/main.js` }),
           // 加载组件实例
-          LoadScript({ src: `${host}${path}.js` }),
+          LoadScript({ src: `${compUrl}` }),
           // // 加载组件的表单实例
-          LoadScript({ src: `${host}${customFormRef}.js` }),
+          LoadScript({ src: `${formUrl}` }),
         ]);
 
         setMetaState({
           fetching: false,
-          metadata: RefMeta,
+          metadata: metaFromRemote,
         });
       });
       // getCompMeta(elementRef).then((metaFromRemote) => {
@@ -80,7 +79,7 @@ const useWidgetMeta = (() => {
       //     metadata: metaFromRemote,
       //   });
       // });
-    }, [elementRef, elementRefMeta]);
+    }, [elementRef, meta]);
 
     return metaState;
   };

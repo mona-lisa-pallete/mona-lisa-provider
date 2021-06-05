@@ -46,7 +46,9 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
       contentChild: [
         {
           contentType: 'element',
-          contentProp: {},
+          contentProp: {
+            style: {},
+          },
           elementId,
           elementRef,
         },
@@ -100,7 +102,9 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         contentChild: [
           {
             contentType: 'element',
-            contentProp: {},
+            contentProp: {
+              style: {},
+            },
             elementId,
             elementRef,
           },

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ViewportBox from './components/Viewport';
@@ -15,13 +15,19 @@ import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
-import { groupBy, merge } from 'lodash';
+import { groupBy, merge, subtract } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
 import PlatformColorPicker from '@/_components/PlatformColorPicker/';
-import { changeElementActionById, delElementById } from './utils';
+import {
+  changeElementActionById,
+  delElementById,
+  findElementById,
+  reizeElementStyle,
+} from './utils';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
+import math, { evaluate } from 'mathjs';
 
 const { TabPane } = Tabs;
 const { confirm } = Modal;
@@ -117,16 +123,16 @@ const Editor: React.FC = () => {
   const [allComponent, setAllComponent] = useState<any[]>([]);
   const [containerVal, setContainerVal] = useState<any>({});
   const [actionForm] = Form.useForm();
+  const resizeRef = useRef(false);
   useHideHeader(location);
 
   const seleComponent = allComponent.find((i) => i.ref === state.selectedElementRef);
-  const selectedRefMeta = seleComponent?.componentMeta;
-  const cdnUrl = seleComponent?.cdnPath;
 
   const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(
     state.selectedElementRef!,
-    selectedRefMeta,
-    cdnUrl,
+    seleComponent?.compMetaUrl,
+    seleComponent?.compUrl,
+    seleComponent?.formUrl,
   );
 
   useEffect(() => {
@@ -169,23 +175,22 @@ const Editor: React.FC = () => {
   ): DSLContent[] | undefined => {
     const list = content.map((i) => {
       if (i.contentChild && i.contentChild.length) {
-        let contentChild: DSLContent[] = [];
+        if (i.elementId === id) {
+          i.contentProp.style = merge(i.contentProp.style, style);
+          return i;
+        }
         i.contentChild.forEach((childItem, index) => {
-          contentChild = i.contentChild!;
           if (id === childItem.elementId) {
-            i.contentChild![index].contentProp.style = style;
+            i.contentChild![index].contentProp.style = merge(
+              i.contentChild![index].contentProp.style,
+              style,
+            );
+            console.log(
+              i.contentChild![index].contentProp.style,
+              'i.contentChild![index].contentProp.style',
+            );
           }
         });
-        if (contentChild) {
-          const heightArr: number[] = contentChild
-            .filter((contentChildItem) => contentChildItem.contentProp?.style?.height)
-            .map((contentChildItem) => contentChildItem!.contentProp!.style!.height) as number[];
-          i.contentProp.style = {
-            ...i.contentProp.style,
-            height: Math.max(...heightArr!),
-          };
-          // const styleArr = contentChild.map)
-        }
       }
       return i!;
     });
@@ -333,22 +338,68 @@ const Editor: React.FC = () => {
     getComponentsData();
   }, []);
 
+  // 监听dsl并改变当前容器高度
   useEffect(() => {
-    if (state.selectedContainerId && !state.selectedElementRef) {
-      const element = state.dsl?.content?.find(
+    if (resizeRef.current) {
+      return;
+    }
+    if (state.selectedContainerId) {
+      const element: DSLContent = state.dsl?.content?.find(
         (i: any) => i.elementId === state.selectedContainerId,
       );
-      let height: string = element?.contentProp?.style?.height;
-      if (height) {
-        if (typeof height === 'string' && height.includes('px')) {
-          height = height.replace('px', '');
+      setTimeout(() => {
+        const containerDom = document.getElementById(state.selectedContainerId!);
+        const childDom = element?.contentChild.map((i) => {
+          const dom = document.getElementById(`${i.elementId}`);
+          return {
+            top: dom!.getBoundingClientRect().top,
+            bottom: dom!.getBoundingClientRect().bottom,
+          };
+        });
+        if (childDom?.length) {
+          const childDomTop = childDom.map((i) => i.top);
+          const childDomBottom = childDom.map((i) => i.bottom);
+          const minTop = Math.min(...childDomTop);
+          const maxBottom = Math.max(...childDomBottom);
+          const height = evaluate(`${maxBottom}-${minTop}`);
+          const containerDomH = containerDom.getBoundingClientRect().height;
+          if (containerDom && containerDomH === height) {
+            console.log('无需调整');
+            return;
+          }
+          const container = findElementById(state.selectedContainerId!, state.dsl.content);
+          const topStyle = container.contentChild?.map((i) => i.contentProp?.style?.top);
+          const minTopStyle = Math.min(...(topStyle as []));
+          console.log(minTopStyle, 'minTopStyleminTopStyle');
+
+          const content = reizeElementStyle(
+            state.dsl.content,
+            state.selectedContainerId!,
+            {
+              height,
+            },
+            0,
+          );
+          dispatch({
+            type: ReducerActionType.UpdateComponent,
+            payload: {
+              dsl: {
+                content: content!,
+                action: state.dsl.action,
+              },
+            },
+          });
+          resizeRef.current = true;
         }
-        // setContainerVal({
-        //   height,
-        // });
-      }
+      }, 500);
     }
-  }, [state.dsl?.content, state.selectedContainerId, state.selectedElementRef]);
+  }, [state.dsl?.content, state.selectedContainerId]);
+
+  useEffect(() => {
+    if (resizeRef.current === true) {
+      resizeRef.current = false;
+    }
+  }, [state.dsl?.content]);
 
   const handleDelElement = () => {
     confirm({
@@ -369,7 +420,7 @@ const Editor: React.FC = () => {
           type: ReducerActionType.SetSelectedRef,
           payload: {
             id: undefined,
-            containerId: undefined,
+            containerId: state.selectedContainerId,
             ref: undefined,
           },
         });

@@ -51,9 +51,19 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
         selectMaterialData.width /= 2;
         selectMaterialData.height /= 2;
       }
+
+      let imgWidth: any;
+      let imgHeight: any;
+      if (selectMaterialData.width < 750) {
+        imgWidth = selectMaterialData.width / 2;
+        imgHeight = selectMaterialData.height / 2;
+      } else {
+        imgWidth = '100%';
+        imgHeight = '100%';
+      }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
-        height: selectMaterialData.height / 2,
-        width: selectMaterialData.width / 2,
+        height: imgHeight,
+        width: imgWidth,
       })!;
       dispatch({
         type: ActionType.UpdateComponent,
@@ -84,37 +94,16 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
   ): DSLContent[] | undefined => {
     const list = content.map((i) => {
       if (i.contentChild && i.contentChild.length && state.selectedContainerId === i.elementId) {
-        let contentChild: DSLContent[] = [];
         i.contentChild.forEach((childItem, index) => {
-          contentChild = i.contentChild!;
           if (id === childItem.elementId) {
             i.contentChild![index].contentProp.style = style;
           }
         });
-
-        if (contentChild) {
-          let maxHeightItem: DSLContent = {};
-          let maxH = 0;
-          contentChild.forEach((contentChildItem: DSLContent) => {
-            if (contentChildItem!.contentProp?.style?.height > maxH) {
-              maxHeightItem = contentChildItem;
-              maxH = (contentChildItem?.contentProp?.style?.height as number) || 0;
-            }
-          });
-          let height = maxHeightItem?.contentProp?.style?.height;
-          if (maxHeightItem && maxHeightItem?.contentProp?.style?.width >= 750) {
-            const radio = maxHeightItem?.contentProp?.style?.width / 750;
-            height /= radio;
-            // height /= 2;
-          }
-          i.contentProp.style = {
-            ...i.contentProp.style,
-            height,
-          };
-        }
       }
       return i!;
     });
+    console.log(list);
+
     return list!;
   };
 
@@ -124,15 +113,20 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       const img = new Image(); // 手动创建一个Image对象
       const url = window.URL || window.webkitURL;
       img.src = url.createObjectURL(file.originFileObj); // 创建Image的对象的url
-      let { height, width } = await getImageSize(img);
+      const { height, width } = await getImageSize(img);
 
+      let imgWidth: any;
+      let imgHeight: any;
       if (width < 750) {
-        width /= 2;
-        height /= 2;
+        imgWidth = width / 2;
+        imgHeight = height / 2;
+      } else {
+        imgWidth = '100%';
+        imgHeight = '100%';
       }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
-        height,
-        width,
+        height: imgHeight,
+        width: imgWidth,
       })!;
       dispatch({
         type: ActionType.UpdateComponent,

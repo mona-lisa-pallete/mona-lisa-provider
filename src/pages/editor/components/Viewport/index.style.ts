@@ -10,10 +10,6 @@ export const ViewportBox = styled.div`
   border-radius: 4px 4px 0px 0px;
   margin-bottom: 16px;
   flex-direction: column;
-  taro-image-core {
-    width: auto;
-    height: auto;
-  }
 `;
 
 export const DragBox = styled.div`
