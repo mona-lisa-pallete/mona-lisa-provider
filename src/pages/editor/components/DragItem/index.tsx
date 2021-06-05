@@ -23,6 +23,7 @@ const DragItem: React.FC<DragItemProps> = (props) => {
         ...style,
         left: `${left}px`,
         top: `${top}px`,
+        position: 'static',
         // border: active ? '3px solid #187FFE' : '3px solid rgba(0,0,0,0)',
       }}
       onClick={(e) => {
