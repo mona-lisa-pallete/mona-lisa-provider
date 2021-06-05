@@ -68,8 +68,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         };
       });
       if (files) {
-        // @ts-ignore
-        onProgress(files);
+        onProgress && onProgress(files);
       }
       if (files && !files.some((i) => i.status !== 'done')) {
         // @ts-ignore
@@ -79,7 +78,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     } else {
       if (file) {
         // @ts-ignore
-        onProgress(file);
+        onProgress && onProgress(file);
       }
       if (file.status === 'done') {
         if (file && onChange) {
