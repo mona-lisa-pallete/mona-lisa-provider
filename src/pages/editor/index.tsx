@@ -19,7 +19,7 @@ import { groupBy, merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
 import PlatformColorPicker from '@/_components/PlatformColorPicker/';
-import { delElementById } from './utils';
+import { changeElementActionById, delElementById } from './utils';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { nanoid } from 'nanoid';
 
@@ -116,7 +116,7 @@ const Editor: React.FC = () => {
   const [componentMap, setComponentMap] = useState<{ [key: string]: any[] }>({});
   const [allComponent, setAllComponent] = useState<any[]>([]);
   const [containerVal, setContainerVal] = useState<any>({});
-
+  const [actionForm] = Form.useForm();
   useHideHeader(location);
 
   const seleComponent = allComponent.find((i) => i.ref === state.selectedElementRef);
@@ -233,12 +233,15 @@ const Editor: React.FC = () => {
           },
         };
       });
+      const content = changeElementActionById(state.selectedElementId, state.dsl.content, {
+        onClick: onClickData,
+      });
       dispatch({
         type: ReducerActionType.UpdateComponent,
         payload: {
           dsl: {
-            content: state.dsl.content,
-            action: merge(state.dsl.action, obj),
+            content,
+            action: obj,
           },
         },
       });
@@ -289,6 +292,24 @@ const Editor: React.FC = () => {
             data: elementRefData.contentProp,
           },
         });
+        if (elementRefData?.contentProp?.event?.onClick) {
+          const list = elementRefData?.contentProp?.event?.onClick.slice();
+          const actionData: any[] = [];
+          list.forEach((i) => {
+            const action = res?.data?.dsl?.action?.[i];
+            if (action) {
+              actionData.push({
+                actionType: action.actionType,
+                data: action.actionProp,
+              });
+            }
+          });
+          console.log(actionData, 'actionData');
+
+          actionForm.setFieldsValue({
+            action: actionData,
+          });
+        }
       }
     };
     if (query.pageId) {
@@ -393,6 +414,7 @@ const Editor: React.FC = () => {
                 {state.selectedElementRef && widgetMeta?.propFormConfig?.useActionForm && (
                   <Form
                     layout="vertical"
+                    form={actionForm}
                     onValuesChange={(changedValues: any, values: any) => {
                       handleActionData(values);
                     }}

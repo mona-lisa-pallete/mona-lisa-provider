@@ -71,10 +71,35 @@ const resizeStyleById = (containerId: string, content: DSLContent[]) => {
   });
 };
 
+const changeElementActionById = (id: string, content: DSLContent[], action: any) => {
+  const contentData: DSLContent[] = JSON.parse(JSON.stringify(content));
+
+  contentData.forEach((e, index) => {
+    e.contentChild?.forEach((i, childItem) => {
+      const event = contentData[index].contentChild?.[childItem].contentProp?.event;
+      if (i.elementId === id && event) {
+        contentData[index].contentChild[childItem].contentProp.event = { ...action };
+        // contentData[index].contentChild![childItem].contentProp.style = data;
+      } else if (i.elementId === id && !event) {
+        contentData[index].contentChild![childItem].contentProp = {
+          event: {
+            ...action,
+          },
+        };
+      }
+      console.log(contentData[index].contentChild?.[childItem].contentProp?.event);
+    });
+  });
+  console.log(contentData, 'contentData');
+
+  return contentData;
+};
+
 export {
   conversionActionData,
   findElementById,
   changeElementStyleById,
   delElementById,
   resizeStyleById,
+  changeElementActionById,
 };

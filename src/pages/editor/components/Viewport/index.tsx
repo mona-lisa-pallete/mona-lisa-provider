@@ -165,6 +165,12 @@ const Viewport: React.FC = () => {
                     id={i.elementId}
                     index={index}
                     active={state.selectedContainerId === i.elementId}
+                    onClick={() => {
+                      if (i.contentChild?.[0]?.elementId) {
+                        const child = i.contentChild?.[0];
+                        handleSelect(child.elementRef!, child.elementId!, child, i.elementId!);
+                      }
+                    }}
                   >
                     {/* <Draggable
                       bounds="parent"

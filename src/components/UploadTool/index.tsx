@@ -23,6 +23,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     uploadText,
     uploadContent,
     accept,
+    onProgress,
   } = props;
   const [policy, setPolicy] = useState<any>({});
 
@@ -46,7 +47,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     return Promise.resolve();
   };
 
-  const handleChange = ({ file }: UploadChangeParam<UploadFile<any>>) => {
+  const handleChange = ({ file, fileList }: UploadChangeParam<UploadFile<any>>) => {
     // const files = fileList.map((e) => {
     //   return {
     //     ...e,
@@ -56,6 +57,16 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     //         : '',
     //   };
     // });
+    const files = fileList.map((e) => {
+      return {
+        ...e,
+        url:
+          e.status === 'done'
+            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`
+            : '',
+      };
+    });
+    onProgress(files!);
     if (file.status === 'done') {
       if (file && onChange) {
         onChange(`https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`);
@@ -74,7 +85,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         showUploadList={false}
         beforeUpload={handleBeforeUpload}
       >
-        {!value && (
+        {!value && !uploadContent && (
           <UploadButton>
             <PlusOutlined style={{ color: '#8E91A3', fontSize: '20px', marginBottom: '6px' }} />
             {uploadText || '添加图片'}

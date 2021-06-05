@@ -9,4 +9,5 @@ export interface UploadToolProps {
   uploadText?: ReactNode | React.Component;
   uploadContent?: ReactNode | React.Component;
   accept?: string;
+  onProgress?: (list: any[]) => void;
 }
