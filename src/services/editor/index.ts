@@ -42,12 +42,7 @@ const getPage = async (id: string | number) =>
  * @returns
  */
 const getCompMeta = async (url: string) => {
-  const isLocal = window.location.host.includes('localhost');
-  if (isLocal) {
-    return fetch(url).then((res) => res.json());
-  } else {
-    return Promise.resolve();
-  }
+  return fetch(url).then((res) => res.json());
 };
 
 export { addPreviewPage, addPage, getComponents, getCompMeta, getPage };
