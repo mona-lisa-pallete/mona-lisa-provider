@@ -10,6 +10,7 @@ import {
   ISetComponentMeta,
   ISetPageName,
   ISetComponentData,
+  ISetResize,
 } from './action';
 
 import { CSSProperties } from 'react';
@@ -71,6 +72,7 @@ export interface IState {
   selectedContainerId: undefined | string;
   pageName: string;
   componentData: any[];
+  resize: undefined | string | number;
 }
 
 export type IAction =
@@ -84,7 +86,8 @@ export type IAction =
   | ISetPageData
   | ISetComponentMeta
   | ISetPageName
-  | ISetComponentData;
+  | ISetComponentData
+  | ISetResize;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -98,4 +101,5 @@ export enum ActionType {
   SetComponentMeta = 'SET_COMPONENT_META',
   SetPageName = 'SET_PAGE_NAME',
   SetComponentData = 'SET_COMPONENT_DATA',
+  SetResize = 'SET_RESIZE',
 }

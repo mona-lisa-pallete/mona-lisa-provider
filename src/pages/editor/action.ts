@@ -81,3 +81,10 @@ export interface ISetComponentData {
     componentData: any[];
   };
 }
+
+export interface ISetResize {
+  type: ActionType.SetResize;
+  payload: {
+    resize: string | number;
+  };
+}

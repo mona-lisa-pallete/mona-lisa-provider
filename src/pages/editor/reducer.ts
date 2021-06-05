@@ -36,6 +36,11 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         componentData: action.payload.componentData,
       };
+    case ActionType.SetResize:
+      return {
+        ...state,
+        resize: action.payload.resize,
+      };
     default:
       return state;
   }

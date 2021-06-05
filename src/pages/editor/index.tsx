@@ -87,6 +87,7 @@ export const initState: IState = {
   selectedContainerId: undefined,
   pageName: '',
   componentData: [],
+  resize: undefined,
 };
 
 /**
@@ -343,6 +344,8 @@ const Editor: React.FC = () => {
     if (resizeRef.current) {
       return;
     }
+    console.log(2222222);
+
     if (state.selectedContainerId) {
       const element: DSLContent = state.dsl?.content?.find(
         (i: any) => i.elementId === state.selectedContainerId,
@@ -393,7 +396,8 @@ const Editor: React.FC = () => {
         }
       }, 500);
     }
-  }, [state.dsl?.content, state.selectedContainerId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.resize, state.dsl.content]);
 
   useEffect(() => {
     if (resizeRef.current === true) {
