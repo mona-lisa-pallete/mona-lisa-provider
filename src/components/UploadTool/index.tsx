@@ -19,10 +19,10 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     value,
     onChange,
     onSelectMaterial,
-    onChangeFile,
     uploadText,
     uploadContent,
     accept,
+    multiple = false,
     onProgress,
   } = props;
   const [policy, setPolicy] = useState<any>({});
@@ -57,23 +57,45 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     //         : '',
     //   };
     // });
-    const files = fileList.map((e) => {
-      return {
-        ...e,
-        url:
-          e.status === 'done'
-            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`
-            : '',
-      };
-    });
-    onProgress(files!);
-    if (file.status === 'done') {
-      if (file && onChange) {
-        onChange(`https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`);
-        onChangeFile && onChangeFile(file);
+    if (multiple) {
+      const files = fileList.map((e) => {
+        return {
+          ...e,
+          url:
+            e.status === 'done'
+              ? `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`
+              : '',
+        };
+      });
+      if (files) {
+        // @ts-ignore
+        onProgress(files);
+      }
+      if (files && !files.some((i) => i.status !== 'done')) {
+        // @ts-ignore
+        onChange(files);
+        // onChangeFile && onChangeFile(file);
+      }
+    } else {
+      if (file) {
+        // @ts-ignore
+        onProgress(file);
+      }
+      if (file.status === 'done') {
+        if (file && onChange) {
+          onChange(`https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`);
+        }
       }
     }
   };
+
+  let imgUrl;
+  if (!multiple) {
+    imgUrl = value;
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    imgUrl === (value as any)?.[0]?.url;
+  }
 
   return (
     <div>
@@ -83,23 +105,24 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         data={getData}
         accept={accept}
         showUploadList={false}
+        multiple={multiple}
         beforeUpload={handleBeforeUpload}
       >
-        {!value && !uploadContent && (
+        {!imgUrl && !uploadContent && (
           <UploadButton>
             <PlusOutlined style={{ color: '#8E91A3', fontSize: '20px', marginBottom: '6px' }} />
             {uploadText || '添加图片'}
           </UploadButton>
         )}
         {uploadContent}
-        {value && !uploadContent && (
+        {imgUrl && !uploadContent && (
           <img
             style={{
               margin: '0 auto',
               display: 'block',
               maxWidth: '287px',
             }}
-            src={value}
+            src={imgUrl}
           />
         )}
       </Upload.Dragger>

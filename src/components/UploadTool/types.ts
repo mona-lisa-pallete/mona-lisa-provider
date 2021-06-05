@@ -3,11 +3,12 @@ import React, { ReactNode } from 'react';
 
 export interface UploadToolProps {
   value?: string;
-  onChange?: (val: string) => void;
+  onChange?: (val: Array<UploadFile<any>> | string) => void;
   onSelectMaterial: () => void;
   onChangeFile?: (file: UploadFile<any>) => void;
   uploadText?: ReactNode | React.Component;
   uploadContent?: ReactNode | React.Component;
   accept?: string;
-  onProgress?: (list: any[]) => void;
+  onProgress?: (list: Array<UploadFile<any>> | UploadFile<any>) => void;
+  multiple?: boolean;
 }
