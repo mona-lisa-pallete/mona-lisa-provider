@@ -1,3 +1,5 @@
+import { Material } from '@/models/useMaterialModel';
+import { MaterialType } from '@/pages/material-manage/types';
 import { UploadFile } from 'antd/lib/upload/interface';
 import React, { ReactNode } from 'react';
 
@@ -10,4 +12,6 @@ export interface PlatformUploadToolProps {
   accept?: string;
   onProgress: () => void;
   multiple?: boolean;
+  onSelectedMaterial: (material: Material) => void;
+  materialType: MaterialType;
 }

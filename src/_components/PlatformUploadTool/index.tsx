@@ -16,10 +16,20 @@ import { getImageSize, isPic } from '@/utils/common';
 import EditorContext from '@/pages/editor/context';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { ActionType, DSL, DSLContent } from '@/pages/editor/types';
+import { MaterialType } from '@/pages/material-manage/types';
 
 const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
-  const { onSelected, uploadContent, uploadText, accept, onProgress, multiple } = props;
-  const { setMaterialVisible } = useModel('useMaterialModel');
+  const {
+    onSelected,
+    uploadContent,
+    uploadText,
+    accept,
+    onProgress,
+    multiple,
+    onSelectedMaterial,
+    materialType = MaterialType.Image,
+  } = props;
+  const { setMaterialVisible, setMaterialType } = useModel('useMaterialModel');
   const { selectMaterial, isSuccess } = useSelectMaterial();
   const [urlVal, setUrlVal] = useState('');
   const { state, dispatch } = useContext(EditorContext);
@@ -55,7 +65,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
         },
       });
       setUrlVal(selectMaterial.url);
-      onSelected([selectMaterial]);
+      onSelectedMaterial(selectMaterial);
     }
   }, [selectMaterial?.url, isSuccess]);
 
@@ -139,6 +149,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
   return (
     <UploadTool
       onSelectMaterial={() => {
+        setMaterialType(materialType);
         setMaterialVisible(true);
       }}
       uploadContent={uploadContent}
