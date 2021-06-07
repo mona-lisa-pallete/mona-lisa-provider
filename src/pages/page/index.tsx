@@ -63,7 +63,7 @@ const Page: React.FC = () => {
     },
     {
       title: '落地页',
-      dataIndex: 'title',
+      dataIndex: 'name',
       formItemProps: {
         label: '页面名称',
         colon: false,
