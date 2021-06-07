@@ -97,8 +97,11 @@ const EditorHeader: React.FC = () => {
 
   const save = async (dsl: string | DSL = state.dsl) => {
     if (!state.pageName) {
-      message.warning('请输入页面名称');
-      return;
+      message.warning({
+        content: '请输入页面名称',
+        className: 'page-message',
+      });
+      return Promise.reject();
     }
     setSaveLoading(true);
     const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
@@ -119,15 +122,18 @@ const EditorHeader: React.FC = () => {
           pageId: res.data.page,
         },
       });
-      message.success('保存成功');
+      message.success({
+        content: '保存成功',
+        className: 'page-message',
+      });
       return Promise.resolve(res.data.page);
     } else {
       return Promise.reject();
     }
   };
 
-  const online = async () => {
-    await updatePage(query.pageId, {
+  const online = async (page: string) => {
+    await updatePage(page, {
       action: 'online',
     });
   };
@@ -279,23 +285,12 @@ const EditorHeader: React.FC = () => {
             <i className="icon-more iconfont" />
           </Popover>
         </SaveBtn>
-        {/* <Button
-          style={{
-            marginRight: '10px',
-            display: 'inline-flex',
-            alignItems: 'center',
-          }}
-          onClick={() => {
-            save();
-          }}
-        >
-          保存 | <i className="icon-more iconfont" />
-        </Button> */}
         <Button
           type="primary"
           onClick={async () => {
-            await save();
-            await online();
+            const page = await save();
+            setPageId(page!);
+            await online(page);
           }}
         >
           保存并上线

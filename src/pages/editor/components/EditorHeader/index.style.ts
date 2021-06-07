@@ -60,6 +60,9 @@ export const PagePopover = createGlobalStyle`
       padding: 16px 0;
     }
   }
+  .page-message {
+    padding-top: 150px;
+  }
 `;
 
 export const PagePopoverBtn = styled(Button)`
