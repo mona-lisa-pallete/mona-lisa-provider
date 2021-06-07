@@ -24,6 +24,8 @@
     "@ant-design/pro-table": "^2.36.0",
     "@grfe/micro-layout": "0.0.1-beta3",
     "@grfe/utils": "^0.3.25",
+    "@sentry/react": "^6.5.1",
+    "@sentry/tracing": "^6.5.1",
     "@umijs/preset-react": "1.x",
     "antd": "^4.15.5",
     "copy-to-clipboard": "^3.3.1",
