@@ -60,23 +60,24 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     //         : '',
     //   };
     // });
+    const files = fileList.map((e) => {
+      return {
+        ...e,
+        url:
+          e.status === 'done'
+            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`
+            : '',
+      };
+    });
+    onOriginChange && onOriginChange({ ...params, fileList: files }); // 向上透传原属性
+
     if (multiple) {
-      const files = fileList.map((e) => {
-        return {
-          ...e,
-          url:
-            e.status === 'done'
-              ? `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`
-              : '',
-        };
-      });
       if (files) {
         onProgress && onProgress(files);
       }
       if (files && !files.some((i) => i.status !== 'done')) {
         // @ts-ignore
         onChange(files);
-        onOriginChange && onOriginChange({ ...params, fileList: files }); // 身上透传原属性
         // onChangeFile && onChangeFile(file);
       }
     } else {
@@ -107,6 +108,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         action={ossPath}
         data={getData}
         accept={accept}
+        showUploadList={false}
         multiple={multiple}
         beforeUpload={handleBeforeUpload}
         {...extraProps}
