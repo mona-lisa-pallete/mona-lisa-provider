@@ -32,8 +32,4 @@ const getDllApi = () => {
   return data[host];
 };
 
-const getActionDllApi = () => {
-  return 'http://127.0.0.1:22111';
-};
-
-export { getApi, getDllApi, getActionDllApi };
+export { getApi, getDllApi };
