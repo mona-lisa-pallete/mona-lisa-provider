@@ -199,7 +199,7 @@ const Page: React.FC = () => {
       dataIndex: 'releaseTime',
       hideInSearch: true,
       renderText(_, record) {
-        return moment(record.releaseTime).format('YYYY-MM-DD HH:MM:SS');
+        return record.releaseTime ? moment(record.releaseTime).format('YYYY-MM-DD HH:mm:ss') : '';
       },
       width: 175,
     },
@@ -243,7 +243,7 @@ const Page: React.FC = () => {
       // valueType: 'dateRange',
       hideInSearch: true,
       renderText(_, record) {
-        return moment(record.updateTime).format('YYYY-MM-DD HH:MM:SS');
+        return moment(record.updateTime).format('YYYY-MM-DD HH:mm:ss');
       },
       // search: {
       //   transform: (value) => {
@@ -275,7 +275,7 @@ const Page: React.FC = () => {
       //   },
       // },
       renderText(_, record) {
-        return moment(record.updateTime).format('YYYY-MM-DD HH:MM:SS');
+        return moment(record.updateTime).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {

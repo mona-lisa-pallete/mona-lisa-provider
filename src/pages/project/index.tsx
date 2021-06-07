@@ -203,7 +203,7 @@ const Project: React.FC = () => {
             return (
               <ProjectItem
                 name={i.name}
-                createTime={moment(i.createTime).format('YYYY-MM-DD HH:MM:SS')}
+                createTime={moment(i.createTime).format('YYYY-MM-DD HH:mm:ss')}
                 createUserName={i.createUserName}
                 onClick={() => {
                   goToPage(i.id);

@@ -47,6 +47,7 @@ const config = defineConfig({
     '@davinci/core': 'davinciCore',
     antd: 'antd',
     axios: 'axios',
+    moment: 'moment'
   },
   styles: [
     '//at.alicdn.com/t/font_2395081_16jfjqg5z1d.css',
