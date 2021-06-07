@@ -13,6 +13,7 @@ import { MaterialType } from '../../types';
 import download from 'downloadjs';
 import { MessageType } from '@/utils/message';
 import { VideoMaterialProps, VideoRef } from './types';
+import { getMaterialCreator } from '@/services/user';
 
 const { confirm } = Modal;
 
@@ -25,6 +26,9 @@ const MaterialManage = (props: VideoMaterialProps, ref: React.Ref<VideoRef>) => 
   const [videoPageNum, setVideoPageNum] = useState(1);
   const [videoPageSize, setVideoPageSize] = useState(20);
   const [videoTotal, setVideoTotal] = useState(0);
+  const [userOption, setUserOption] = useState<Array<{ label: string; value: string | number }>>(
+    [],
+  );
 
   useImperativeHandle(ref, () => {
     return {
@@ -42,27 +46,19 @@ const MaterialManage = (props: VideoMaterialProps, ref: React.Ref<VideoRef>) => 
       }
     };
     window.addEventListener('message', messageListener);
-    // const getData = async () => {
-    //   const res = await getUser({
-    //     type: UserRequestType.Material,
-    //   });
-    //   if (res.code === 0) {
-    //     const data = res.data
-    //       .map((i) => {
-    //         return {
-    //           label: i.createUserName,
-    //           value: i.createUserId,
-    //         };
-    //       })
-    //       .filter((i) => i.value !== userInfo?.id);
-    //     data.unshift({
-    //       label: '我',
-    //       value: userInfo!.id as number,
-    //     });
-    //     setUserOption(data);
-    //   }
-    // };
-    // getData();
+    const getData = async () => {
+      const res = await getMaterialCreator();
+      if (res.code === 0) {
+        const data = res.data.map((i) => {
+          return {
+            label: i,
+            value: i,
+          };
+        });
+        setUserOption(data);
+      }
+    };
+    getData();
     return () => {
       window.removeEventListener('message', messageListener);
     };
@@ -218,7 +214,7 @@ const MaterialManage = (props: VideoMaterialProps, ref: React.Ref<VideoRef>) => 
         >
           <ProFormText name="materialName" label="素材名称" />
           <ProFormSelect
-            options={[]}
+            options={userOption}
             mode="multiple"
             name="creater"
             fieldProps={{ filterOption: true, maxTagCount: 'responsive' }}
