@@ -300,24 +300,6 @@ const Editor: React.FC = () => {
             data: elementRefData.contentProp,
           },
         });
-        if (elementRefData?.contentProp?.event?.onClick) {
-          const list = elementRefData?.contentProp?.event?.onClick.slice();
-          const actionData: any[] = [];
-          list.forEach((i) => {
-            const action = res?.data?.dsl?.action?.[i];
-            if (action) {
-              actionData.push({
-                actionType: action.actionType,
-                data: action.actionProp,
-              });
-            }
-          });
-          console.log(actionData, 'actionData');
-
-          actionForm.setFieldsValue({
-            action: actionData,
-          });
-        }
       }
     };
     if (query.pageId) {
@@ -346,8 +328,6 @@ const Editor: React.FC = () => {
     if (resizeRef.current) {
       return;
     }
-    console.log(2222222);
-
     if (state.selectedContainerId) {
       const element: DSLContent = state.dsl?.content?.find(
         (i: any) => i.elementId === state.selectedContainerId,
@@ -407,6 +387,37 @@ const Editor: React.FC = () => {
     }
   }, [state.dsl?.content]);
 
+  // 根据当前的elementId来动态修改action表单
+  useEffect(() => {
+    if (!state.selectedElementId) {
+      return;
+    }
+    const element = findElementById(state.selectedElementId, state.dsl.content);
+    if (element?.contentProp?.event?.onClick) {
+      const list = element?.contentProp?.event?.onClick.slice();
+      const actionArr: any[] = [];
+
+      list.forEach((i) => {
+        const actionData = state.dsl.action?.[i];
+        if (actionData) {
+          actionArr.push({
+            actionType: actionData.actionType,
+            data: actionData.actionProp,
+          });
+        }
+        // const { action } = state.dsl.action;
+      });
+
+      setActionData({
+        action: actionArr,
+      });
+    } else {
+      setActionData({
+        action: [],
+      });
+    }
+  }, [state.selectedElementId]);
+
   const handleDelElement = () => {
     confirm({
       title: '提示',
@@ -443,8 +454,12 @@ const Editor: React.FC = () => {
     });
   };
 
+  const setActionData = (data: any) => {
+    actionForm.setFieldsValue(data);
+  };
+
   return (
-    <EditorContext.Provider value={{ dispatch, state }}>
+    <EditorContext.Provider value={{ dispatch, state, setActionData }}>
       <DndProvider backend={HTML5Backend}>
         <EditorHeader />
         <EditorMain>

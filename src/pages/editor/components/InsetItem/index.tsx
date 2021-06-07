@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid';
 
 const InsetItem: React.FC<InsetItemProps> = (props) => {
   const { index, visible, height = '118px', style = {} } = props;
-  const { state, dispatch } = useContext(EditorContext);
+  const { state, dispatch, setActionData } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [elementRef, setElementRef] = useState('');
   const dropRef = useRef(true);
@@ -71,6 +71,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         data: {},
       },
     });
+    setActionData({});
     dispatch({
       type: ActionType.SetResize,
       payload: {
@@ -150,6 +151,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           data: {},
         },
       });
+      setActionData({});
       dispatch({
         type: ActionType.SetResize,
         payload: {

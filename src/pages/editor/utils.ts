@@ -87,11 +87,8 @@ const changeElementActionById = (id: string, content: DSLContent[], action: any)
           },
         };
       }
-      console.log(contentData[index].contentChild?.[childItem].contentProp?.event);
     });
   });
-  console.log(contentData, 'contentData');
-
   return contentData;
 };
 

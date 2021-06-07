@@ -50,7 +50,6 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       const selectMaterialData = { ...selectMaterial };
 
       if (selectMaterialData.width < 750) {
-        console.log(selectMaterialData.width, 'selectMaterialData.width');
         selectMaterialData.width /= 2;
         selectMaterialData.height /= 2;
       }
@@ -105,8 +104,6 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       }
       return i!;
     });
-    console.log(list);
-
     return list!;
   };
 

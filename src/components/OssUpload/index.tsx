@@ -23,10 +23,11 @@ enum Accept {
   'img' = 'image/png,image/jpeg',
   'video' = 'audio/mp4,video/mp4',
   'imgVideo' = 'image/png,image/jpeg,audio/mp4,video/mp4',
+  'imgVideoFile' = 'image/png,image/jpeg,audio/mp4,video/mp4,application/pdf,application/vnd.ms-powerpoint,application/vnd.ms-excel,application/msword',
 }
 
 interface UploadToolProps {
-  type?: 'img' | 'video' | 'imgVideo';
+  type?: 'img' | 'video' | 'imgVideo' | 'imgVideoFile';
   onChange: (file: UploadFile<any>, fileList?: UploadFile[]) => void;
   beforeUpload?: (file: RcFile, FileList: RcFile[]) => PromiseLike<void>;
   cRef?: any;

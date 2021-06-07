@@ -139,12 +139,12 @@ const MaterialManageUpload: React.FC = () => {
   return (
     <UploadContainer>
       <OssUpload
-        type="imgVideo"
+        type="imgVideoFile"
         multiple
         beforeUpload={async (file) => {
           const imgTypes = ['.png', '.jpeg', '.jpg'];
           const videoTypes = ['.mp4'];
-          const fileTypes = Object.keys(MIME);
+          const fileTypes = Object.keys(MIME).map((i) => `.${i}`);
           if (imgTypes.includes(getFileType(file.name))) {
             await validateImg(file);
           } else if (videoTypes.includes(getFileType(file.name))) {
