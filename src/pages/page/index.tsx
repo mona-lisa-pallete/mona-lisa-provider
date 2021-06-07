@@ -44,8 +44,14 @@ const Page: React.FC = () => {
   const [h5Url, setH5Url] = useState('');
   const [miniappCodeUrl, setMiniappCodeUrl] = useState('');
   const [miniappUrl, setMiniappUrl] = useState('');
+  const [previewType, setPreviewType] = useState('h5');
 
   useHideHeader(location);
+
+  const copyText = (text: string) => {
+    copy(text);
+    message.success('复制成功');
+  };
 
   const columns: Array<ProColumns<PageItem>> = [
     {
@@ -81,7 +87,7 @@ const Page: React.FC = () => {
                 <PageAction>
                   <Button
                     onClick={() => {
-                      copy(record.webUrl);
+                      copyText(record.webUrl);
                     }}
                     type="link"
                     style={{ marginRight: '40px' }}
@@ -91,7 +97,7 @@ const Page: React.FC = () => {
                   </Button>
                   <Button
                     onClick={() => {
-                      copy(record.miniappUrl);
+                      copyText(record.miniappUrl);
                     }}
                     type="link"
                   >
@@ -329,6 +335,18 @@ const Page: React.FC = () => {
               <Button
                 type="link"
                 onClick={() => {
+                  const isBoth =
+                    item.platform.includes(PlatformType.MINIAPP) &&
+                    item.platform.includes(PlatformType.WEB);
+                  // const isMini = item.platform.includes(PlatformType.MINIAPP);
+                  const isH5 = item.platform.includes(PlatformType.WEB);
+                  if (isBoth) {
+                    setPreviewType('h5mini');
+                  } else if (isH5) {
+                    setPreviewType('h5');
+                  } else {
+                    setPreviewType('mini');
+                  }
                   setH5Url(item.webUrl);
                   setMiniappUrl(item.miniappUrl);
                   setMiniappCodeUrl(item.miniappCodeUrl);
@@ -470,7 +488,7 @@ const Page: React.FC = () => {
           search={{
             labelWidth: 'auto',
           }}
-          scroll={{ x: 'max-content' }}
+          scroll={{ x: 'max-content', y: '600px' }}
           request={getData}
           form={{
             labelAlign: 'left',
@@ -486,6 +504,7 @@ const Page: React.FC = () => {
         onChange={() => {
           setPreviewVisible(false);
         }}
+        type={previewType}
         miniappCodeUrl={miniappCodeUrl}
         miniappUrl={miniappUrl}
         visible={previewVisible}

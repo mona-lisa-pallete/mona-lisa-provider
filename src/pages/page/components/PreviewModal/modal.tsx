@@ -22,10 +22,11 @@ interface PreviewModalProp {
   h5Url: string;
   miniappCodeUrl: string;
   miniappUrl: string;
+  type: 'h5' | 'mini' | 'h5mini';
 }
 
 const PreviewModal: React.FC<PreviewModalProp> = (props) => {
-  const { onChange, h5Url = 'http://www.baidu.com', miniappCodeUrl, miniappUrl } = props;
+  const { onChange, h5Url = 'http://www.baidu.com', miniappCodeUrl, miniappUrl, type } = props;
   const [h5QRCode, setH5QRCode] = useState('');
 
   useEffect(() => {
@@ -46,47 +47,51 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
             <iframe frameBorder={0} src={h5Url} />
           </PreviewPhoneContainer>
           <PreviewQRContainer>
-            <PreviewQRItem>
-              <img src={h5QRCode} />
-              <PreviewQRInfo>
-                <PreviewQRName>H5链接</PreviewQRName>
-                <PreviewQRLink>{h5Url}</PreviewQRLink>
-                <PreviewQRAction>
-                  <Button
-                    onClick={() => {
-                      copy(h5Url);
-                      message.success('复制成功');
-                    }}
-                  >
-                    复制链接
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      downloadjs(h5QRCode);
-                    }}
-                  >
-                    下载二维码
-                  </Button>
-                </PreviewQRAction>
-              </PreviewQRInfo>
-            </PreviewQRItem>
-            <PreviewQRItem>
-              <img src={miniappCodeUrl} />
-              <PreviewQRInfo>
-                <PreviewQRName>小程序链接</PreviewQRName>
-                <PreviewQRLink>{miniappUrl}</PreviewQRLink>
-                <PreviewQRAction>
-                  <Button>复制链接</Button>
-                  <Button
-                    onClick={() => {
-                      downloadjs(miniappCodeUrl);
-                    }}
-                  >
-                    下载二维码
-                  </Button>
-                </PreviewQRAction>
-              </PreviewQRInfo>
-            </PreviewQRItem>
+            {(type === 'h5' || type === 'h5mini') && (
+              <PreviewQRItem>
+                <img src={h5QRCode} />
+                <PreviewQRInfo>
+                  <PreviewQRName>H5链接</PreviewQRName>
+                  <PreviewQRLink>{h5Url}</PreviewQRLink>
+                  <PreviewQRAction>
+                    <Button
+                      onClick={() => {
+                        copy(h5Url);
+                        message.success('复制成功');
+                      }}
+                    >
+                      复制链接
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        downloadjs(h5QRCode);
+                      }}
+                    >
+                      下载二维码
+                    </Button>
+                  </PreviewQRAction>
+                </PreviewQRInfo>
+              </PreviewQRItem>
+            )}
+            {(type === 'mini' || type === 'h5mini') && (
+              <PreviewQRItem>
+                <img src={miniappCodeUrl} />
+                <PreviewQRInfo>
+                  <PreviewQRName>小程序链接</PreviewQRName>
+                  <PreviewQRLink>{miniappUrl}</PreviewQRLink>
+                  <PreviewQRAction>
+                    <Button>复制链接</Button>
+                    <Button
+                      onClick={() => {
+                        downloadjs(miniappCodeUrl);
+                      }}
+                    >
+                      下载二维码
+                    </Button>
+                  </PreviewQRAction>
+                </PreviewQRInfo>
+              </PreviewQRItem>
+            )}
           </PreviewQRContainer>
         </div>
       </PreviewModalRoot>

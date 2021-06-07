@@ -345,14 +345,22 @@ const Viewer: React.FC<ViewerProps> = (props) => {
                 <div className="info-item__label">大小:</div>
                 <div className="info-item__value">{fileSizeText}</div>
               </div>
-              <div className="info-item">
-                <div className="info-item__label">宽度:</div>
-                <div className="info-item__value">{`${materialData?.contentWidth || ''}像素`}</div>
-              </div>
-              <div className="info-item">
-                <div className="info-item__label">高度:</div>
-                <div className="info-item__value">{`${materialData?.contentHeight || ''}像素`}</div>
-              </div>
+              {selectedData?.type === MaterialType.Image && (
+                <>
+                  <div className="info-item">
+                    <div className="info-item__label">宽度:</div>
+                    <div className="info-item__value">{`${
+                      materialData?.contentWidth || ''
+                    }像素`}</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-item__label">高度:</div>
+                    <div className="info-item__value">{`${
+                      materialData?.contentHeight || ''
+                    }像素`}</div>
+                  </div>
+                </>
+              )}
             </ViewerDetailsInfo>
           </ViewerDetails>
         )}
