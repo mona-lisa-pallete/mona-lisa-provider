@@ -21,6 +21,7 @@ import { MIME } from '../components/File/types';
 enum FileType {
   Img = 'image',
   Video = 'video',
+  File = 'file',
 }
 const { confirm } = Modal;
 
@@ -175,7 +176,18 @@ const MaterialManageUpload: React.FC = () => {
                 return [...list];
               } else {
                 const isVideo = fileData.name.includes('.mp4');
-                fileData.fileType = isVideo ? FileType.Video : FileType.Img;
+                const isImg =
+                  fileData.name.includes('.jpg') ||
+                  fileData.name.includes('.gif') ||
+                  fileData.name.includes('.png') ||
+                  fileData.name.includes('.jpeg');
+                if (isImg) {
+                  fileData.fileType = FileType.Img;
+                } else if (isVideo) {
+                  fileData.fileType = FileType.Video;
+                } else {
+                  fileData.fileType = FileType.File;
+                }
                 fileData.url = window.URL.createObjectURL(file.originFileObj);
                 fileData.inputName = getFileName(file.name);
                 fileData.editShow = false;
