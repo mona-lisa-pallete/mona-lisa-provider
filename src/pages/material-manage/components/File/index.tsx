@@ -9,6 +9,7 @@ import { FileContainer } from './index.style';
 import { FileMaterialProps, FileRef, MIME } from './types';
 import download from 'downloadjs';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { getMaterialCreator } from '@/services/user';
 
 const { confirm } = Modal;
 
@@ -45,12 +46,21 @@ const File = (props: FileMaterialProps, ref: React.Ref<FileRef>) => {
     pageSize?: number | undefined;
     current?: number | undefined;
     keyword?: string | undefined;
+    createTime: string[];
   }) => {
+    let beginTime;
+    let endTime;
+    if (params.createTime && params.createTime.length > 0) {
+      beginTime = params.createTime[0];
+      endTime = params.createTime[1];
+    }
     const res = await getMaterials({
       ...params,
       page: params.current || 1,
       limit: params.pageSize || 10,
       materialType: MaterialType.File,
+      beginTime,
+      endTime,
     });
     setList(res.data.list);
     return {
@@ -63,19 +73,43 @@ const File = (props: FileMaterialProps, ref: React.Ref<FileRef>) => {
   const columns: Array<ProColumns<IGetMaterialsResponseList>> = [
     {
       dataIndex: 'materialName',
-      width: 48,
+      width: 500,
       title: '文档名称',
-      hideInSearch: true,
     },
     {
       dataIndex: 'createUserName',
-      width: 120,
-      title: '创建人',
+      title: '上传人',
+      width: 100,
+      formItemProps: {
+        colon: false,
+      },
+      fieldProps: {
+        placeholder: '请输入创建人',
+        filterOption: true,
+        showSearch: true,
+      },
+      valueType: 'select',
+      async request() {
+        const res = await getMaterialCreator();
+        if (res.code === 0) {
+          return res.data.map((i) => {
+            return {
+              label: i,
+              value: i,
+            };
+          });
+        } else {
+          return [];
+        }
+      },
     },
     {
       dataIndex: 'createTime',
-      width: 120,
       title: '创建时间',
+      formItemProps: {
+        colon: false,
+      },
+      valueType: 'dateRange',
       renderText(text) {
         return moment(text).format('YYYY-MM-DD HH:mm:ss');
       },
@@ -84,7 +118,7 @@ const File = (props: FileMaterialProps, ref: React.Ref<FileRef>) => {
       title: '操作',
       valueType: 'option',
       hideInSearch: true,
-      width: 260,
+      width: 300,
       render(_, item, index) {
         return (
           <>

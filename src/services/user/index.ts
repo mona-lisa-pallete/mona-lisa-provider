@@ -10,4 +10,11 @@ const getUserInfo = (params: { app: string } = { app: 'portal' }) => {
   });
 };
 
-export { getUserInfo };
+const getMaterialCreator = () => {
+  return instance.request<string[], IResponse<string[]>>({
+    method: 'GET',
+    url: `/davinciapi/api/1/provider/material/users`,
+  });
+};
+
+export { getUserInfo, getMaterialCreator };
