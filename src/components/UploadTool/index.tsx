@@ -18,12 +18,14 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
   const {
     value,
     onChange,
+    onOriginChange,
     onSelectMaterial,
     uploadText,
     uploadContent,
     accept,
     multiple = false,
     onProgress,
+    ...extraProps
   } = props;
   const [policy, setPolicy] = useState<any>({});
 
@@ -47,7 +49,8 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     return Promise.resolve();
   };
 
-  const handleChange = ({ file, fileList }: UploadChangeParam<UploadFile<any>>) => {
+  const handleChange = (params: UploadChangeParam<UploadFile<any>>) => {
+    const { file, fileList } = params;
     // const files = fileList.map((e) => {
     //   return {
     //     ...e,
@@ -73,6 +76,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
       if (files && !files.some((i) => i.status !== 'done')) {
         // @ts-ignore
         onChange(files);
+        onOriginChange && onOriginChange({ ...params, fileList: files }); // 身上透传原属性
         // onChangeFile && onChangeFile(file);
       }
     } else {
@@ -103,9 +107,9 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         action={ossPath}
         data={getData}
         accept={accept}
-        showUploadList={false}
         multiple={multiple}
         beforeUpload={handleBeforeUpload}
+        {...extraProps}
       >
         {!imgUrl && !uploadContent && (
           <UploadButton>

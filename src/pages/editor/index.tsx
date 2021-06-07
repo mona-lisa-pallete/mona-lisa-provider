@@ -160,6 +160,8 @@ const Editor: React.FC = () => {
       if (i.contentChild && i.contentChild.length) {
         i.contentChild.forEach((childItem, index) => {
           if (id === childItem.elementId) {
+            // TODO 这里的merge方法建议使用 immutable 库。
+            // 这里对于数组会进行合并而不是替换，尝试 mergeWith API
             i.contentChild![index].contentProp = merge(i.contentChild![index].contentProp, data);
           }
         });

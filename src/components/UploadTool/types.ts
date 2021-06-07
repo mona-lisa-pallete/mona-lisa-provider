@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react';
 export interface UploadToolProps {
   value?: string;
   onChange?: (val: Array<UploadFile<any>> | string) => void;
+  onOriginChange?: (_: any) => void;
   onSelectMaterial: () => void;
   onChangeFile?: (file: UploadFile<any>) => void;
   uploadText?: ReactNode | React.Component;

@@ -20,7 +20,8 @@ import { MaterialType } from '@/pages/material-manage/types';
 
 const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
   const {
-    onSelected,
+    onSelected = () => {},
+    onChange,
     uploadContent,
     uploadText,
     accept,
@@ -28,6 +29,8 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
     multiple,
     onSelectedMaterial,
     materialType = MaterialType.Image,
+    onChangeFormatter,
+    ...extraProps
   } = props;
   const { setMaterialVisible, setMaterialType } = useModel('useMaterialModel');
   const { selectMaterial, isSuccess } = useSelectMaterial();
@@ -149,6 +152,15 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       uploadContent={uploadContent}
       accept={accept}
       uploadText={uploadText}
+      onOriginChange={(e) => {
+        if (onChange) {
+          if (onChangeFormatter) {
+            onChange(onChangeFormatter(e));
+          } else {
+            onChange(e);
+          }
+        }
+      }}
       onChange={(url) => {
         if (multiple) {
           onSelected(url as Array<UploadFile<any>>);
@@ -159,8 +171,9 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       }}
       multiple={multiple}
       onChangeFile={handleElementStyle}
-      value={value}
       onProgress={onProgress}
+      {...extraProps}
+      value={value}
     />
   );
 };
