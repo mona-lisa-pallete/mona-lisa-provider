@@ -208,7 +208,7 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
       visible={visible}
       {...props.drawProp}
       width="400"
-      zIndex={1000}
+      zIndex={11}
       title={
         <div className="material-library__header">
           <div className="header__title">

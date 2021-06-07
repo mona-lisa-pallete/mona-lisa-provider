@@ -7,7 +7,7 @@ export const ViewerContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.65);
-  z-index: 10;
+  z-index: 12;
   display: flex;
   flex-direction: column;
   .viewer-title {
@@ -20,7 +20,7 @@ export const ViewerContainer = styled.div`
 export const ViewerBottom = styled.div`
   /* height: 135px; */
   width: 100%;
-  z-index: 11;
+  z-index: 12;
 `;
 export const ViewerAction = styled.div`
   height: 48px;
@@ -116,26 +116,26 @@ export const ViewerFile = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 10;
+    z-index: 12;
     /* max-width: 1300px; */
   }
   > video {
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 10;
+    z-index: 12;
     max-width: 1000px;
   }
   > iframe {
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 10;
+    z-index: 12;
     width: 1000px;
     height: 500px;
   }
   .action-prev {
-    z-index: 11;
+    z-index: 12;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -147,7 +147,7 @@ export const ViewerFile = styled.div`
     }
   }
   .action-next {
-    z-index: 11;
+    z-index: 12;
     display: flex;
     align-items: center;
     justify-content: center;
