@@ -65,7 +65,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         ...e,
         url:
           e.status === 'done'
-            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`
+            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(e.name, e.uid)}`
             : '',
       };
     });
