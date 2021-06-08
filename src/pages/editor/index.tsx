@@ -15,7 +15,7 @@ import ActionForm from './components/ActionForm';
 import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
-import { groupBy, merge, subtract } from 'lodash';
+import { groupBy, merge, mergeWith } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
 import PlatformColorPicker from '@/_components/PlatformColorPicker/';
@@ -162,7 +162,11 @@ const Editor: React.FC = () => {
           if (id === childItem.elementId) {
             // TODO 这里的merge方法建议使用 immutable 库。
             // 这里对于数组会进行合并而不是替换，尝试 mergeWith API
-            i.contentChild![index].contentProp = merge(i.contentChild![index].contentProp, data);
+            i.contentChild![index].contentProp = mergeWith(
+              i.contentChild![index].contentProp,
+              data,
+              (a, b) => (Array.isArray(b) ? b : undefined),
+            );
           }
         });
       }

@@ -1,6 +1,6 @@
 import { getAllActions } from '@/services/action';
 import { getCompMeta } from '@/services/editor';
-import { getActionDllApi, getDllApi } from '@/utils/host';
+import { getDllApi } from '@/utils/host';
 import { useEffect, useState } from 'react';
 import { LoadScript } from './load-stuff';
 
@@ -120,10 +120,10 @@ const useActionMeta = (() => {
         // getActionsByTypes // 简单版本管理，没有调用此接口
         setMetaState({ fetching: true });
         const host = isLocal
-          ? getActionDllApi()
-          : `https://static.guorou.net/davinci/action/${elementRef}/form.js`;
+          ? getDllApi()
+          : `https://static.guorou.net/davinci/action/${elementRef}`;
 
-        const path = isLocal ? elementRef : 'index';
+        const path = isLocal ? elementRef : 'form';
         await LoadScript({ src: `${host}/${path}.js` });
         metaCache[elementRef] = true; // TODO 简化为 true，没有从json中获取实际meta数据
         setMetaState({
