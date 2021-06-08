@@ -15,7 +15,7 @@ import Draggable, { DraggableData } from 'react-draggable';
 import { changeElementStyleById } from '../../utils';
 
 const Viewport: React.FC = () => {
-  const { state, dispatch } = useContext(EditorContext);
+  const { state, dispatch, setDragContainerId } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [, setDropName] = useState('');
   const boxRef = useRef(null);
@@ -122,7 +122,7 @@ const Viewport: React.FC = () => {
         {isNullData && <InsetItem height="605px" visible={isStart} index={-1} />}
         {state?.dsl?.content?.map((i, index) => {
           return (
-            <div key={i.elementId}>
+            <div className="container-item" key={i.elementId}>
               <InsetItem key={`${i.elementId}inset`} visible={isStart} index={index} />
               <div
                 style={{
@@ -132,17 +132,17 @@ const Viewport: React.FC = () => {
                 {i.contentType === 'container' && (
                   <ViewportItem
                     actionVisible={state.selectedContainerId === i.elementId}
-                    id={i.elementId}
                     index={index}
                     active={state.selectedContainerId === i.elementId}
                     onClick={() => {
                       if (i.contentChild?.[0]?.elementId) {
                         const child = i.contentChild?.[0];
+                        setDragContainerId(i.elementId!);
                         handleSelect(child.elementRef!, child.elementId!, child, i.elementId!);
                       }
                     }}
                   >
-                    <DvContainer index={index} style={i.contentProp.style}>
+                    <DvContainer id={i.elementId} index={index} style={i.contentProp.style}>
                       {i?.contentChild &&
                         i.contentChild.map((childItem) => {
                           return (
@@ -150,6 +150,14 @@ const Viewport: React.FC = () => {
                               bounds="parent"
                               onStop={(e, data) => {
                                 handleItemEvent(e, data, childItem.elementId!);
+                              }}
+                              defaultPosition={{
+                                x: childItem?.contentProp?.style?.left
+                                  ? childItem?.contentProp?.style?.left / 2
+                                  : 0,
+                                y: childItem?.contentProp?.style?.top
+                                  ? childItem?.contentProp?.style?.top / 2
+                                  : 0,
                               }}
                               key={childItem.elementId}
                             >
@@ -159,13 +167,13 @@ const Viewport: React.FC = () => {
                                   position: 'absolute',
                                 }}
                                 key={childItem.elementId}
-                                id={childItem.elementId}
                               >
                                 <DragItem
                                   id={childItem.elementId!}
                                   active={state.selectedElementId === childItem.elementId}
                                   onSelect={(e) => {
                                     e.stopPropagation();
+                                    setDragContainerId(i.elementId!);
                                     handleSelect(
                                       childItem.elementRef!,
                                       childItem.elementId!,
@@ -173,7 +181,6 @@ const Viewport: React.FC = () => {
                                       i.elementId!,
                                     );
                                   }}
-                                  style={childItem.contentProp.style}
                                 >
                                   <CompLoader
                                     elementRef={childItem.elementRef!}

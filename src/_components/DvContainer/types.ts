@@ -4,4 +4,5 @@ export interface DvContainerProps {
   contentProps?: {};
   style?: CSSProperties;
   index: number;
+  id: string;
 }

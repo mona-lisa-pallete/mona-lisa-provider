@@ -15,5 +15,5 @@ export const CompLoader: React.FC<CompLoaderProps> = ({ elementRef, contentProps
   if (!window?.[elementRef]?.default) {
     return null;
   }
-  return fetching ? <div>loading</div> : <Comp {...contentProps} edit /> || '';
+  return fetching ? <div>loading</div> : <Comp class="dv-item" {...contentProps} edit /> || '';
 };

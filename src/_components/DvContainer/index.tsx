@@ -7,8 +7,8 @@ import { DvDiv, DvMask } from './index.style';
 import { DvContainerProps } from './types';
 
 const DvContainer: React.FC<DvContainerProps> = (props) => {
-  const { index } = props;
-  const { state, dispatch } = useContext(EditorContext);
+  const { index, id } = props;
+  const { state, dispatch, setDragContainerId } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [elementRef, setElementRef] = useState('');
   const dropRef = useRef(true);
@@ -48,7 +48,7 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
       });
 
       list[index] = element;
-
+      setDragContainerId(state.dsl.content[index].elementId!);
       dispatch({
         type: ActionType.UpdateComponent,
         payload: {
@@ -76,9 +76,13 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
   }, [state.dsl]);
 
   return (
-    <DvDiv ref={insetDrag} style={props.style}>
+    <DvDiv ref={insetDrag} className="dv-container" id={id} style={props.style}>
       {props.children}
-      {isStart && <DvMask active={isOverCurrent}>放在此处</DvMask>}
+      {isStart && (
+        <DvMask className="inset-box" active={isOverCurrent}>
+          放在此处
+        </DvMask>
+      )}
     </DvDiv>
   );
 };

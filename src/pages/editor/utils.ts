@@ -1,4 +1,5 @@
 import { merge } from 'lodash';
+import { evaluate } from 'mathjs';
 import { CSSProperties } from 'styled-components';
 import { DSLAction, DSLContent } from './types';
 
@@ -82,6 +83,7 @@ const changeElementActionById = (id: string, content: DSLContent[], action: any)
         // contentData[index].contentChild![childItem].contentProp.style = data;
       } else if (i.elementId === id && !event) {
         contentData[index].contentChild![childItem].contentProp = {
+          ...contentData[index].contentChild![childItem].contentProp,
           event: {
             ...action,
           },
@@ -96,20 +98,22 @@ const reizeElementStyle = (
   content: DSLContent[],
   id: string,
   style: CSSProperties,
-  top: number,
 ): DSLContent[] | undefined => {
-  const list = content.map((i) => {
+  const contentCopy: DSLContent[] = JSON.parse(JSON.stringify(content));
+  const list = contentCopy.map((i) => {
     if (i.contentChild && i.contentChild.length) {
       if (i.elementId === id) {
         i.contentProp.style = merge(i.contentProp.style, style);
-        i.contentChild.forEach((childItem, index) => {
-          i.contentChild[index].contentProp.style = {
-            ...i.contentChild[index].contentProp.style,
-            top,
-          };
-        });
         return i;
       }
+      i.contentChild.forEach((childItem, index) => {
+        if (id === childItem.elementId) {
+          i.contentChild![index].contentProp.style = merge(
+            i.contentChild![index].contentProp.style,
+            style,
+          );
+        }
+      });
     }
     return i!;
   });
