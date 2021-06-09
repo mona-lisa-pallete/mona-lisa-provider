@@ -22,11 +22,12 @@ import { ActionType, DSL } from '../../types';
 import { updatePage } from '@/services/page';
 import { PagePopoverStyle, TableActionMenu } from '@/pages/page/index.style';
 import PageSettingModal from '@/pages/page/components/PageSettingModal';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
   const location: any = useLocation();
-  const { state, dispatch } = useContext(EditorContext);
+  const { state, dispatch, getDslIsSave } = useContext(EditorContext);
   const [value, setValue] = useState('');
   const [visible, setVisible] = useState(false);
   const query = location.query as {
@@ -41,11 +42,33 @@ const EditorHeader: React.FC = () => {
   const [saveLoading, setSaveLoading] = useState(false);
   // const [pageName, setPageName] = useState(state.pageName);
 
+  const { confirm } = Modal;
+
   useEffect(() => {
     setValue(JSON.stringify(state.dsl));
   }, [state.dsl]);
 
   const back = () => {
+    if (!getDslIsSave()) {
+      confirm({
+        title: '提示',
+        icon: <ExclamationCircleOutlined />,
+        content: '页面还未保存，是否确认退出？未保存的修改内容将不会记录',
+        okText: '确认',
+        okType: 'danger',
+        cancelText: '取消',
+        centered: true,
+        async onOk() {
+          history.push({
+            pathname: '/page',
+            query: {
+              projectId: query.projectId,
+            },
+          });
+        },
+      });
+      return;
+    }
     history.push({
       pathname: '/page',
       query: {
@@ -53,6 +76,7 @@ const EditorHeader: React.FC = () => {
       },
     });
   };
+
   const handleAddPage = async () => {
     if (query.type === 'edit') {
       return Promise.resolve(query.pageId);
@@ -123,7 +147,7 @@ const EditorHeader: React.FC = () => {
         },
       });
       message.success({
-        content: '保存成功',
+        content: `${state.pageName}保存成功`,
         className: 'page-message',
       });
       return Promise.resolve(res.data.page);

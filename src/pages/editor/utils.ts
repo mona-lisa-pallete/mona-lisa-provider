@@ -1,7 +1,8 @@
 import { merge } from 'lodash';
-import { evaluate } from 'mathjs';
 import { CSSProperties } from 'styled-components';
 import { DSLAction, DSLContent } from './types';
+import { LoadScript } from './load-stuff';
+import { getDllApi } from '@/utils/host';
 
 const conversionActionData = () => {};
 
@@ -120,6 +121,30 @@ const reizeElementStyle = (
   return list!;
 };
 
+const getScript = (url: string) => {
+  return () => {
+    return LoadScript({ src: url });
+  };
+};
+
+const getWidgetData = (
+  refNames: Array<{ compUrl: string; formUrl: string; compMetaUrl: string; name: string }>,
+) => {
+  const isLocal = window.location.host.includes('localhost');
+  const fetchData = [];
+  refNames.forEach((i) => {
+    const compMetaUrl = isLocal ? `${getDllApi()}${i.name}.json` : i.compMetaUrl;
+    const formUrl = isLocal ? `${getDllApi() + i.name}.js` : i.formUrl;
+    const compUrl = isLocal ? `${getDllApi() + i.name}.js` : i.compUrl;
+
+    fetchData.push(getScript(compMetaUrl)());
+    fetchData.push(getScript(formUrl)());
+    fetchData.push(getScript(compUrl)());
+  });
+  Promise.all(fetchData);
+  // console.log(fetchData, 'fetchData');
+};
+
 export {
   conversionActionData,
   findElementById,
@@ -128,4 +153,5 @@ export {
   resizeStyleById,
   changeElementActionById,
   reizeElementStyle,
+  getWidgetData,
 };

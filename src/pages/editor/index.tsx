@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ViewportBox from './components/Viewport';
@@ -23,10 +30,10 @@ import {
   changeElementActionById,
   delElementById,
   findElementById,
+  getWidgetData,
   reizeElementStyle,
 } from './utils';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { nanoid } from 'nanoid';
 import math, { evaluate, json } from 'mathjs';
 import { useDebounce } from 'react-use';
 
@@ -37,49 +44,6 @@ export const initState: IState = {
   dsl: {
     content: [],
     action: {},
-    // content: [
-    //   {
-    //     contentType: 'container',
-    //     contentProp: {
-    //       style: {
-    //         position: 'relative',
-    //         width: '100%',
-    //         height: '300px',
-    //       },
-    //     },
-    //     contentChild: [
-    //       {
-    //         contentType: 'element',
-    //         contentProp: {
-    //           style: {
-    //             position: 'absolute',
-    //             left: '20px',
-    //             top: '30px',
-    //             width: '300px',
-    //           },
-    //           event: {
-    //             onClick: ['bca84122a2a498e30300bce50b2ca490'],
-    //             onBlur: ['2'],
-    //           },
-    //           url:
-    //             'https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png',
-    //         },
-    //         elementId: '2',
-    //         elementRef: 'DvImage',
-    //       },
-    //     ],
-    //   },
-    // ],
-    // action: {
-    //   bca84122a2a498e30300bce50b2ca490: {
-    //     actionLabel: '打开新页面',
-    //     actionType: 'openPage',
-    //   },
-    //   2: {
-    //     actionLabel: '打开新页面',
-    //     actionType: 'toast',
-    //   },
-    // },
   },
   selectedElementRef: undefined,
   selectedElementId: undefined,
@@ -123,11 +87,12 @@ const Editor: React.FC = () => {
   const { query } = location;
   const [componentMap, setComponentMap] = useState<{ [key: string]: any[] }>({});
   const [allComponent, setAllComponent] = useState<any[]>([]);
-  const [containerVal, setContainerVal] = useState<any>({});
+  const [resizeVal, setResizeVal] = useState<any>({});
   const [actionForm] = Form.useForm();
-  const resizeRef = useRef(false);
+  const resizeRef = useRef('');
   const dragContainerId = useRef('');
   const [observer, setObserver] = useState<any>();
+  const oldDsl = useRef(JSON.stringify(state.dsl));
 
   useHideHeader(location);
 
@@ -139,17 +104,6 @@ const Editor: React.FC = () => {
     seleComponent?.compUrl,
     seleComponent?.formUrl,
   );
-
-  useEffect(() => {
-    if (widgetMeta) {
-      dispatch({
-        type: ReducerActionType.SetComponentMeta,
-        payload: {
-          meta: widgetMeta,
-        },
-      });
-    }
-  }, [widgetMeta]);
 
   const handleComponentVal = (val: ComponentType) => {
     setComponentVal(val);
@@ -210,8 +164,6 @@ const Editor: React.FC = () => {
   };
 
   const handleData = (allVal: any) => {
-    console.log(allVal);
-
     const data = { ...state.formData.contentProp, ...allVal };
 
     if (state.selectedElementId) {
@@ -280,7 +232,9 @@ const Editor: React.FC = () => {
 
   useEffect(() => {
     const getData = async () => {
+      const compData = await getComponentsData();
       const res = await getPage(query.pageId);
+      oldDsl.current = JSON.stringify(res.data.dsl);
       dispatch({
         type: ReducerActionType.SetPageData,
         payload: {
@@ -293,6 +247,26 @@ const Editor: React.FC = () => {
           name: res.data.name,
         },
       });
+      const elementRefList: Array<{
+        compUrl: string;
+        formUrl: string;
+        compMetaUrl: string;
+        name: string;
+      }> = [];
+      res.data.dsl?.content?.forEach((i) => {
+        if (i?.contentChild) {
+          i.contentChild.forEach((child) => {
+            const compItemData = compData.find((compItem) => compItem.ref === child.elementRef);
+            elementRefList.push({
+              name: child.elementRef!,
+              compUrl: compItemData!.compUrl!,
+              formUrl: compItemData!.formUrl!,
+              compMetaUrl: compItemData!.compMetaUrl!,
+            });
+          });
+        }
+      });
+      getWidgetData(elementRefList);
       const elementRefData = res.data?.dsl?.content?.[0]?.contentChild?.[0];
       if (elementRefData) {
         dispatch({
@@ -313,35 +287,40 @@ const Editor: React.FC = () => {
     };
     if (query.pageId) {
       getData();
+    } else {
+      getComponentsData();
     }
   }, []);
 
-  useEffect(() => {
-    const getComponentsData = async () => {
-      const res = await getComponents();
-      const group = groupBy(res.data, 'componentMeta.classification');
-      setComponentMap(group);
-      setAllComponent(res.data);
-      dispatch({
-        type: ReducerActionType.SetComponentData,
-        payload: {
-          componentData: res.data,
-        },
-      });
-    };
-    getComponentsData();
+  const getComponentsData = useCallback(async () => {
+    const res = await getComponents();
+    const group = groupBy(res.data, 'componentMeta.classification');
+    setComponentMap(group);
+    setAllComponent(res.data);
+    dispatch({
+      type: ReducerActionType.SetComponentData,
+      payload: {
+        componentData: res.data,
+      },
+    });
+    return Promise.resolve(res.data);
   }, []);
 
   useDebounce(
     () => {
-      if (!observer) {
+      console.log(observer, resizeRef.current);
+      if (!observer || !resizeRef.current) {
         return;
       }
+      console.log(2);
       const isAddContainer = document.getElementById(dragContainerId.current);
       if (isAddContainer) {
         let height = 0;
         const childDom: any[] = [];
-        isAddContainer.childNodes.forEach((childNode) => {
+        let childNodes = isAddContainer.querySelectorAll('.drag-item-container');
+        childNodes = [...childNodes].map((i) => i.firstElementChild);
+
+        childNodes.forEach((childNode) => {
           childDom.push({
             top: (childNode as HTMLDivElement).getBoundingClientRect().top,
             bottom: (childNode as HTMLDivElement).getBoundingClientRect().bottom,
@@ -352,7 +331,7 @@ const Editor: React.FC = () => {
         const minTop = Math.min(...childDomTop);
         const maxBottom = Math.max(...childDomBottom);
         height = evaluate(`${maxBottom}-${minTop}`);
-        console.log(height, 'height');
+        console.log(3);
 
         if (height) {
           const list = changeElementStyle(state.dsl.content, state.selectedContainerId!, {
@@ -367,6 +346,7 @@ const Editor: React.FC = () => {
               },
             },
           });
+          resizeRef.current = '';
         }
       }
     },
@@ -432,8 +412,9 @@ const Editor: React.FC = () => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [state.resize, state.dsl.content]);
 
-  useLayoutEffect(() => {
-    // const targetNode = document.getElementById(state.selectedContainerId);
+  const resizeContainer = useCallback(() => {
+    console.log('resizeContainer');
+
     const targetNode = document.querySelector('.viewport-box');
 
     const o = new MutationObserver((mutationsList) => {
@@ -444,8 +425,7 @@ const Editor: React.FC = () => {
         if (i.removedNodes?.[0]?.className?.includes('inset-box')) {
           return;
         }
-        console.log(i, 'iii');
-
+        // console.log(i);
         setObserver(i);
       });
     });
@@ -457,9 +437,15 @@ const Editor: React.FC = () => {
     return () => {
       setObserver(null);
       o.disconnect();
+      resizeRef.current = '';
     };
+  }, [resizeVal]);
+
+  useLayoutEffect(() => {
+    // const targetNode = document.getElementById(state.selectedContainerId);
+    resizeContainer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.selectedContainerId]);
+  }, [resizeContainer]);
 
   // useEffect(() => {
   //   if (resizeRef.current === true) {
@@ -530,6 +516,7 @@ const Editor: React.FC = () => {
             },
           },
         });
+        resizeContainerFn();
       },
     });
   };
@@ -542,8 +529,32 @@ const Editor: React.FC = () => {
     dragContainerId.current = id;
   };
 
+  const getDslIsSave = () => {
+    return oldDsl.current === JSON.stringify(state.dsl);
+  };
+
+  const handleResize = (str: string) => {
+    resizeRef.current = str;
+    setResizeVal(new Date().getTime());
+  };
+
+  const resizeContainerFn = () => {
+    resizeRef.current = '111';
+    setObserver(new Date().getTime());
+  };
+
   return (
-    <EditorContext.Provider value={{ dispatch, state, setActionData, setDragContainerId }}>
+    <EditorContext.Provider
+      value={{
+        dispatch,
+        state,
+        setActionData,
+        setDragContainerId,
+        getDslIsSave,
+        handleResize,
+        resizeContainerFn,
+      }}
+    >
       <DndProvider backend={HTML5Backend}>
         <EditorHeader />
         <EditorMain>

@@ -7,6 +7,9 @@ interface EditorContextType {
   dispatch: (action: IAction) => any;
   setActionData: (data: any) => void;
   setDragContainerId: (id: string) => void;
+  getDslIsSave: () => boolean;
+  handleResize: (resize: string) => void;
+  resizeContainerFn: () => void;
 }
 
 const EditorContext = React.createContext<EditorContextType>({
@@ -14,6 +17,9 @@ const EditorContext = React.createContext<EditorContextType>({
   dispatch: () => {},
   setActionData: () => {},
   setDragContainerId: () => {},
+  getDslIsSave: () => false,
+  handleResize: () => {},
+  resizeContainerFn: () => {},
 });
 
 export default EditorContext;

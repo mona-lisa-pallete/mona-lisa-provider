@@ -26,4 +26,10 @@ export const PhoneHeader = styled.img`
 
 export const ViewportContainer = styled.div`
   margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  max-height: calc(100vh - 50px);
 `;

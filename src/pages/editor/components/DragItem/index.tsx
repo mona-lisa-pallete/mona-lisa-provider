@@ -4,7 +4,7 @@ import { DragItemProps } from './types';
 import './index.less';
 
 const DragItem: React.FC<DragItemProps> = (props) => {
-  const { left, top, style, onSelect, active, id } = props;
+  const { style, active, id } = props;
 
   // const [, drag] = useDrag(
   //   () => ({
@@ -21,13 +21,6 @@ const DragItem: React.FC<DragItemProps> = (props) => {
       // ref={drag}
       style={{
         ...style,
-        left: `${left}px`,
-        top: `${top}px`,
-        // position: 'static',
-        // border: active ? '3px solid #187FFE' : '3px solid rgba(0,0,0,0)',
-      }}
-      onClick={(e) => {
-        onSelect(e);
       }}
       id={id}
       active={active}

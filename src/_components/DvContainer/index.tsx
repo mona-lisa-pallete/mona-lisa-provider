@@ -8,7 +8,7 @@ import { DvContainerProps } from './types';
 
 const DvContainer: React.FC<DvContainerProps> = (props) => {
   const { index, id } = props;
-  const { state, dispatch, setDragContainerId } = useContext(EditorContext);
+  const { state, dispatch, setDragContainerId, resizeContainerFn } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [elementRef, setElementRef] = useState('');
   const dropRef = useRef(true);
@@ -66,6 +66,7 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
           containerId: state.dsl.content[index].elementId,
         },
       });
+      resizeContainerFn();
       dropRef.current = false;
     }
   }, [hasDropped, index, elementRef, state.dsl.content]);
