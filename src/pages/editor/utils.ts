@@ -1,6 +1,8 @@
 import { merge } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import { DSLAction, DSLContent } from './types';
+import { LoadScript } from './load-stuff';
+import { getDllApi } from '@/utils/host';
 
 const conversionActionData = () => {};
 
@@ -82,6 +84,7 @@ const changeElementActionById = (id: string, content: DSLContent[], action: any)
         // contentData[index].contentChild![childItem].contentProp.style = data;
       } else if (i.elementId === id && !event) {
         contentData[index].contentChild![childItem].contentProp = {
+          ...contentData[index].contentChild![childItem].contentProp,
           event: {
             ...action,
           },
@@ -96,24 +99,50 @@ const reizeElementStyle = (
   content: DSLContent[],
   id: string,
   style: CSSProperties,
-  top: number,
 ): DSLContent[] | undefined => {
-  const list = content.map((i) => {
+  const contentCopy: DSLContent[] = JSON.parse(JSON.stringify(content));
+  const list = contentCopy.map((i) => {
     if (i.contentChild && i.contentChild.length) {
       if (i.elementId === id) {
         i.contentProp.style = merge(i.contentProp.style, style);
-        i.contentChild.forEach((childItem, index) => {
-          i.contentChild[index].contentProp.style = {
-            ...i.contentChild[index].contentProp.style,
-            top,
-          };
-        });
         return i;
       }
+      i.contentChild.forEach((childItem, index) => {
+        if (id === childItem.elementId) {
+          i.contentChild![index].contentProp.style = merge(
+            i.contentChild![index].contentProp.style,
+            style,
+          );
+        }
+      });
     }
     return i!;
   });
   return list!;
+};
+
+const getScript = (url: string) => {
+  return () => {
+    return LoadScript({ src: url });
+  };
+};
+
+const getWidgetData = (
+  refNames: Array<{ compUrl: string; formUrl: string; compMetaUrl: string; name: string }>,
+) => {
+  const isLocal = window.location.host.includes('localhost');
+  const fetchData = [];
+  refNames.forEach((i) => {
+    const compMetaUrl = isLocal ? `${getDllApi()}${i.name}.json` : i.compMetaUrl;
+    const formUrl = isLocal ? `${getDllApi() + i.name}.js` : i.formUrl;
+    const compUrl = isLocal ? `${getDllApi() + i.name}.js` : i.compUrl;
+
+    fetchData.push(getScript(compMetaUrl)());
+    fetchData.push(getScript(formUrl)());
+    fetchData.push(getScript(compUrl)());
+  });
+  Promise.all(fetchData);
+  // console.log(fetchData, 'fetchData');
 };
 
 export {
@@ -124,4 +153,5 @@ export {
   resizeStyleById,
   changeElementActionById,
   reizeElementStyle,
+  getWidgetData,
 };

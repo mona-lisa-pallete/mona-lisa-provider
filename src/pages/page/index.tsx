@@ -30,6 +30,7 @@ import { PageEdit } from './types';
 import PageSettingModal from './components/PageSettingModal/';
 import { useHideHeader } from '../editor/hooks';
 import copy from 'copy-to-clipboard';
+// import FreedomDrag from '../editor/components/FreedomDrag';
 
 const { confirm } = Modal;
 
@@ -516,6 +517,7 @@ const Page: React.FC = () => {
         }}
         visible={settingVisible}
       />
+      {/* <FreedomDrag /> */}
       {/* <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
         <CopyForm colon layout="vertical">
           <Form.Item label="页面类型">

@@ -35,7 +35,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
   const { setMaterialVisible, setMaterialType } = useModel('useMaterialModel');
   const { selectMaterial, isSuccess } = useSelectMaterial();
   const [urlVal, setUrlVal] = useState('');
-  const { state, dispatch } = useContext(EditorContext);
+  const { state, dispatch, resizeContainerFn } = useContext(EditorContext);
 
   useImperativeHandle(ref, () => {
     return {
@@ -49,10 +49,10 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
     if (isSuccess && selectMaterial) {
       const selectMaterialData = { ...selectMaterial };
 
-      if (selectMaterialData.width < 750) {
-        selectMaterialData.width /= 2;
-        selectMaterialData.height /= 2;
-      }
+      // if (selectMaterialData.width < 750) {
+      //   selectMaterialData.width /= 2;
+      //   selectMaterialData.height /= 2;
+      // }
 
       let imgWidth: any;
       let imgHeight: any;
@@ -60,8 +60,8 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
         imgWidth = selectMaterialData.width / 2;
         imgHeight = selectMaterialData.height / 2;
       } else {
-        imgWidth = '100%';
-        imgHeight = '100%';
+        imgWidth = 375;
+        // imgHeight = '100%';
       }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
         height: imgHeight,
@@ -78,6 +78,10 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       });
       setUrlVal(selectMaterial.url);
       onSelectedMaterial(selectMaterial);
+      resizeContainerFn();
+      // setTimeout(() => {
+      //   resizeContainerFn();
+      // }, 1000);
     }
   }, [selectMaterial?.url, isSuccess]);
 
@@ -121,8 +125,8 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
         imgWidth = width / 2;
         imgHeight = height / 2;
       } else {
-        imgWidth = '100%';
-        imgHeight = '100%';
+        imgWidth = 375;
+        // imgHeight = '100%';
       }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
         height: imgHeight,
@@ -137,6 +141,10 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
           },
         },
       });
+      resizeContainerFn();
+      // setTimeout(() => {
+      //   resizeContainerFn();
+      // }, 1000);
     }
   };
 

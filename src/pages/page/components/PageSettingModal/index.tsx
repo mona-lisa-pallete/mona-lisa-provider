@@ -44,12 +44,6 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
     if (beforeSave) {
       pageId = await beforeSave();
     }
-    let action = 'online';
-    if (online) {
-      action = 'online';
-    } else {
-      action = status ? 'online' : 'offline';
-    }
     const {
       attributes: {
         shareTitle = '',
@@ -76,13 +70,17 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
     if (miniappImmersion) {
       attributes.miniappImmersion = miniappImmersion;
     }
-    const res = await updatePage(pageId, {
-      // @ts-ignore
-      action,
+
+    const requestData: any = {
       attributes,
       platform,
       name,
-    });
+    };
+
+    if (online) {
+      requestData.action = 'online';
+    }
+    const res = await updatePage(pageId, requestData);
     if (res.code === 0) {
       onChangeVisible(false);
     }

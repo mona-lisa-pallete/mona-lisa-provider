@@ -8,7 +8,9 @@ import { nanoid } from 'nanoid';
 
 const InsetItem: React.FC<InsetItemProps> = (props) => {
   const { index, visible, height = '118px', style = {} } = props;
-  const { state, dispatch, setActionData } = useContext(EditorContext);
+  const { state, dispatch, setActionData, setDragContainerId, handleResize } = useContext(
+    EditorContext,
+  );
   const [hasDropped, setHasDropped] = useState(false);
   const [elementRef, setElementRef] = useState('');
   const dropRef = useRef(true);
@@ -72,12 +74,8 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
       },
     });
     setActionData({});
-    dispatch({
-      type: ActionType.SetResize,
-      payload: {
-        resize: new Date().getTime(),
-      },
-    });
+    setDragContainerId(containerId);
+    handleResize('add');
     if (index === -1 || index === -2) {
       dispatch({
         type: ActionType.SetSelectedRef,
@@ -136,7 +134,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           },
         },
       });
-
+      setDragContainerId(containerId);
       dispatch({
         type: ActionType.SetSelectedRef,
         payload: {
@@ -151,13 +149,8 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           data: {},
         },
       });
+      handleResize('add');
       setActionData({});
-      dispatch({
-        type: ActionType.SetResize,
-        payload: {
-          resize: new Date().getTime(),
-        },
-      });
       dropRef.current = false;
     }
   }, [hasDropped, index, elementRef, state.dsl.content]);
@@ -176,6 +169,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         marginBottom: '20px',
         ...style,
       }}
+      className="inset-box"
     >
       <InsetItemBox
         ref={insetDrag}

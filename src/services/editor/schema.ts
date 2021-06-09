@@ -1,3 +1,4 @@
+import { DSL } from '@/pages/editor/types';
 import { PlatformType } from '../page/schema';
 
 export interface IAddPreviewRequest {
@@ -25,6 +26,10 @@ export interface IGetComponentsReponse {
   ref: string;
   label: string;
   cdnPath: string;
+  compMetaUrl: string;
+  compUrl: string;
+  formMetaUrl: string;
+  formUrl: string;
   componentMeta: {
     version: string;
     elementRef: string;
@@ -54,7 +59,7 @@ export interface IGetPageReponse {
   createTime: string;
   updateTime: string;
   status: number;
-  dsl: any;
+  dsl: DSL;
   platform: PlatformType[];
   attributes: {
     miniappImmersion: string;
