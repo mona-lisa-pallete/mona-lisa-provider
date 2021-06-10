@@ -14,6 +14,7 @@ import { MessageType } from '@/utils/message';
 import { ViewerItem } from '@/components/Viewer/types';
 import { MaterialType } from '@/pages/material-manage/types';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { getFileType } from '@/utils/common';
 
 const { confirm } = Modal;
 
@@ -48,6 +49,8 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
   const [materialName, setMaterialName] = useState('');
   const [materialId, setMaterialId] = useState<number>();
   const [confirmLoading, setConfirmLoading] = useState(false);
+
+  console.log(type, 'typetypetypetype');
 
   const getMaterialsData = (reset?: boolean) => {
     if (!visible || loading) {
@@ -287,10 +290,39 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
             return (
               <div className="material-library__item">
                 <div className="material-library-item__main">
-                  {type === 'image' ? (
+                  {type === 'image' && (
                     <img src={`${i.ossUrl}?x-oss-process=image/format,jpg/interlace,1`} alt="" />
-                  ) : (
+                  )}
+                  {type === 'video' && (
                     <img src={`${i.ossUrl}?x-oss-process=video/snapshot,t_0,f_jpg,m_fast`} />
+                  )}
+                  {type === 'file' && (
+                    <>
+                      {(getFileType(i.ossUrl) === '.xls' || getFileType(i.ossUrl) === '.xlsx') && (
+                        <img
+                          className="material-library-file"
+                          src="https://static.guorou.net/davinci/assets/images/excel%402x.png"
+                        />
+                      )}
+                      {getFileType(i.ossUrl) === '.pdf' && (
+                        <img
+                          className="material-library-file"
+                          src="https://static.guorou.net/davinci/assets/images/pdf%402x.png"
+                        />
+                      )}
+                      {(getFileType(i.ossUrl) === '.ppt' || getFileType(i.ossUrl) === '.pptx') && (
+                        <img
+                          className="material-library-file"
+                          src="https://static.guorou.net/davinci/assets/images/ppt%402x.png"
+                        />
+                      )}
+                      {(getFileType(i.ossUrl) === '.word' || getFileType(i.ossUrl) === '.word') && (
+                        <img
+                          className="material-library-file"
+                          src="https://static.guorou.net/davinci/assets/images/word%402x.png"
+                        />
+                      )}
+                    </>
                   )}
                   <div className="material-library-item__mask">
                     <div

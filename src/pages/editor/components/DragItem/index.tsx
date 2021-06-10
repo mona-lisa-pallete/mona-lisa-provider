@@ -4,27 +4,20 @@ import { DragItemProps } from './types';
 import './index.less';
 
 const DragItem: React.FC<DragItemProps> = (props) => {
-  const { style, active, id } = props;
+  const { style, active, id, onSelect } = props;
 
-  // const [, drag] = useDrag(
-  //   () => ({
-  //     type: 'a',
-  //     item: { left, top, id },
-  //     collect: (monitor) => ({
-  //       isDragging: monitor.isDragging(),
-  //     }),
-  //   }),
-  //   [left, top, id],
-  // );
   return (
     <DragItemContainer
       // ref={drag}
       style={{
         ...style,
+        // display: isDrag ? 'inline-block' : 'block',
+        // position: isDrag ? 'absolute' : 'static',
       }}
-      id={id}
+      id={`${id}`}
       active={active}
       className={`drag-item-container ${active ? 'drag-item-container--active' : ''}`}
+      onClick={onSelect}
     >
       {props.children}
     </DragItemContainer>

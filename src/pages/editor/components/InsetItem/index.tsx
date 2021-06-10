@@ -16,7 +16,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
   const dropRef = useRef(true);
 
   const [{ isOverCurrent }, insetDrag] = useDrop({
-    accept: 'box',
+    accept: 'container',
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       isOverCurrent: monitor.isOver({ shallow: true }),
@@ -40,7 +40,6 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         style: {
           position: 'relative',
           width: '100%',
-          height: '200px',
         },
       },
       elementId: containerId,
@@ -49,9 +48,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
         {
           contentType: 'element',
           contentProp: {
-            style: {
-              position: 'absolute',
-            },
+            style: {},
           },
           elementId,
           elementRef,
@@ -107,7 +104,6 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           style: {
             position: 'relative',
             width: '100%',
-            height: '200px',
           },
         },
         elementRef: 'DvDiv',
@@ -116,9 +112,7 @@ const InsetItem: React.FC<InsetItemProps> = (props) => {
           {
             contentType: 'element',
             contentProp: {
-              style: {
-                position: 'absolute',
-              },
+              style: {},
             },
             elementId,
             elementRef,

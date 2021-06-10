@@ -41,6 +41,11 @@ const reducer = (state: IState, action: IAction) => {
         ...state,
         resize: action.payload.resize,
       };
+    case ActionType.SetMaterials:
+      return {
+        ...state,
+        materials: action.payload.materials,
+      };
     default:
       return state;
   }

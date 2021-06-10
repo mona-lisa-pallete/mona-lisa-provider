@@ -11,17 +11,17 @@ import DvContainer from '@/_components/DvContainer';
 import PreviewHeader from '@/assets/img/common/preview-header.png';
 // import { ActionType as ActionFormType } from '../ActionForm/types';
 import { CompLoader } from './comp-loader';
-import { changeElementStyleById } from '../../utils';
-import FreedomDrag from '../FreedomDrag';
+import { changeElementStyleById, isDragTarget } from '../../utils';
+import Draggable, { DraggableData } from 'react-draggable';
 
 const Viewport: React.FC = () => {
   const { state, dispatch, setDragContainerId } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [, setDropName] = useState('');
-  const boxRef = useRef(null);
+  const boxRef = useRef<HTMLDivElement>(null);
   const [{ isStart }, drag] = useDrop(
     {
-      accept: 'box',
+      accept: 'container',
       collect: (monitor) => ({
         isOver: monitor.isOver(),
         isOverCurrent: monitor.isOver({ shallow: true }),
@@ -83,11 +83,35 @@ const Viewport: React.FC = () => {
         containerId,
       },
     });
+    console.log(data.contentProp, 'data.contentProp');
+
     dispatch({
       type: ActionType.SetFormData,
       payload: {
         data: {
           ...data.contentProp,
+        },
+      },
+    });
+  };
+
+  const handleItemEvent = (_: any, data: DraggableData, id: string) => {
+    const parentRect = data.node.parentElement?.getBoundingClientRect();
+    const rect = data.node.getBoundingClientRect();
+    const left = rect?.left - parentRect?.left;
+    const top = rect?.top - parentRect?.top;
+    const content = changeElementStyleById(id, state.dsl.content, {
+      left,
+      top,
+    });
+    console.log(left, top, 'data');
+    data.node.parentElement?.getBoundingClientRect();
+    dispatch({
+      type: ActionType.UpdateComponent,
+      payload: {
+        dsl: {
+          content,
+          action: state.dsl.action,
         },
       },
     });
@@ -124,54 +148,63 @@ const Viewport: React.FC = () => {
                       }
                     }}
                   >
-                    <DvContainer id={i.elementId} index={index} style={i.contentProp.style}>
+                    <DvContainer id={i.elementId!} index={index} style={i.contentProp.style}>
                       {i?.contentChild &&
-                        i.contentChild.map((childItem, childItemIndex) => {
+                        i.contentChild.map((childItem) => {
                           return (
-                            <FreedomDrag
-                              activeRef={state.selectedElementId}
-                              height={i.contentProp.style?.height}
-                              zIndex={childItemIndex}
-                              onSelect={(e) => {
-                                e.stopPropagation();
-                                setDragContainerId(i.elementId!);
-                                handleSelect(
-                                  childItem.elementRef!,
-                                  childItem.elementId!,
-                                  childItem,
-                                  i.elementId!,
-                                );
+                            <Draggable
+                              bounds="parent"
+                              disabled={!isDragTarget(childItem.elementRef!)}
+                              onStop={(e, data) => {
+                                handleItemEvent(e, data, childItem.elementId!);
                               }}
-                              onChangeStyle={(style) => {
-                                const content = changeElementStyleById(
-                                  state.selectedElementId!,
-                                  state.dsl.content,
-                                  {
-                                    left: style.moveX,
-                                    top: style.moveY,
-                                  },
-                                );
-                                dispatch({
-                                  type: ActionType.UpdateComponent,
-                                  payload: {
-                                    dsl: {
-                                      content,
-                                      action: state.dsl.action,
-                                    },
-                                  },
-                                });
+                              defaultPosition={{
+                                x: (childItem.contentProp?.style?.left as number) || 0,
+                                y: (childItem?.contentProp?.style?.top as number) || 0,
                               }}
+                              key={childItem.elementId}
                             >
-                              <DragItem
-                                id={childItem.elementId!}
-                                active={state.selectedElementId === childItem.elementId}
+                              <div
+                                style={{
+                                  display: isDragTarget(childItem.elementRef!)
+                                    ? 'inline-block'
+                                    : 'block',
+                                  position: isDragTarget(childItem.elementRef!)
+                                    ? 'absolute'
+                                    : 'static',
+                                  top: 0,
+                                  left: 0,
+                                }}
+                                id={childItem.elementId}
                               >
-                                <CompLoader
-                                  elementRef={childItem.elementRef!}
-                                  contentProps={childItem.contentProp}
-                                />
-                              </DragItem>
-                            </FreedomDrag>
+                                <DragItem
+                                  id={`${childItem.elementId}2`}
+                                  onSelect={(e) => {
+                                    console.log(e, 'eeee');
+
+                                    e.stopPropagation();
+                                    handleSelect(
+                                      childItem.elementRef!,
+                                      childItem.elementId!,
+                                      childItem,
+                                      i.elementId!,
+                                    );
+                                  }}
+                                  active={state.selectedElementId === childItem.elementId}
+                                >
+                                  <CompLoader
+                                    elementRef={childItem.elementRef!}
+                                    contentProps={{
+                                      ...childItem.contentProp,
+                                      style: {
+                                        ...childItem.contentProp.style,
+                                        position: 'static',
+                                      },
+                                    }}
+                                  />
+                                </DragItem>
+                              </div>
+                            </Draggable>
                           );
                         })}
                     </DvContainer>

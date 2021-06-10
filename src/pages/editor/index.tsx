@@ -53,6 +53,7 @@ export const initState: IState = {
   pageName: '',
   componentData: [],
   resize: undefined,
+  materials: [],
 };
 
 /**
@@ -306,53 +307,53 @@ const Editor: React.FC = () => {
     return Promise.resolve(res.data);
   }, []);
 
-  useDebounce(
-    () => {
-      console.log(observer, resizeRef.current);
-      if (!observer || !resizeRef.current) {
-        return;
-      }
-      console.log(2);
-      const isAddContainer = document.getElementById(dragContainerId.current);
-      if (isAddContainer) {
-        let height = 0;
-        const childDom: any[] = [];
-        let childNodes = isAddContainer.querySelectorAll('.drag-item-container');
-        childNodes = [...childNodes].map((i) => i.firstElementChild);
+  // useDebounce(
+  //   () => {
+  //     console.log(observer, resizeRef.current);
+  //     if (!observer || !resizeRef.current) {
+  //       return;
+  //     }
+  //     console.log(2);
+  //     const isAddContainer = document.getElementById(dragContainerId.current);
+  //     if (isAddContainer) {
+  //       let height = 0;
+  //       const childDom: any[] = [];
+  //       let childNodes = isAddContainer.querySelectorAll('.drag-item-container');
+  //       childNodes = [...childNodes].map((i) => i.firstElementChild);
 
-        childNodes.forEach((childNode) => {
-          childDom.push({
-            top: (childNode as HTMLDivElement).getBoundingClientRect().top,
-            bottom: (childNode as HTMLDivElement).getBoundingClientRect().bottom,
-          });
-        });
-        const childDomTop = childDom.map((childNode) => childNode.top);
-        const childDomBottom = childDom.map((childNode) => childNode.bottom);
-        const minTop = Math.min(...childDomTop);
-        const maxBottom = Math.max(...childDomBottom);
-        height = evaluate(`${maxBottom}-${minTop}`);
-        console.log(3);
+  //       childNodes.forEach((childNode) => {
+  //         childDom.push({
+  //           top: (childNode as HTMLDivElement).getBoundingClientRect().top,
+  //           bottom: (childNode as HTMLDivElement).getBoundingClientRect().bottom,
+  //         });
+  //       });
+  //       const childDomTop = childDom.map((childNode) => childNode.top);
+  //       const childDomBottom = childDom.map((childNode) => childNode.bottom);
+  //       const minTop = Math.min(...childDomTop);
+  //       const maxBottom = Math.max(...childDomBottom);
+  //       height = evaluate(`${maxBottom}-${minTop}`);
+  //       console.log(3);
 
-        if (height) {
-          const list = changeElementStyle(state.dsl.content, state.selectedContainerId!, {
-            height,
-          });
-          dispatch({
-            type: ReducerActionType.UpdateComponent,
-            payload: {
-              dsl: {
-                content: list!,
-                action: state.dsl.action,
-              },
-            },
-          });
-          resizeRef.current = '';
-        }
-      }
-    },
-    200,
-    [observer],
-  );
+  //       if (height) {
+  //         const list = changeElementStyle(state.dsl.content, state.selectedContainerId!, {
+  //           height,
+  //         });
+  //         dispatch({
+  //           type: ReducerActionType.UpdateComponent,
+  //           payload: {
+  //             dsl: {
+  //               content: list!,
+  //               action: state.dsl.action,
+  //             },
+  //           },
+  //         });
+  //         resizeRef.current = '';
+  //       }
+  //     }
+  //   },
+  //   200,
+  //   [observer],
+  // );
 
   // // 监听dsl并改变当前容器高度
   // useEffect(() => {
@@ -412,46 +413,38 @@ const Editor: React.FC = () => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [state.resize, state.dsl.content]);
 
-  const resizeContainer = useCallback(() => {
-    console.log('resizeContainer');
+  // const resizeContainer = useCallback(() => {
+  //   console.log('resizeContainer');
 
-    const targetNode = document.querySelector('.viewport-box');
+  //   const targetNode = document.querySelector('.viewport-box');
 
-    const o = new MutationObserver((mutationsList) => {
-      mutationsList.forEach((i) => {
-        if (i.addedNodes?.[0]?.className?.includes('inset-box')) {
-          return;
-        }
-        if (i.removedNodes?.[0]?.className?.includes('inset-box')) {
-          return;
-        }
-        // console.log(i);
-        setObserver(i);
-      });
-    });
+  //   const o = new MutationObserver((mutationsList) => {
+  //     mutationsList.forEach((i) => {
+  //       if (i.addedNodes?.[0]?.className?.includes('inset-box')) {
+  //         return;
+  //       }
+  //       if (i.removedNodes?.[0]?.className?.includes('inset-box')) {
+  //         return;
+  //       }
+  //       // console.log(i);
+  //       setObserver(i);
+  //     });
+  //   });
 
-    // if (state.selectedContainerId && state.resize) {
-    const config = { childList: true, subtree: true };
-    o.observe(targetNode!, config);
-    // }
-    return () => {
-      setObserver(null);
-      o.disconnect();
-      resizeRef.current = '';
-    };
-  }, [resizeVal]);
+  //   // if (state.selectedContainerId && state.resize) {
+  //   const config = { childList: true, subtree: true };
+  //   o.observe(targetNode!, config);
+  //   // }
+  //   return () => {
+  //     setObserver(null);
+  //     o.disconnect();
+  //     resizeRef.current = '';
+  //   };
+  // }, [resizeVal]);
 
-  useLayoutEffect(() => {
-    // const targetNode = document.getElementById(state.selectedContainerId);
-    resizeContainer();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resizeContainer]);
-
-  // useEffect(() => {
-  //   if (resizeRef.current === true) {
-  //     resizeRef.current = false;
-  //   }
-  // }, [state.dsl?.content]);
+  // useLayoutEffect(() => {
+  //   resizeContainer();
+  // }, [resizeContainer]);
 
   // 根据当前的elementId来动态修改action表单
   useEffect(() => {

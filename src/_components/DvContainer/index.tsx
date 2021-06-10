@@ -8,13 +8,13 @@ import { DvContainerProps } from './types';
 
 const DvContainer: React.FC<DvContainerProps> = (props) => {
   const { index, id } = props;
-  const { state, dispatch, setDragContainerId, resizeContainerFn } = useContext(EditorContext);
+  const { state, dispatch, setDragContainerId } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [elementRef, setElementRef] = useState('');
   const dropRef = useRef(true);
 
   const [{ isOverCurrent, isStart }, insetDrag] = useDrop({
-    accept: 'box',
+    accept: 'drag',
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       isOverCurrent: monitor.isOver({ shallow: true }),
@@ -66,7 +66,12 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
           containerId: state.dsl.content[index].elementId,
         },
       });
-      resizeContainerFn();
+      dispatch({
+        type: ActionType.SetFormData,
+        payload: {
+          data: {},
+        },
+      });
       dropRef.current = false;
     }
   }, [hasDropped, index, elementRef, state.dsl.content]);

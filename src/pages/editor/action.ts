@@ -88,3 +88,10 @@ export interface ISetResize {
     resize: string | number;
   };
 }
+
+export interface ISetMaterials {
+  type: ActionType.SetMaterials;
+  payload: {
+    materials: Array<{ ossUrl: string; materialType: string }>;
+  };
+}
