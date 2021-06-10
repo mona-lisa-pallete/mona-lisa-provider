@@ -65,13 +65,20 @@ export const PageAction = styled.div`
 `;
 
 export const PageTag = styled.div`
-  .mini {
+  /* .mini {
     color: #52c41a;
     border: 1px solid #b7dd9b;
   }
   .h5 {
     color: #1980ff;
     border: 1px solid #97c6ff;
+  } */
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  .ant-tag {
+    width: 52px;
+    text-align: center;
   }
 `;
 
@@ -120,6 +127,15 @@ export const PagePopoverStyle = createGlobalStyle`
       }
     }
   }
+  .page-tag-tooltip {
+    .ant-tooltip-inner {
+      background-color: #fff;
+      color: rgba(5, 12, 50, 0.7);
+    }
+    .ant-tooltip-arrow-content {
+      background-color: #fff;
+    }
+  }
 `;
 
 export const TableActionCol = styled.div`
@@ -131,5 +147,11 @@ export const TableActionCol = styled.div`
     &:last-child {
       border-right: none;
     }
+  }
+`;
+
+export const Tips = styled.div`
+  span {
+    color: #1980ff;
   }
 `;

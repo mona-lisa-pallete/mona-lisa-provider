@@ -47,10 +47,10 @@ const config = defineConfig({
     '@davinci/core': 'davinciCore',
     antd: 'antd',
     axios: 'axios',
-    moment: 'moment'
+    moment: 'moment',
   },
   styles: [
-    '//at.alicdn.com/t/font_2395081_16jfjqg5z1d.css',
+    '//at.alicdn.com/t/font_2395081_r6i2tdcoor.css',
     'https://static.guorou.net/course-static/8b5e1c66cad44947aa14258d1220678d.css',
   ],
   favicon: 'https://static.guorou.net/portal/logo-simple.svg',

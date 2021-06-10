@@ -1,5 +1,5 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Image, message, Modal, Popover, Tag } from 'antd';
+import { Button, Image, message, Modal, Popover, Tag, Tooltip } from 'antd';
 import React, { useRef, useState } from 'react';
 import {
   PageAction,
@@ -10,11 +10,10 @@ import {
   PageMain,
   PageName,
   PageTag,
-  Point,
-  StatusContainer,
   TableActionMenu,
   PagePopoverStyle,
   TableActionCol,
+  Tips,
 } from './index.style';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
@@ -25,11 +24,13 @@ import { delPage, getPages, getPageUsers, updatePage } from '@/services/page';
 import { useLocation } from 'umi';
 import { PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { PageEdit } from './types';
 import PageSettingModal from './components/PageSettingModal/';
 import { useHideHeader } from '../editor/hooks';
 import copy from 'copy-to-clipboard';
+import StatusTag from './components/StatusTag';
+import { StatusType } from './components/StatusTag/types';
 // import FreedomDrag from '../editor/components/FreedomDrag';
 
 const { confirm } = Modal;
@@ -116,9 +117,9 @@ const Page: React.FC = () => {
       },
     },
     {
-      title: '页面类型',
+      title: '页面类型和状态',
       dataIndex: 'platform',
-      width: 150,
+      width: 200,
       formItemProps: {
         label: '页面类型',
         colon: false,
@@ -136,32 +137,35 @@ const Page: React.FC = () => {
         mode: 'multiple',
         maxTagCount: 'responsive',
       },
-      render(_, item) {
+      render() {
         return (
-          <PageTag>
-            {item.platform.map((p) => {
-              let node;
-              switch (p) {
-                case PlatformType.MINIAPP:
-                  node = (
-                    <Tag className="mini" color="#F1F8EB">
-                      小程序
-                    </Tag>
-                  );
-                  break;
-                case PlatformType.WEB:
-                  node = (
-                    <Tag className="h5" color="#EAF4FF">
-                      H5
-                    </Tag>
-                  );
-                  break;
-                default:
-                  break;
-              }
-              return node;
-            })}
-          </PageTag>
+          <>
+            <PageTag>
+              <Tag className="h5">H5</Tag>
+              <StatusTag type={StatusType.Primary} />
+              <Tooltip overlayClassName="page-tag-tooltip" title="H5上线大概需要2分钟，请耐心等候">
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </PageTag>
+            <PageTag>
+              <Tag className="mini">小程序</Tag>
+              <StatusTag edit type={StatusType.Warning} />
+              <Tooltip
+                overlayClassName="page-tag-tooltip"
+                title={
+                  <Tips>
+                    小程序需要上
+                    <a href="https://mp.weixin.qq.com/" target="_blank" rel="noreferrer">
+                      微信公众平台
+                    </a>
+                    ，手动上线并且等待审核通过
+                  </Tips>
+                }
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </PageTag>
+          </>
         );
       },
     },
@@ -182,15 +186,7 @@ const Page: React.FC = () => {
           text: '已上线',
         },
       },
-      render(_, item) {
-        const statusName = item.status === 1 ? '已上线' : '未上线';
-        return (
-          <StatusContainer>
-            <Point online={item.status === 1} />
-            {statusName}
-          </StatusContainer>
-        );
-      },
+      hideInTable: true,
     },
     {
       title: '线上版本号',
@@ -486,6 +482,7 @@ const Page: React.FC = () => {
       <PageMain>
         <ProTable<PageItem>
           bordered
+          polling={5000}
           actionRef={tableRef}
           columns={columns}
           rowKey="id"
