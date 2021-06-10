@@ -10,7 +10,6 @@ interface EditorContextType {
   getDslIsSave: () => boolean;
   handleResize: (resize: string) => void;
   resizeContainerFn: () => void;
-  addMaterialUrl: (material: { ossUrl: string; materialType: string }) => void;
 }
 
 const EditorContext = React.createContext<EditorContextType>({
@@ -21,7 +20,6 @@ const EditorContext = React.createContext<EditorContextType>({
   getDslIsSave: () => false,
   handleResize: () => {},
   resizeContainerFn: () => {},
-  addMaterialUrl: () => {},
 });
 
 export default EditorContext;

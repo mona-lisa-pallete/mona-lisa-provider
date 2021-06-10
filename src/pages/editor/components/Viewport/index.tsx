@@ -96,10 +96,16 @@ const Viewport: React.FC = () => {
   };
 
   const handleItemEvent = (_: any, data: DraggableData, id: string) => {
+    const parentRect = data.node.parentElement?.getBoundingClientRect();
+    const rect = data.node.getBoundingClientRect();
+    const left = rect?.left - parentRect?.left;
+    const top = rect?.top - parentRect?.top;
     const content = changeElementStyleById(id, state.dsl.content, {
-      left: data.lastX * 2,
-      top: data.lastY * 2,
+      left,
+      top,
     });
+    console.log(left, top, 'data');
+    data.node.parentElement?.getBoundingClientRect();
     dispatch({
       type: ActionType.UpdateComponent,
       payload: {
@@ -142,7 +148,7 @@ const Viewport: React.FC = () => {
                       }
                     }}
                   >
-                    <DvContainer id={i.elementId} index={index} style={i.contentProp.style}>
+                    <DvContainer id={i.elementId!} index={index} style={i.contentProp.style}>
                       {i?.contentChild &&
                         i.contentChild.map((childItem) => {
                           return (
@@ -151,6 +157,10 @@ const Viewport: React.FC = () => {
                               disabled={!isDragTarget(childItem.elementRef!)}
                               onStop={(e, data) => {
                                 handleItemEvent(e, data, childItem.elementId!);
+                              }}
+                              defaultPosition={{
+                                x: (childItem.contentProp?.style?.left as number) || 0,
+                                y: (childItem?.contentProp?.style?.top as number) || 0,
                               }}
                               key={childItem.elementId}
                             >
@@ -162,13 +172,16 @@ const Viewport: React.FC = () => {
                                   position: isDragTarget(childItem.elementRef!)
                                     ? 'absolute'
                                     : 'static',
+                                  top: 0,
+                                  left: 0,
                                 }}
-                                key={childItem.elementId}
                                 id={childItem.elementId}
                               >
                                 <DragItem
-                                  id={childItem.elementId!}
+                                  id={`${childItem.elementId}2`}
                                   onSelect={(e) => {
+                                    console.log(e, 'eeee');
+
                                     e.stopPropagation();
                                     handleSelect(
                                       childItem.elementRef!,
@@ -181,7 +194,13 @@ const Viewport: React.FC = () => {
                                 >
                                   <CompLoader
                                     elementRef={childItem.elementRef!}
-                                    contentProps={childItem.contentProp}
+                                    contentProps={{
+                                      ...childItem.contentProp,
+                                      style: {
+                                        ...childItem.contentProp.style,
+                                        position: 'static',
+                                      },
+                                    }}
                                   />
                                 </DragItem>
                               </div>

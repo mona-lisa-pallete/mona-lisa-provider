@@ -78,6 +78,6 @@ export interface ISetMaterialRequest {
 }
 
 export interface IAddMaterialsRequest {
-  materialType: 'image' | 'video';
+  materialType: MaterialType;
   ossUrl: string;
 }

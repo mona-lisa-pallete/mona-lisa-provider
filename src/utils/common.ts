@@ -1,4 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
+import { MaterialType } from '@/pages/material-manage/types';
 import type { RcFile } from 'antd/lib/upload';
 
 function getScrollWidth() {
@@ -104,6 +105,31 @@ function getImageSize(img: HTMLImageElement) {
   });
 }
 
+const convertFileToMaterial = (fileType: string) => {
+  const fileTypeName = fileType.replaceAll('.', '');
+  let materialType = '';
+  switch (fileTypeName) {
+    case 'png':
+    case 'jpg':
+    case 'jpeg':
+    case 'gif':
+      materialType = MaterialType.Image;
+      break;
+    case 'mp4':
+      materialType = MaterialType.Video;
+      break;
+    case 'ppt':
+    case 'pptx':
+    case 'pdf':
+    case 'word':
+    case 'xls':
+    case 'xlsx':
+      materialType = MaterialType.File;
+      break;
+  }
+  return materialType;
+};
+
 export {
   getScrollWidth,
   swapArr,
@@ -118,4 +144,5 @@ export {
   isVideoSize,
   isImgSize,
   getImageSize,
+  convertFileToMaterial,
 };

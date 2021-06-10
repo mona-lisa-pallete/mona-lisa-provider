@@ -23,6 +23,7 @@ import { updatePage } from '@/services/page';
 import { PagePopoverStyle, TableActionMenu } from '@/pages/page/index.style';
 import PageSettingModal from '@/pages/page/components/PageSettingModal';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { addMaterials } from '@/services/material';
 
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
@@ -113,6 +114,7 @@ const EditorHeader: React.FC = () => {
       dsl: dslData,
       page: pageId,
     });
+    addMaterialsData();
     if (res.code === 0) {
       // message.success('保存成功');
       window.open(res.data.url);
@@ -135,6 +137,7 @@ const EditorHeader: React.FC = () => {
       name: state.pageName,
       projectId: parseInt(query.projectId, 10),
     });
+    addMaterialsData();
     setSaveLoading(false);
     if (res.code === 0) {
       setPageId(res.data.page);
@@ -159,6 +162,13 @@ const EditorHeader: React.FC = () => {
   const online = async (page: string) => {
     await updatePage(page, {
       action: 'online',
+    });
+    addMaterialsData();
+  };
+
+  const addMaterialsData = async () => {
+    await addMaterials({
+      materials: state.materials,
     });
   };
 

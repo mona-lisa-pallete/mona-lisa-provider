@@ -11,9 +11,11 @@ import {
   ISetPageName,
   ISetComponentData,
   ISetResize,
+  ISetMaterials,
 } from './action';
 
 import { CSSProperties } from 'react';
+import { MaterialType } from '../material-manage/types';
 
 export const DSLActionType = {
   openPage: 'openPage',
@@ -73,6 +75,7 @@ export interface IState {
   pageName: string;
   componentData: any[];
   resize: undefined | string | number;
+  materials: Array<{ ossUrl: string; materialType: MaterialType }>;
 }
 
 export type IAction =
@@ -87,7 +90,8 @@ export type IAction =
   | ISetComponentMeta
   | ISetPageName
   | ISetComponentData
-  | ISetResize;
+  | ISetResize
+  | ISetMaterials;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -102,4 +106,5 @@ export enum ActionType {
   SetPageName = 'SET_PAGE_NAME',
   SetComponentData = 'SET_COMPONENT_DATA',
   SetResize = 'SET_RESIZE',
+  SetMaterials = 'SET_MATERIALS',
 }

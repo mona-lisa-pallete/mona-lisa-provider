@@ -12,7 +12,7 @@ import UploadTool from '@/components/UploadTool/';
 import { PlatformUploadToolProps } from './types';
 import { useModel } from 'umi';
 import { useSelectMaterial } from '@/hooks/material';
-import { getImageSize, isPic } from '@/utils/common';
+import { convertFileToMaterial, getFileType, getImageSize, isPic } from '@/utils/common';
 import EditorContext from '@/pages/editor/context';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { ActionType, DSL, DSLContent } from '@/pages/editor/types';
@@ -168,8 +168,36 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       }}
       onChange={(url) => {
         if (multiple) {
+          const materials = (url as Array<UploadFile<any>>).map((i) => {
+            const fileType = getFileType(i.url!);
+            const materialTypeName = convertFileToMaterial(fileType);
+            return {
+              ossUrl: i.url!,
+              materialType: materialTypeName,
+            };
+          });
+          dispatch({
+            type: ActionType.SetMaterials,
+            payload: {
+              materials: [...state.materials, ...materials],
+            },
+          });
           onSelected(url as Array<UploadFile<any>>);
         } else {
+          const fileType = getFileType(url as string);
+          const materialTypeName = convertFileToMaterial(fileType);
+          dispatch({
+            type: ActionType.SetMaterials,
+            payload: {
+              materials: [
+                ...state.materials,
+                {
+                  ossUrl: url as string,
+                  materialType: materialTypeName,
+                },
+              ],
+            },
+          });
           onSelected({ url: url as string });
           setUrlVal(url as string);
         }

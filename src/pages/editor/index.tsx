@@ -53,6 +53,7 @@ export const initState: IState = {
   pageName: '',
   componentData: [],
   resize: undefined,
+  materials: [],
 };
 
 /**
@@ -93,7 +94,6 @@ const Editor: React.FC = () => {
   const dragContainerId = useRef('');
   const [observer, setObserver] = useState<any>();
   const oldDsl = useRef(JSON.stringify(state.dsl));
-  const [materials, setMaterial] = useState<Array<{ ossUrl: string; materialType: string }>>([]);
 
   useHideHeader(location);
 
@@ -536,12 +536,6 @@ const Editor: React.FC = () => {
     setObserver(new Date().getTime());
   };
 
-  const addMaterialUrl = (material: { ossUrl: string; materialType: string }) => {
-    setMaterial((i) => {
-      return [...i, material];
-    });
-  };
-
   return (
     <EditorContext.Provider
       value={{
@@ -552,7 +546,6 @@ const Editor: React.FC = () => {
         getDslIsSave,
         handleResize,
         resizeContainerFn,
-        addMaterialUrl,
       }}
     >
       <DndProvider backend={HTML5Backend}>

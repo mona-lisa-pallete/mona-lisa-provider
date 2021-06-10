@@ -4,7 +4,6 @@ import { useDebounce } from 'react-use';
 import { CSSProperties } from 'styled-components';
 
 interface FreedomDragProps {
-  height: number | undefined;
   onSelect: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   zIndex: CSSProperties['zIndex'];
   activeRef: string;
@@ -15,7 +14,7 @@ const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   // const mouseRef = useRef<boolean>(false);
   const [drag, setDrag] = useState<{ moveX: number; moveY: number }>();
-  const { height, onSelect, zIndex, activeRef, onChangeStyle, isDrag = false } = props;
+  const { onSelect, zIndex, activeRef, onChangeStyle, isDrag = false } = props;
 
   useDebounce(
     () => {
@@ -28,13 +27,14 @@ const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
   );
 
   useEffect(() => {
-    if (!isDrag || !height) {
+    if (!isDrag) {
       return;
     }
     let dragdrop: any = null;
     // const mousedown = (e: MouseEvent) => {
     //   onSelect(e);
     // };
+    console.log(ref.current?.firstChild?.id, 'dddddddd');
     if (ref.current?.firstChild?.id === activeRef) {
       // if (!mouseRef.current) {
       //   ref.current.addEventListener('mousedown', mousedown);
@@ -51,10 +51,9 @@ const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
     return () => {
       if (dragdrop) {
         dragdrop.destroy();
-        // ref.current?.removeEventListener('mousedown', mousedown);
       }
     };
-  }, [height, activeRef]);
+  }, [activeRef]);
 
   return (
     <div
