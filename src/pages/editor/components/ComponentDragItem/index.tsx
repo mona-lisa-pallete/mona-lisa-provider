@@ -3,10 +3,11 @@ import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { ComponentDragItemProps } from './types';
 
 const ComponentDragItem: React.FC<ComponentDragItemProps> = (props) => {
-  const { name } = props;
+  const { name, type } = props;
+
   const [, drag] = useDrag(
     () => ({
-      type: 'box',
+      type,
       item: { name },
       collect: (monitor: DragSourceMonitor) => ({
         opacity: monitor.isDragging() ? 0.4 : 1,

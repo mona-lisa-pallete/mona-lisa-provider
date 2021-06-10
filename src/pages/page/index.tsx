@@ -36,7 +36,6 @@ const { confirm } = Modal;
 
 const Page: React.FC = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
-  // const [modelVisible, setModelVisible] = useState(false);
   const location: any = useLocation();
   const { query } = location;
   const [settingVisible, setSettingVisible] = useState(false);
@@ -86,25 +85,29 @@ const Page: React.FC = () => {
               <PageName>{record.name}</PageName>
               {record.releaseBatch && (
                 <PageAction>
-                  <Button
-                    onClick={() => {
-                      copyText(record.webUrl);
-                    }}
-                    type="link"
-                    style={{ marginRight: '40px' }}
-                  >
-                    <i className="iconicon-copy iconfont" />
-                    复制链接
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      copyText(record.miniappUrl);
-                    }}
-                    type="link"
-                  >
-                    <i className="iconicon-copy iconfont" />
-                    复制小程序路径
-                  </Button>
+                  {record.platform.includes(PlatformType.WEB) && (
+                    <Button
+                      onClick={() => {
+                        copyText(record.webUrl);
+                      }}
+                      type="link"
+                      style={{ marginRight: '40px' }}
+                    >
+                      <i className="iconicon-copy iconfont" />
+                      复制链接
+                    </Button>
+                  )}
+                  {record.platform.includes(PlatformType.MINIAPP) && (
+                    <Button
+                      onClick={() => {
+                        copyText(record.miniappUrl);
+                      }}
+                      type="link"
+                    >
+                      <i className="iconicon-copy iconfont" />
+                      复制小程序路径
+                    </Button>
+                  )}
                 </PageAction>
               )}
             </PageDetail>

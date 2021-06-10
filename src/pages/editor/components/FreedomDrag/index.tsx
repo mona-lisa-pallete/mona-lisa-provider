@@ -4,17 +4,18 @@ import { useDebounce } from 'react-use';
 import { CSSProperties } from 'styled-components';
 
 interface FreedomDragProps {
-  height: number;
+  height: number | undefined;
   onSelect: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   zIndex: CSSProperties['zIndex'];
   activeRef: string;
   onChangeStyle: (style: { moveX: number; moveY: number }) => void;
+  isDrag: boolean;
 }
 const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
   // const mouseRef = useRef<boolean>(false);
   const [drag, setDrag] = useState<{ moveX: number; moveY: number }>();
-  const { height, onSelect, zIndex, activeRef, onChangeStyle } = props;
+  const { height, onSelect, zIndex, activeRef, onChangeStyle, isDrag = false } = props;
 
   useDebounce(
     () => {
@@ -27,6 +28,9 @@ const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
   );
 
   useEffect(() => {
+    if (!isDrag || !height) {
+      return;
+    }
     let dragdrop: any = null;
     // const mousedown = (e: MouseEvent) => {
     //   onSelect(e);
@@ -55,7 +59,7 @@ const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
   return (
     <div
       style={{
-        position: 'absolute',
+        position: isDrag ? 'absolute' : 'static',
         zIndex,
       }}
       onMouseDown={() => {

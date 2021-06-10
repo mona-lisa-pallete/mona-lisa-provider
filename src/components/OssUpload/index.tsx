@@ -66,7 +66,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
   };
   const handleChange = ({ file, fileList }: UploadChangeParam<UploadFile<any>>) => {
     if (file.status === 'done') {
-      file.url = `${ossPath}/${DIR_PATH}/${getFileName(file.name, file.uid)}`;
+      file.url = `${ossPath}${DIR_PATH}/${getFileName(file.name, file.uid)}`;
     }
     onChange(file, fileList);
   };

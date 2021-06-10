@@ -14,7 +14,7 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
   const dropRef = useRef(true);
 
   const [{ isOverCurrent, isStart }, insetDrag] = useDrop({
-    accept: 'box',
+    accept: 'drag',
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       isOverCurrent: monitor.isOver({ shallow: true }),

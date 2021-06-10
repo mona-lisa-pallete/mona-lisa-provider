@@ -49,11 +49,13 @@ const delElementById = (id: string, content: DSLContent[], action: DSLAction) =>
   const contentData: DSLContent[] = JSON.parse(JSON.stringify(content));
   contentData.forEach((e, index) => {
     e.contentChild?.forEach((i, childItemIndex) => {
-      if (i.elementId === id) {
+      if (i.elementId === id && isDragTarget(i.elementRef!)) {
         contentData[index].contentChild?.splice(childItemIndex, 1);
         if (contentData[index].contentChild?.length === 0) {
           contentData.splice(index, 1);
         }
+      } else if (i.elementId === id && !isDragTarget(i.elementRef!)) {
+        contentData.splice(index, 1);
       }
     });
   });
@@ -145,6 +147,10 @@ const getWidgetData = (
   // console.log(fetchData, 'fetchData');
 };
 
+const isDragTarget = (elementRef: string) => {
+  return ['DvButton', 'DvText'].includes(elementRef);
+};
+
 export {
   conversionActionData,
   findElementById,
@@ -154,4 +160,5 @@ export {
   changeElementActionById,
   reizeElementStyle,
   getWidgetData,
+  isDragTarget,
 };

@@ -60,7 +60,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
         imgWidth = selectMaterialData.width / 2;
         imgHeight = selectMaterialData.height / 2;
       } else {
-        imgWidth = 375;
+        imgWidth = '100%';
         // imgHeight = '100%';
       }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
@@ -125,7 +125,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
         imgWidth = width / 2;
         imgHeight = height / 2;
       } else {
-        imgWidth = 375;
+        imgWidth = '100%';
         // imgHeight = '100%';
       }
       const content = changeElementStyle(state.dsl.content, state.selectedElementId!, {
