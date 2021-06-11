@@ -101,6 +101,11 @@ const ActionForm: React.FC<ActionFormProps> = () => {
               onClick={() => {
                 add();
               }}
+              style={{
+                padding: 0,
+                color: '#1980FF',
+                marginBottom: '50px',
+              }}
             >
               <PlusOutlined style={{ fontSize: '12px' }} />
               新增交互配置

@@ -13,6 +13,9 @@ export const EditorConfig = styled.div`
   .ant-form-item {
     margin-bottom: 20px;
   }
+  .del-btn {
+    width: 100%;
+  }
 `;
 
 export const FormSubTitle = styled.div`

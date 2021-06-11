@@ -29,6 +29,7 @@ export const PreviewPhone = styled.img`
   height: auto;
   min-height: 548px;
   min-width: 278px;
+  max-width: 360px;
 `;
 
 export const PreviewPhoneContainer = styled.div`

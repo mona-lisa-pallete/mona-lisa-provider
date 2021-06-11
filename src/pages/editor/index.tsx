@@ -583,7 +583,7 @@ const Editor: React.FC = () => {
                   </Form>
                 )}
                 {state.selectedElementRef && (
-                  <Button onClick={handleDelElement}>
+                  <Button className="del-btn" onClick={handleDelElement}>
                     <DelText>删除组件</DelText>
                   </Button>
                 )}

@@ -80,7 +80,14 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
                   <PreviewQRName>小程序链接</PreviewQRName>
                   <PreviewQRLink>{miniappUrl}</PreviewQRLink>
                   <PreviewQRAction>
-                    <Button>复制链接</Button>
+                    <Button
+                      onClick={() => {
+                        copy(miniappUrl);
+                        message.success('复制成功');
+                      }}
+                    >
+                      复制链接
+                    </Button>
                     <Button
                       onClick={() => {
                         downloadjs(miniappCodeUrl);
