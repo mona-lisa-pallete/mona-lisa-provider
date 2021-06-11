@@ -1,34 +1,52 @@
 import { Dropdown, Menu } from 'antd';
 import React from 'react';
 import { Status } from './index.style';
-import { StatusTagProps, StatusType } from './types';
+import { StatusTagProps, PageStatusType } from './types';
 
 const StatusTag: React.FC<StatusTagProps> = (props) => {
-  const { type, edit = false } = props;
+  const { type, edit = false, onChangeStatus } = props;
 
   const menu = (
     <Menu>
-      <Menu.Item>审核中</Menu.Item>
-      <Menu.Item>已上线</Menu.Item>
+      <Menu.Item
+        onClick={() => {
+          onChangeStatus && onChangeStatus(PageStatusType.Audit);
+        }}
+      >
+        审核中
+      </Menu.Item>
+      <Menu.Item
+        onClick={() => {
+          onChangeStatus && onChangeStatus(PageStatusType.Online);
+        }}
+      >
+        已上线
+      </Menu.Item>
     </Menu>
   );
 
   return (
     <Dropdown disabled={!edit} overlay={menu}>
       <Status type={type}>
-        {type === StatusType.Primary && (
+        {type === PageStatusType.Offline && (
           <>
             <i className="icon-notset iconfont" />
             <span>未上线</span>
           </>
         )}
-        {type === StatusType.Warning && (
+        {type === PageStatusType.Deploy && (
           <>
             <i className="iconicon-clock-circle iconfont" />
             <span>上线中</span>
           </>
         )}
-        {type === StatusType.Success && (
+        {type === PageStatusType.Audit && (
+          <>
+            <i className="iconicon-check-circle iconfont" />
+            <span>审核中</span>
+          </>
+        )}
+        {type === PageStatusType.Online && (
           <>
             <i className="iconicon-check-circle iconfont" />
             <span>已上线</span>

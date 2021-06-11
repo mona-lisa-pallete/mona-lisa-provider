@@ -1,4 +1,5 @@
 import { CSSProperties } from 'react';
+import { MaterialType } from '../material-manage/types';
 import { ActionType, DSL } from './types';
 
 export interface IAddComponentAction {
@@ -92,6 +93,13 @@ export interface ISetResize {
 export interface ISetMaterials {
   type: ActionType.SetMaterials;
   payload: {
-    materials: Array<{ ossUrl: string; materialType: string }>;
+    materials: Array<{ ossUrl: string; materialType: MaterialType }>;
+  };
+}
+
+export interface ISetOldDslStr {
+  type: ActionType.SetOldDslStr;
+  payload: {
+    dslStr: string;
   };
 }

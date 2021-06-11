@@ -1,3 +1,5 @@
+import { PageStatusType } from '@/pages/page/components/StatusTag/types';
+
 export interface IGetPagesRequest {
   name: string;
   createUserName: string;
@@ -35,11 +37,13 @@ export interface PageItem {
   updateUserName: string;
   createTime: string;
   updateTime: string;
-  status: 1 | 0;
+  status: number;
   editVersion: number;
   releaseVersion: number;
   releaseUsername: string;
   releaseTime: string;
+  webReleaseState: PageStatusType;
+  miniappReleaseState: PageStatusType;
 }
 
 export interface IGetPagesReponse {
@@ -48,8 +52,10 @@ export interface IGetPagesReponse {
   list: PageItem[];
 }
 
+export type PageActionType = 'online' | 'offline' | 'miniappOnline' | 'miniappAudit';
+
 export interface IUpdatePageRequest {
-  action?: 'online' | 'offline';
+  action?: PageActionType;
   name?: string;
   attributes?: {
     miniappImmersion?: MiniPageStyle;

@@ -1,10 +1,12 @@
 export interface StatusTagProps {
-  type: StatusType;
+  type: PageStatusType;
   edit?: boolean;
+  onChangeStatus?: (status: PageStatusType) => void;
 }
 
-export enum StatusType {
-  Primary = 'primary',
-  Warning = 'warning',
-  Success = 'success',
+export enum PageStatusType {
+  Online = 'online',
+  Deploy = 'deploy',
+  Audit = 'audit',
+  Offline = 'offline',
 }

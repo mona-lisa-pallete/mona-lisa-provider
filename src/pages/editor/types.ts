@@ -12,6 +12,7 @@ import {
   ISetComponentData,
   ISetResize,
   ISetMaterials,
+  ISetOldDslStr,
 } from './action';
 
 import { CSSProperties } from 'react';
@@ -76,6 +77,7 @@ export interface IState {
   componentData: any[];
   resize: undefined | string | number;
   materials: Array<{ ossUrl: string; materialType: MaterialType }>;
+  oldDslStr: string;
 }
 
 export type IAction =
@@ -91,7 +93,8 @@ export type IAction =
   | ISetPageName
   | ISetComponentData
   | ISetResize
-  | ISetMaterials;
+  | ISetMaterials
+  | ISetOldDslStr;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -107,4 +110,5 @@ export enum ActionType {
   SetComponentData = 'SET_COMPONENT_DATA',
   SetResize = 'SET_RESIZE',
   SetMaterials = 'SET_MATERIALS',
+  SetOldDslStr = 'SET_OLD_DSL_STR',
 }

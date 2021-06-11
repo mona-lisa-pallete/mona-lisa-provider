@@ -28,7 +28,7 @@ import { addMaterials } from '@/services/material';
 const EditorHeader: React.FC = () => {
   const [expendVal, setExpendVal] = useState(false);
   const location: any = useLocation();
-  const { state, dispatch, getDslIsSave } = useContext(EditorContext);
+  const { state, dispatch } = useContext(EditorContext);
   const [value, setValue] = useState('');
   const [visible, setVisible] = useState(false);
   const query = location.query as {
@@ -50,7 +50,7 @@ const EditorHeader: React.FC = () => {
   }, [state.dsl]);
 
   const back = () => {
-    if (!getDslIsSave()) {
+    if (state.oldDslStr !== JSON.stringify(state.dsl)) {
       confirm({
         title: '提示',
         icon: <ExclamationCircleOutlined />,
@@ -141,6 +141,12 @@ const EditorHeader: React.FC = () => {
     setSaveLoading(false);
     if (res.code === 0) {
       setPageId(res.data.page);
+      dispatch({
+        type: ActionType.SetOldDslStr,
+        payload: {
+          dslStr: JSON.stringify(state.dsl),
+        },
+      });
       history.replace({
         pathname: '/editor',
         query: {

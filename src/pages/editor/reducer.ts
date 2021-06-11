@@ -1,6 +1,6 @@
 import { IAction, IState, ActionType } from './types';
 
-const reducer = (state: IState, action: IAction) => {
+const reducer: React.Reducer<IState, IAction> = (state, action) => {
   switch (action.type) {
     case ActionType.UpdateComponent:
       return { ...state, dsl: action.payload.dsl };
@@ -45,6 +45,11 @@ const reducer = (state: IState, action: IAction) => {
       return {
         ...state,
         materials: action.payload.materials,
+      };
+    case ActionType.SetOldDslStr:
+      return {
+        ...state,
+        oldDslStr: action.payload.dslStr,
       };
     default:
       return state;

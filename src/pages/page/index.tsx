@@ -22,7 +22,7 @@ import PreviewModal from './components/PreviewModal/';
 // import ConfirmModal from '@/components/ConfirmModal';
 import { delPage, getPages, getPageUsers, updatePage } from '@/services/page';
 import { useLocation } from 'umi';
-import { PageItem, PlatformType } from '@/services/page/schema';
+import { PageActionType, PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
 import { ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { PageEdit } from './types';
@@ -30,7 +30,7 @@ import PageSettingModal from './components/PageSettingModal/';
 import { useHideHeader } from '../editor/hooks';
 import copy from 'copy-to-clipboard';
 import StatusTag from './components/StatusTag';
-import { StatusType } from './components/StatusTag/types';
+import { PageStatusType } from './components/StatusTag/types';
 // import FreedomDrag from '../editor/components/FreedomDrag';
 
 const { confirm } = Modal;
@@ -52,6 +52,27 @@ const Page: React.FC = () => {
   const copyText = (text: string) => {
     copy(text);
     message.success('复制成功');
+  };
+
+  const handlePageAuditStatus = async (id: number | string, status: PageStatusType) => {
+    let actionData: PageActionType;
+    switch (status) {
+      case PageStatusType.Audit:
+        actionData = 'miniappAudit';
+        break;
+      case PageStatusType.Online:
+        actionData = 'miniappOnline';
+        break;
+      default:
+        actionData = 'miniappOnline';
+        break;
+    }
+    const res = await updatePage(id, {
+      action: actionData!,
+    });
+    if (res.code === 0) {
+      tableRef.current?.reload();
+    }
   };
 
   const columns: Array<ProColumns<PageItem>> = [
@@ -137,19 +158,26 @@ const Page: React.FC = () => {
         mode: 'multiple',
         maxTagCount: 'responsive',
       },
-      render() {
+      render(_, item) {
         return (
           <>
             <PageTag>
               <Tag className="h5">H5</Tag>
-              <StatusTag type={StatusType.Primary} />
+              <StatusTag type={item.webReleaseState} />
               <Tooltip overlayClassName="page-tag-tooltip" title="H5上线大概需要2分钟，请耐心等候">
                 <QuestionCircleOutlined />
               </Tooltip>
             </PageTag>
             <PageTag>
               <Tag className="mini">小程序</Tag>
-              <StatusTag edit type={StatusType.Warning} />
+              <StatusTag
+                edit={item.miniappReleaseState !== PageStatusType.Offline}
+                onChangeStatus={(status) => {
+                  console.log(status);
+                  handlePageAuditStatus(item.page, status);
+                }}
+                type={item.miniappReleaseState}
+              />
               <Tooltip
                 overlayClassName="page-tag-tooltip"
                 title={

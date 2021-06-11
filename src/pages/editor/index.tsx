@@ -54,6 +54,7 @@ export const initState: IState = {
   componentData: [],
   resize: undefined,
   materials: [],
+  oldDslStr: '',
 };
 
 /**
@@ -140,7 +141,7 @@ const Editor: React.FC = () => {
     id: string,
     style: CSSProperties,
   ): DSLContent[] | undefined => {
-    const contentCopy = JSON.parse(JSON.stringify(content));
+    const contentCopy: DSLContent[] = JSON.parse(JSON.stringify(content));
     const list = contentCopy.map((i) => {
       if (i.contentChild && i.contentChild.length) {
         if (i.elementId === id) {
@@ -175,7 +176,7 @@ const Editor: React.FC = () => {
         payload: {
           dsl: {
             ...state.dsl,
-            content,
+            content: content!,
           },
         },
       });
@@ -193,7 +194,7 @@ const Editor: React.FC = () => {
       ) || undefined;
     if (list.length) {
       const onClickData: string[] = list.map((i: any, index: number) => {
-        return state.selectedElementId + index;
+        return state.selectedElementId! + index;
       });
       const obj: any = {};
       onClickData.forEach((i, index) => {
@@ -204,7 +205,7 @@ const Editor: React.FC = () => {
           },
         };
       });
-      const content = changeElementActionById(state.selectedElementId, state.dsl.content, {
+      const content = changeElementActionById(state.selectedElementId!, state.dsl.content, {
         onClick: onClickData,
       });
       dispatch({
@@ -226,7 +227,7 @@ const Editor: React.FC = () => {
       payload: {
         dsl: {
           ...state.dsl,
-          content,
+          content: content!,
         },
       },
     });
@@ -236,7 +237,12 @@ const Editor: React.FC = () => {
     const getData = async () => {
       const compData = await getComponentsData();
       const res = await getPage(query.pageId);
-      oldDsl.current = JSON.stringify(res.data.dsl);
+      dispatch({
+        type: ReducerActionType.SetOldDslStr,
+        payload: {
+          dslStr: JSON.stringify(res.data.dsl),
+        },
+      });
       dispatch({
         type: ReducerActionType.SetPageData,
         payload: {
@@ -491,7 +497,7 @@ const Editor: React.FC = () => {
         const { content, action } = delElementById(
           state.selectedElementId!,
           state.dsl.content,
-          state.dsl.action,
+          state.dsl.action!,
         );
         dispatch({
           type: ReducerActionType.SetSelectedRef,
