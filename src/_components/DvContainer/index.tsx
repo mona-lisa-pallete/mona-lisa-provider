@@ -41,6 +41,8 @@ const DvContainer: React.FC<DvContainerProps> = (props) => {
         contentProp: {
           style: {
             position: 'absolute',
+            left: 0,
+            top: 0,
           },
         },
         elementId,

@@ -17,6 +17,7 @@ import EditorContext from '@/pages/editor/context';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { ActionType, DSL, DSLContent } from '@/pages/editor/types';
 import { MaterialType } from '@/pages/material-manage/types';
+import { merge } from 'lodash';
 
 const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
   const {
@@ -102,7 +103,10 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       if (i.contentChild && i.contentChild.length && state.selectedContainerId === i.elementId) {
         i.contentChild.forEach((childItem, index) => {
           if (id === childItem.elementId) {
-            i.contentChild![index].contentProp.style = style;
+            i.contentChild![index].contentProp.style = merge(
+              i.contentChild![index].contentProp.style,
+              style,
+            );
           }
         });
       }
