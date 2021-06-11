@@ -31,6 +31,7 @@ import { useHideHeader } from '../editor/hooks';
 import copy from 'copy-to-clipboard';
 import StatusTag from './components/StatusTag';
 import { PageStatusType } from './components/StatusTag/types';
+import { StatusTagStyle } from './components/StatusTag/index.style';
 // import FreedomDrag from '../editor/components/FreedomDrag';
 
 const { confirm } = Modal;
@@ -159,6 +160,9 @@ const Page: React.FC = () => {
         maxTagCount: 'responsive',
       },
       render(_, item) {
+        const isEdit =
+          item.miniappReleaseState !== PageStatusType.Offline &&
+          item.miniappReleaseState !== PageStatusType.Online;
         return (
           <>
             <PageTag>
@@ -171,7 +175,7 @@ const Page: React.FC = () => {
             <PageTag>
               <Tag className="mini">小程序</Tag>
               <StatusTag
-                edit={item.miniappReleaseState !== PageStatusType.Offline}
+                edit={isEdit}
                 onChangeStatus={(status) => {
                   console.log(status);
                   handlePageAuditStatus(item.page, status);
@@ -502,6 +506,7 @@ const Page: React.FC = () => {
   return (
     <PageContainer>
       <PagePopoverStyle />
+      <StatusTagStyle />
       <PageHeader title="页面列表">
         <Button type="primary" onClick={addPage}>
           创建页面

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { PageStatusType } from './types';
 
 const StatusBg = {
@@ -33,6 +33,14 @@ export const Status = styled.div<{ type: PageStatusType }>`
     &:last-child {
       margin-right: 0;
       margin-left: 5px;
+    }
+  }
+`;
+
+export const StatusTagStyle = createGlobalStyle`
+  .status-down {
+    .ant-dropdown-menu-item {
+      text-align: center;
     }
   }
 `;

@@ -8,13 +8,15 @@ const StatusTag: React.FC<StatusTagProps> = (props) => {
 
   const menu = (
     <Menu>
-      <Menu.Item
-        onClick={() => {
-          onChangeStatus && onChangeStatus(PageStatusType.Audit);
-        }}
-      >
-        审核中
-      </Menu.Item>
+      {type !== PageStatusType.Audit && (
+        <Menu.Item
+          onClick={() => {
+            onChangeStatus && onChangeStatus(PageStatusType.Audit);
+          }}
+        >
+          审核中
+        </Menu.Item>
+      )}
       <Menu.Item
         onClick={() => {
           onChangeStatus && onChangeStatus(PageStatusType.Online);
@@ -26,7 +28,7 @@ const StatusTag: React.FC<StatusTagProps> = (props) => {
   );
 
   return (
-    <Dropdown disabled={!edit} overlay={menu}>
+    <Dropdown disabled={!edit} overlayClassName="status-down" overlay={menu}>
       <Status type={type}>
         {type === PageStatusType.Offline && (
           <>
