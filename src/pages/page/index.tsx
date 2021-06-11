@@ -409,7 +409,18 @@ const Page: React.FC = () => {
               <Button
                 type="link"
                 onClick={() => {
-                  handlePageStatus(item.page, 'offline');
+                  confirm({
+                    title: '确认下线页面',
+                    icon: <ExclamationCircleOutlined />,
+                    content: '页面下线后，线上页面将会失效，无法进入。请谨慎操作！',
+                    okText: '确认',
+                    okType: 'danger',
+                    cancelText: '取消',
+                    centered: true,
+                    async onOk() {
+                      handlePageStatus(item.page, 'offline');
+                    },
+                  });
                 }}
               >
                 下线
