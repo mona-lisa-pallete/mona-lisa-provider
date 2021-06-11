@@ -18,7 +18,6 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
   const {
     value,
     onChange,
-    onOriginChange,
     onSelectMaterial,
     uploadText,
     uploadContent,
@@ -69,7 +68,6 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
             : '',
       };
     });
-    onOriginChange && onOriginChange({ ...params, fileList: files }); // 向上透传原属性
 
     if (multiple) {
       if (files) {

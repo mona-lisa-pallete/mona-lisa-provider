@@ -22,7 +22,6 @@ import { merge } from 'lodash';
 const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
   const {
     onSelected = () => {},
-    onChange,
     uploadContent,
     uploadText,
     accept,
@@ -31,6 +30,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
     onSelectedMaterial,
     materialType = MaterialType.Image,
     onChangeFormatter,
+    value,
     ...extraProps
   } = props;
   const { setMaterialVisible, setMaterialType } = useModel('useMaterialModel');
@@ -90,7 +90,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
     setImgUrl();
   }, [setImgUrl]);
 
-  const value = useMemo(() => {
+  const cusValue = useMemo(() => {
     return urlVal;
   }, [urlVal]);
 
@@ -161,15 +161,6 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       uploadContent={uploadContent}
       accept={accept}
       uploadText={uploadText}
-      onOriginChange={(e) => {
-        if (onChange) {
-          if (onChangeFormatter) {
-            onChange(onChangeFormatter(e));
-          } else {
-            onChange(e);
-          }
-        }
-      }}
       onChange={(url) => {
         if (multiple) {
           const materials = (url as Array<UploadFile<any>>).map((i) => {
@@ -210,7 +201,7 @@ const PlatformUploadTool = (props: PlatformUploadToolProps, ref: any) => {
       onChangeFile={handleElementStyle}
       onProgress={onProgress}
       {...extraProps}
-      value={value}
+      value={cusValue || value}
     />
   );
 };
