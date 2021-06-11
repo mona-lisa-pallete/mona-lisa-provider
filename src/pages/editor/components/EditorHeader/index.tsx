@@ -54,7 +54,7 @@ const EditorHeader: React.FC = () => {
       confirm({
         title: '提示',
         icon: <ExclamationCircleOutlined />,
-        content: '页面还未保存，是否确认退出？未保存的修改内容将不会记录',
+        content: '请确保你的页面改动已保存，否则会丢失未保存内容',
         okText: '确认',
         okType: 'danger',
         cancelText: '取消',
