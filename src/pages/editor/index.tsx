@@ -66,7 +66,7 @@ const PlatformContext = {
   },
 };
 
-const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValues }: any) => {
+const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValues, id }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
     ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
@@ -76,6 +76,7 @@ const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValue
       onChange={onChange}
       initialValues={initialValues}
       platformCtx={PlatformContext}
+      id={id}
       actionRender={actionRender}
     />
   ) : null;
@@ -569,6 +570,7 @@ const Editor: React.FC = () => {
                     onChange={handleData}
                     widgetMeta={widgetMeta}
                     onChangeStyle={handleElementStyle}
+                    id={state.selectedElementId}
                   />
                 )}
                 {state.selectedElementRef && widgetMeta?.propFormConfig?.useActionForm && (
