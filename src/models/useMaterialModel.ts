@@ -6,6 +6,8 @@ interface Material {
   name: string;
   width: number;
   height: number;
+  size: number;
+  contentMd5: string;
 }
 
 export default function useMaterialModel() {

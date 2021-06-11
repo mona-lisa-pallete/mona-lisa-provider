@@ -23,6 +23,8 @@ const MaterialLibraryContainer: React.FC = () => {
           name: i.materialName,
           width: i.contentWidth,
           height: i.contentHeight,
+          size: i.contentLength,
+          contentMd5: i.contentMd5,
         });
       }}
       extra={extraData}
