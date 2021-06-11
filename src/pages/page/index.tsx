@@ -165,38 +165,45 @@ const Page: React.FC = () => {
           item.miniappReleaseState !== PageStatusType.Online;
         return (
           <>
-            <PageTag>
-              <Tag className="h5">H5</Tag>
-              <StatusTag type={item.webReleaseState} />
-              <Tooltip overlayClassName="page-tag-tooltip" title="H5上线大概需要2分钟，请耐心等候">
-                <QuestionCircleOutlined />
-              </Tooltip>
-            </PageTag>
-            <PageTag>
-              <Tag className="mini">小程序</Tag>
-              <StatusTag
-                edit={isEdit}
-                onChangeStatus={(status) => {
-                  console.log(status);
-                  handlePageAuditStatus(item.page, status);
-                }}
-                type={item.miniappReleaseState}
-              />
-              <Tooltip
-                overlayClassName="page-tag-tooltip"
-                title={
-                  <Tips>
-                    小程序需要上
-                    <a href="https://mp.weixin.qq.com/" target="_blank" rel="noreferrer">
-                      微信公众平台
-                    </a>
-                    ，手动上线并且等待审核通过
-                  </Tips>
-                }
-              >
-                <QuestionCircleOutlined />
-              </Tooltip>
-            </PageTag>
+            {item.platform.includes('WEB') && (
+              <PageTag>
+                <Tag className="h5">H5</Tag>
+                <StatusTag type={item.webReleaseState} />
+                <Tooltip
+                  overlayClassName="page-tag-tooltip"
+                  title="H5上线大概需要2分钟，请耐心等候"
+                >
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </PageTag>
+            )}
+            {item.platform.includes('MINIAPP') && (
+              <PageTag>
+                <Tag className="mini">小程序</Tag>
+                <StatusTag
+                  edit={isEdit}
+                  onChangeStatus={(status) => {
+                    console.log(status);
+                    handlePageAuditStatus(item.page, status);
+                  }}
+                  type={item.miniappReleaseState}
+                />
+                <Tooltip
+                  overlayClassName="page-tag-tooltip"
+                  title={
+                    <Tips>
+                      小程序需要上
+                      <a href="https://mp.weixin.qq.com/" target="_blank" rel="noreferrer">
+                        微信公众平台
+                      </a>
+                      ，手动上线并且等待审核通过
+                    </Tips>
+                  }
+                >
+                  <QuestionCircleOutlined />
+                </Tooltip>
+              </PageTag>
+            )}
           </>
         );
       },
