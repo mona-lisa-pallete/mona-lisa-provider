@@ -281,7 +281,7 @@ const Page: React.FC = () => {
       // valueType: 'dateRange',
       hideInSearch: true,
       renderText(_, record) {
-        return moment(record.updateTime).format('YYYY-MM-DD HH:mm:ss');
+        return moment(record.createTime).format('YYYY-MM-DD HH:mm:ss');
       },
       // search: {
       //   transform: (value) => {
