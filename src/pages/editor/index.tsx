@@ -212,7 +212,7 @@ const Editor: React.FC = () => {
         payload: {
           dsl: {
             content,
-            action: obj,
+            action: mergeWith(state.dsl.action, obj),
           },
         },
       });
