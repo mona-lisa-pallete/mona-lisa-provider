@@ -36,6 +36,7 @@ import {
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import math, { evaluate, json } from 'mathjs';
 import { useDebounce } from 'react-use';
+import ComponentForm from './components/ComponentForm';
 
 const { TabPane } = Tabs;
 const { confirm } = Modal;
@@ -571,13 +572,20 @@ const Editor: React.FC = () => {
                 {state.selectedElementId && '组件ID：'}
                 {state.selectedElementId}
                 {widgetMeta && state.selectedContainerId && state.selectedElementId && (
-                  <CompPropEditorLoader
+                  <ComponentForm
                     initialValues={state.formData}
                     onChange={handleData}
                     widgetMeta={widgetMeta}
-                    onChangeStyle={handleElementStyle}
                     id={state.selectedElementId}
+                    PlatformContext={PlatformContext}
                   />
+                  // <CompPropEditorLoader
+                  //   initialValues={state.formData}
+                  //   onChange={handleData}
+                  //   widgetMeta={widgetMeta}
+                  //   onChangeStyle={handleElementStyle}
+                  //   id={state.selectedElementId}
+                  // />
                 )}
                 {state.selectedElementRef && widgetMeta?.propFormConfig?.useActionForm && (
                   <Form
