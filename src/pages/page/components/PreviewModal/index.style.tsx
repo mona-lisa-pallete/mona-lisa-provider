@@ -8,7 +8,7 @@ export const PreviewModalRoot = styled.div`
       right: 0;
       bottom: 0;
       left: 0;
-      z-index: 10;
+      z-index: 13;
       display: flex;
       align-items: center;
       justify-content: center;

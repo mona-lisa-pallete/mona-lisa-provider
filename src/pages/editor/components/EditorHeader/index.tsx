@@ -25,7 +25,11 @@ import PageSettingModal from '@/pages/page/components/PageSettingModal';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { addMaterials } from '@/services/material';
 
-const EditorHeader: React.FC = () => {
+interface EditorHeaderProps {
+  onPreview: (url: string) => void;
+}
+
+const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
   const [expendVal, setExpendVal] = useState(false);
   const location: any = useLocation();
   const { state, dispatch } = useContext(EditorContext);
@@ -41,6 +45,7 @@ const EditorHeader: React.FC = () => {
   const history = useHistory();
   const [pageId, setPageId] = useState(query.pageId);
   const [saveLoading, setSaveLoading] = useState(false);
+  const { onPreview } = props;
 
   const { confirm } = Modal;
 
@@ -116,7 +121,8 @@ const EditorHeader: React.FC = () => {
     addMaterialsData();
     if (res.code === 0) {
       // message.success('保存成功');
-      window.open(res.data.url);
+      onPreview(res.data.url);
+      // window.open(res.data.url);
     }
   };
 

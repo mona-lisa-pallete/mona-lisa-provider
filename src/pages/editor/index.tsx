@@ -30,6 +30,7 @@ import { changeElementActionById, delElementById, findElementById, getWidgetData
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ComponentForm from './components/ComponentForm';
 import PlatformUpload from '@/_components/PlatformUpload';
+import PreviewModal from '../page/components/PreviewModal/';
 
 const { TabPane } = Tabs;
 const { confirm } = Modal;
@@ -94,6 +95,8 @@ const Editor: React.FC = () => {
   const oldDsl = useRef(JSON.stringify(state.dsl));
   const currentDsl = useRef<any>();
   const oldPageName = useRef(JSON.stringify(state.pageName));
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [h5Url, setH5Url] = useState('');
 
   useHideHeader(location);
 
@@ -566,7 +569,12 @@ const Editor: React.FC = () => {
       }}
     >
       <DndProvider backend={HTML5Backend}>
-        <EditorHeader />
+        <EditorHeader
+          onPreview={(url) => {
+            setH5Url(url);
+            setPreviewVisible(true);
+          }}
+        />
         <EditorMain>
           <ComponentClassification
             componentMap={componentMap}
@@ -628,6 +636,14 @@ const Editor: React.FC = () => {
               {/* <TabPane tab="页面交互" key="3" /> */}
             </Tabs>
           </EditorConfig>
+          <PreviewModal
+            visible={previewVisible}
+            onChange={() => {
+              setPreviewVisible(false);
+            }}
+            type="h5"
+            h5Url={h5Url}
+          />
         </EditorMain>
       </DndProvider>
     </EditorContext.Provider>
