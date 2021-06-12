@@ -53,6 +53,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
         miniappShareDescription = '',
         miniappShareImage = '',
         miniappTitle = '',
+        title = '',
       },
       miniappImmersion,
       platform,
@@ -66,6 +67,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
       miniappShareDescription,
       miniappShareImage,
       miniappTitle,
+      title,
     };
     if (miniappImmersion) {
       attributes.miniappImmersion = miniappImmersion;

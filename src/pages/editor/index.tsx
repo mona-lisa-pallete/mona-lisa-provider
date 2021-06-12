@@ -37,6 +37,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import math, { evaluate, json } from 'mathjs';
 import { useDebounce } from 'react-use';
 import ComponentForm from './components/ComponentForm';
+import PlatformUpload from '@/_components/PlatformUpload';
 
 const { TabPane } = Tabs;
 const { confirm } = Modal;
@@ -65,6 +66,7 @@ const PlatformContext = {
   ui: {
     UploadTool: PlatformUploadTool,
     ColorPicker: PlatformColorPicker,
+    Upload: PlatformUpload,
   },
 };
 
@@ -97,6 +99,7 @@ const Editor: React.FC = () => {
   const dragContainerId = useRef('');
   const [observer, setObserver] = useState<any>();
   const oldDsl = useRef(JSON.stringify(state.dsl));
+  const currentDsl = useRef<any>();
 
   useHideHeader(location);
 
@@ -118,7 +121,8 @@ const Editor: React.FC = () => {
     id: string,
     data: any,
   ): DSLContent[] | undefined => {
-    const list = content.map((i) => {
+    const contentData: DSL['content'] = JSON.parse(JSON.stringify(content));
+    const list = contentData.map((i) => {
       if (i.contentChild && i.contentChild.length) {
         i.contentChild.forEach((childItem, index) => {
           if (id === childItem.elementId) {
@@ -167,22 +171,30 @@ const Editor: React.FC = () => {
     return list!;
   };
 
-  const handleData = (allVal: any) => {
-    const data = { ...state.formData.contentProp, ...allVal };
+  const handleData = useCallback(
+    (allVal: any) => {
+      const data = { ...state.formData.contentProp, ...allVal };
+      console.log(state.formData, 'datadatadata');
 
-    if (state.selectedElementId) {
-      const content = changeElement(state.dsl.content, state.selectedElementId, data);
-      dispatch({
-        type: ReducerActionType.UpdateComponent,
-        payload: {
-          dsl: {
-            ...state.dsl,
-            content: content!,
+      if (state.selectedElementId) {
+        const content = changeElement(state.dsl.content, state.selectedElementId, data);
+        dispatch({
+          type: ReducerActionType.UpdateComponent,
+          payload: {
+            dsl: {
+              ...state.dsl,
+              content: content!,
+            },
           },
-        },
-      });
-    }
-  };
+        });
+        currentDsl.current = {
+          ...state.dsl,
+          content: content!,
+        };
+      }
+    },
+    [state],
+  );
 
   const handleActionData = (val: any) => {
     if (!val) {
@@ -544,6 +556,10 @@ const Editor: React.FC = () => {
     setObserver(new Date().getTime());
   };
 
+  const getCurrentDsl = () => {
+    return currentDsl.current;
+  };
+
   return (
     <EditorContext.Provider
       value={{
@@ -554,6 +570,7 @@ const Editor: React.FC = () => {
         getDslIsSave,
         handleResize,
         resizeContainerFn,
+        getCurrentDsl,
       }}
     >
       <DndProvider backend={HTML5Backend}>
@@ -579,13 +596,6 @@ const Editor: React.FC = () => {
                     id={state.selectedElementId}
                     PlatformContext={PlatformContext}
                   />
-                  // <CompPropEditorLoader
-                  //   initialValues={state.formData}
-                  //   onChange={handleData}
-                  //   widgetMeta={widgetMeta}
-                  //   onChangeStyle={handleElementStyle}
-                  //   id={state.selectedElementId}
-                  // />
                 )}
                 {state.selectedElementRef && widgetMeta?.propFormConfig?.useActionForm && (
                   <Form
@@ -603,6 +613,18 @@ const Editor: React.FC = () => {
                     <DelText>删除组件</DelText>
                   </Button>
                 )}
+                {/* <Form
+                  onValuesChange={(a, b) => {
+                    console.log(a, b);
+                  }}
+                  initialValues={{
+                    file: 'https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF',
+                  }}
+                >
+                  <Form.Item name="file">
+                    <PlatformUpload />
+                  </Form.Item>
+                </Form> */}
               </TabPane>
               {/* <TabPane tab="页面交互" key="3" /> */}
             </Tabs>

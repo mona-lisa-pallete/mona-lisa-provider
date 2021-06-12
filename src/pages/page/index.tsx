@@ -32,7 +32,6 @@ import copy from 'copy-to-clipboard';
 import StatusTag from './components/StatusTag';
 import { PageStatusType } from './components/StatusTag/types';
 import { StatusTagStyle } from './components/StatusTag/index.style';
-// import FreedomDrag from '../editor/components/FreedomDrag';
 
 const { confirm } = Modal;
 
