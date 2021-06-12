@@ -166,7 +166,7 @@ const Editor: React.FC = () => {
   };
 
   const handleData = useCallback(
-    (_: any, allVal: any) => {
+    (allVal: any) => {
       const data = { ...state.formData.contentProp, ...allVal };
 
       if (state.selectedElementId) {
