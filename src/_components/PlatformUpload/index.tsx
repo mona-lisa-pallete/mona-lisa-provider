@@ -76,20 +76,22 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
 
       if (type === PlatformUploadFile.Image) {
         const getImgSize = changeImgSize(selectMaterialData.height, selectMaterialData.width);
-        const content = changeElementStyleById(
-          state.selectedElementId!,
-          state.dsl.content,
-          getImgSize(),
-        )!;
-        dispatch({
-          type: ActionType.UpdateComponent,
-          payload: {
-            dsl: {
-              ...state.dsl,
-              content,
+        setTimeout(() => {
+          const content = changeElementStyleById(
+            state.selectedElementId!,
+            (getCurrentDsl() as any).content,
+            getImgSize(),
+          )!;
+          dispatch({
+            type: ActionType.UpdateComponent,
+            payload: {
+              dsl: {
+                ...state.dsl,
+                content,
+              },
             },
-          },
-        });
+          });
+        }, 200);
       }
 
       switch (type) {
