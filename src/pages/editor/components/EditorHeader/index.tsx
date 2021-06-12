@@ -133,7 +133,7 @@ const EditorHeader: React.FC = () => {
     const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
     const res = await addPage({
       dsl: dslData,
-      page: pageId,
+      page: query.type === 'edit' ? pageId : '',
       name: state.pageName,
       projectId: parseInt(query.projectId, 10),
     });

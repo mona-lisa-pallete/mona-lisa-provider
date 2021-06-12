@@ -573,7 +573,14 @@ const Editor: React.FC = () => {
           <ViewportBox />
           <EditorConfig>
             <Tabs defaultActiveKey="2">
-              <TabPane tab="组件配置" key="2">
+              <TabPane
+                style={{
+                  height: 'calc(100vh - 120px)',
+                  overflow: 'auto',
+                }}
+                tab="组件配置"
+                key="2"
+              >
                 {state.selectedElementId && '组件ID：'}
                 {state.selectedElementId}
                 {widgetMeta && state.selectedContainerId && state.selectedElementId && (
