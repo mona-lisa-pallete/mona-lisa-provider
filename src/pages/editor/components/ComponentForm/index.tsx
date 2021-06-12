@@ -6,9 +6,8 @@ const ComponentForm: React.FC<ComponentFormProps> = (props, ref: any) => {
   const { widgetMeta, onChange, initialValues, PlatformContext, id } = props;
 
   useEffect(() => {
-    console.log(id, 'id', initialValues, '1');
     forceUpdate();
-  }, [id]);
+  }, [id, widgetMeta]);
 
   const forceUpdate = () => {
     setState(new Date().getTime());
@@ -21,8 +20,6 @@ const ComponentForm: React.FC<ComponentFormProps> = (props, ref: any) => {
   });
 
   return useMemo(() => {
-    console.log(initialValues, 'initialValues', '2');
-
     const hasMeta = !!widgetMeta;
     const FormComp = hasMeta
       ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
