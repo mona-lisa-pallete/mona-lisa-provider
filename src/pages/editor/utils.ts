@@ -1,6 +1,6 @@
-import { merge } from 'lodash';
+import { merge, mergeWith } from 'lodash';
 import { CSSProperties } from 'styled-components';
-import { DSLAction, DSLContent } from './types';
+import { DSL, DSLAction, DSLContent } from './types';
 import { LoadScript } from './load-stuff';
 import { getDllApi } from '@/utils/host';
 
@@ -151,6 +151,31 @@ const isDragTarget = (elementRef: string) => {
   return ['DvButton', 'DvText'].includes(elementRef);
 };
 
+const changeElement = (
+  content: DSL['content'],
+  id: string,
+  data: any,
+): DSLContent[] | undefined => {
+  const contentData: DSL['content'] = JSON.parse(JSON.stringify(content));
+  const list = contentData.map((i) => {
+    if (i.contentChild && i.contentChild.length) {
+      i.contentChild.forEach((childItem, index) => {
+        if (id === childItem.elementId) {
+          // TODO 这里的merge方法建议使用 immutable 库。
+          // 这里对于数组会进行合并而不是替换，尝试 mergeWith API
+          i.contentChild![index].contentProp = mergeWith(
+            i.contentChild![index].contentProp,
+            data,
+            (a, b) => (Array.isArray(b) ? b : undefined),
+          );
+        }
+      });
+    }
+    return i!;
+  });
+  return list!;
+};
+
 export {
   conversionActionData,
   findElementById,
@@ -161,4 +186,5 @@ export {
   reizeElementStyle,
   getWidgetData,
   isDragTarget,
+  changeElement,
 };

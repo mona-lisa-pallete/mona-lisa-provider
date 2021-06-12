@@ -13,6 +13,8 @@ import {
   ISetResize,
   ISetMaterials,
   ISetOldDslStr,
+  IChangeElementStyle,
+  IChangeElement,
 } from './action';
 
 import { CSSProperties } from 'react';
@@ -94,7 +96,9 @@ export type IAction =
   | ISetComponentData
   | ISetResize
   | ISetMaterials
-  | ISetOldDslStr;
+  | ISetOldDslStr
+  | IChangeElementStyle
+  | IChangeElement;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -111,4 +115,6 @@ export enum ActionType {
   SetResize = 'SET_RESIZE',
   SetMaterials = 'SET_MATERIALS',
   SetOldDslStr = 'SET_OLD_DSL_STR',
+  ChangeElementStyle = 'CHANGE_ELEMENT_STYLE',
+  ChangeElement = 'ChangeElement',
 }

@@ -14,7 +14,6 @@ import EditorContext from '@/pages/editor/context';
 import { ActionType } from '@/pages/editor/types';
 import { DraggerProps } from 'antd/lib/upload';
 import { useSelectMaterial } from '@/hooks/material';
-import { changeElementStyleById } from '@/pages/editor/utils';
 
 const UploadContentRenderMap = new Map<PlatformUploadFile, React.FC>([
   [PlatformUploadFile.Image, ImageContent],
@@ -49,7 +48,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
   const { setMaterialVisible, setMaterialType } = useModel('useMaterialModel');
   const { type = PlatformUploadFile.Image, multiple = false, onChange, value } = props;
   const [uploadVal, setUploadVal] = useState<any>(value);
-  const { state, dispatch, getCurrentDsl } = useContext(EditorContext);
+  const { state, dispatch } = useContext(EditorContext);
   const { selectMaterial, isSuccess } = useSelectMaterial();
 
   const changeImgSize = (height: number, width: number) => {
@@ -76,22 +75,12 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
 
       if (type === PlatformUploadFile.Image) {
         const getImgSize = changeImgSize(selectMaterialData.height, selectMaterialData.width);
-        setTimeout(() => {
-          const content = changeElementStyleById(
-            state.selectedElementId!,
-            (getCurrentDsl() as any).content,
-            getImgSize(),
-          )!;
-          dispatch({
-            type: ActionType.UpdateComponent,
-            payload: {
-              dsl: {
-                ...state.dsl,
-                content,
-              },
-            },
-          });
-        }, 200);
+        dispatch({
+          type: ActionType.ChangeElementStyle,
+          payload: {
+            data: getImgSize(),
+          },
+        });
       }
 
       switch (type) {
@@ -146,22 +135,12 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
         img.src = url.createObjectURL((file as any).originFileObj); // 创建Image的对象的url
         const { height, width } = await getImageSize(img);
         const getImgSize = changeImgSize(height, width);
-        setTimeout(() => {
-          const content = changeElementStyleById(
-            state.selectedElementId!,
-            (getCurrentDsl() as any).content,
-            getImgSize(),
-          )!;
-          dispatch({
-            type: ActionType.UpdateComponent,
-            payload: {
-              dsl: {
-                ...state.dsl,
-                content,
-              },
-            },
-          });
-        }, 200);
+        dispatch({
+          type: ActionType.ChangeElementStyle,
+          payload: {
+            data: getImgSize(),
+          },
+        });
         break;
       default:
         break;
@@ -197,8 +176,10 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
           ],
         },
       });
-      onChange && onChange(url);
-      setUploadVal(url);
+      setTimeout(() => {
+        onChange && onChange(url);
+        setUploadVal(url);
+      }, 200);
     }
   };
 

@@ -1,4 +1,6 @@
+/* eslint-disable no-case-declarations */
 import { IAction, IState, ActionType } from './types';
+import { changeElement, changeElementStyleById } from './utils';
 
 const reducer: React.Reducer<IState, IAction> = (state, action) => {
   switch (action.type) {
@@ -51,6 +53,20 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
         ...state,
         oldDslStr: action.payload.dslStr,
       };
+    case ActionType.ChangeElementStyle:
+      const elementContent = changeElementStyleById(
+        state.selectedElementId!,
+        state.dsl.content,
+        action.payload.data,
+      );
+      return { ...state, dsl: { content: elementContent, action: state.dsl.action } };
+    case ActionType.ChangeElement:
+      const content = changeElement(
+        state.dsl.content,
+        state.selectedElementId!,
+        action.payload.data,
+      );
+      return { ...state, dsl: { content, action: state.dsl.action } };
     default:
       return state;
   }

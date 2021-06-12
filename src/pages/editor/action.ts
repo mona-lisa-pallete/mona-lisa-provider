@@ -103,3 +103,17 @@ export interface ISetOldDslStr {
     dslStr: string;
   };
 }
+
+export interface IChangeElementStyle {
+  type: ActionType.ChangeElementStyle;
+  payload: {
+    data: any;
+  };
+}
+
+export interface IChangeElement {
+  type: ActionType.ChangeElement;
+  payload: {
+    data: any;
+  };
+}

@@ -26,16 +26,8 @@ import { groupBy, merge, mergeWith } from 'lodash';
 import { CSSProperties } from 'styled-components';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
 import PlatformColorPicker from '@/_components/PlatformColorPicker/';
-import {
-  changeElementActionById,
-  delElementById,
-  findElementById,
-  getWidgetData,
-  reizeElementStyle,
-} from './utils';
+import { changeElementActionById, delElementById, findElementById, getWidgetData } from './utils';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import math, { evaluate, json } from 'mathjs';
-import { useDebounce } from 'react-use';
 import ComponentForm from './components/ComponentForm';
 import PlatformUpload from '@/_components/PlatformUpload';
 
@@ -172,25 +164,16 @@ const Editor: React.FC = () => {
   };
 
   const handleData = useCallback(
-    (allVal: any) => {
+    (_: any, allVal: any) => {
       const data = { ...state.formData.contentProp, ...allVal };
-      console.log(state.formData, 'datadatadata');
 
       if (state.selectedElementId) {
-        const content = changeElement(state.dsl.content, state.selectedElementId, data);
         dispatch({
-          type: ReducerActionType.UpdateComponent,
+          type: ReducerActionType.ChangeElement,
           payload: {
-            dsl: {
-              ...state.dsl,
-              content: content!,
-            },
+            data,
           },
         });
-        currentDsl.current = {
-          ...state.dsl,
-          content: content!,
-        };
       }
     },
     [state],
@@ -560,6 +543,10 @@ const Editor: React.FC = () => {
     return currentDsl.current;
   };
 
+  const setCurrentDsl = (dsl: any) => {
+    currentDsl.current = dsl;
+  };
+
   return (
     <EditorContext.Provider
       value={{
@@ -571,6 +558,7 @@ const Editor: React.FC = () => {
         handleResize,
         resizeContainerFn,
         getCurrentDsl,
+        setCurrentDsl,
       }}
     >
       <DndProvider backend={HTML5Backend}>
