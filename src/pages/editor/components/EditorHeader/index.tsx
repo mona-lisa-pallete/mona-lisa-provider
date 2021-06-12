@@ -41,7 +41,6 @@ const EditorHeader: React.FC = () => {
   const history = useHistory();
   const [pageId, setPageId] = useState(query.pageId);
   const [saveLoading, setSaveLoading] = useState(false);
-  // const [pageName, setPageName] = useState(state.pageName);
 
   const { confirm } = Modal;
 
@@ -50,7 +49,7 @@ const EditorHeader: React.FC = () => {
   }, [state.dsl]);
 
   const back = () => {
-    if (state.oldDslStr !== JSON.stringify(state.dsl)) {
+    if (state.oldDslStr !== JSON.stringify(state.dsl) || state.pageName !== state.oldPageName) {
       confirm({
         title: '提示',
         icon: <ExclamationCircleOutlined />,
@@ -145,6 +144,12 @@ const EditorHeader: React.FC = () => {
         type: ActionType.SetOldDslStr,
         payload: {
           dslStr: JSON.stringify(state.dsl),
+        },
+      });
+      dispatch({
+        type: ActionType.ChangeOldPageName,
+        payload: {
+          name: state.pageName,
         },
       });
       history.replace({

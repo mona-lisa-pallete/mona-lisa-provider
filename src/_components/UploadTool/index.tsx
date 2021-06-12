@@ -1,6 +1,6 @@
 import { getUploadPolicy } from '@/services/common';
 import { Button, Upload } from 'antd';
-import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
+import { RcFile, UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import React, { useState } from 'react';
 import { UploadToolProps } from './types';
 
@@ -13,7 +13,15 @@ const getFileName = (fileName: string, uid: string) => {
 };
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
-  const { value, onChange, onSelectMaterial, multiple = false, onProgress, ...extraProps } = props;
+  const {
+    value,
+    onChange,
+    onSelectMaterial,
+    multiple = false,
+    onProgress,
+    beforeUpload,
+    ...extraProps
+  } = props;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -22,7 +30,10 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
       key: `${DIR_PATH}/${getFileName(file.name, file.uid)}`,
     };
   };
-  const handleBeforeUpload = async () => {
+  const handleBeforeUpload = async (file: RcFile, FileList: RcFile[]) => {
+    if (beforeUpload) {
+      await beforeUpload(file, FileList);
+    }
     const res = await getUploadPolicy({
       dirPath: DIR_PATH,
     });

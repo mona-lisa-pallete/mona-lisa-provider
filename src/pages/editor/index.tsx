@@ -49,6 +49,7 @@ export const initState: IState = {
   resize: undefined,
   materials: [],
   oldDslStr: '',
+  oldPageName: '',
 };
 
 /**
@@ -92,6 +93,7 @@ const Editor: React.FC = () => {
   const [observer, setObserver] = useState<any>();
   const oldDsl = useRef(JSON.stringify(state.dsl));
   const currentDsl = useRef<any>();
+  const oldPageName = useRef(JSON.stringify(state.pageName));
 
   useHideHeader(location);
 
@@ -233,6 +235,7 @@ const Editor: React.FC = () => {
     const getData = async () => {
       const compData = await getComponentsData();
       const res = await getPage(query.pageId);
+      oldPageName.current = res.data.name;
       dispatch({
         type: ReducerActionType.SetOldDslStr,
         payload: {
@@ -247,6 +250,12 @@ const Editor: React.FC = () => {
       });
       dispatch({
         type: ReducerActionType.SetPageName,
+        payload: {
+          name: res.data.name,
+        },
+      });
+      dispatch({
+        type: ReducerActionType.ChangeOldPageName,
         payload: {
           name: res.data.name,
         },
@@ -525,10 +534,6 @@ const Editor: React.FC = () => {
     dragContainerId.current = id;
   };
 
-  const getDslIsSave = () => {
-    return oldDsl.current === JSON.stringify(state.dsl);
-  };
-
   const handleResize = (str: string) => {
     resizeRef.current = str;
     setResizeVal(new Date().getTime());
@@ -554,7 +559,6 @@ const Editor: React.FC = () => {
         state,
         setActionData,
         setDragContainerId,
-        getDslIsSave,
         handleResize,
         resizeContainerFn,
         getCurrentDsl,

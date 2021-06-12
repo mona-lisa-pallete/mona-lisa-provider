@@ -117,3 +117,10 @@ export interface IChangeElement {
     data: any;
   };
 }
+
+export interface IChangeOldPageName {
+  type: ActionType.ChangeOldPageName;
+  payload: {
+    name: string;
+  };
+}

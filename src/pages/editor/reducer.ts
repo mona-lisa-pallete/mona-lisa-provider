@@ -67,6 +67,8 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
         action.payload.data,
       );
       return { ...state, dsl: { content, action: state.dsl.action } };
+    case ActionType.ChangeOldPageName:
+      return { ...state, oldPageName: action.payload.name };
     default:
       return state;
   }

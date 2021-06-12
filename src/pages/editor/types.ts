@@ -15,6 +15,7 @@ import {
   ISetOldDslStr,
   IChangeElementStyle,
   IChangeElement,
+  IChangeOldPageName,
 } from './action';
 
 import { CSSProperties } from 'react';
@@ -80,6 +81,7 @@ export interface IState {
   resize: undefined | string | number;
   materials: Array<{ ossUrl: string; materialType: MaterialType }>;
   oldDslStr: string;
+  oldPageName: string;
 }
 
 export type IAction =
@@ -98,7 +100,8 @@ export type IAction =
   | ISetMaterials
   | ISetOldDslStr
   | IChangeElementStyle
-  | IChangeElement;
+  | IChangeElement
+  | IChangeOldPageName;
 
 export enum ActionType {
   AddComponent = 'ADD_COMPONENT',
@@ -116,5 +119,6 @@ export enum ActionType {
   SetMaterials = 'SET_MATERIALS',
   SetOldDslStr = 'SET_OLD_DSL_STR',
   ChangeElementStyle = 'CHANGE_ELEMENT_STYLE',
-  ChangeElement = 'ChangeElement',
+  ChangeElement = 'CHANGE_ELEMENT',
+  ChangeOldPageName = 'CHANGE_OLD_PAGENAME',
 }

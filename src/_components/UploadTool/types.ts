@@ -1,4 +1,4 @@
-import { UploadFile } from 'antd/lib/upload/interface';
+import { RcFile, UploadFile } from 'antd/lib/upload/interface';
 
 export interface UploadToolProps {
   value?: string;
@@ -6,4 +6,5 @@ export interface UploadToolProps {
   onSelectMaterial: () => void;
   onProgress?: (list: Array<UploadFile<any>> | UploadFile<any>) => void;
   multiple?: boolean;
+  beforeUpload?: (file: RcFile, FileList: RcFile[]) => PromiseLike<void>;
 }

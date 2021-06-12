@@ -7,7 +7,6 @@ interface EditorContextType {
   dispatch: (action: IAction) => any;
   setActionData: (data: any) => void;
   setDragContainerId: (id: string) => void;
-  getDslIsSave: () => boolean;
   handleResize: (resize: string) => void;
   resizeContainerFn: () => void;
   getCurrentDsl: () => void;
@@ -19,7 +18,6 @@ const EditorContext = React.createContext<EditorContextType>({
   dispatch: () => {},
   setActionData: () => {},
   setDragContainerId: () => {},
-  getDslIsSave: () => false,
   handleResize: () => {},
   resizeContainerFn: () => {},
   getCurrentDsl: () => {},
