@@ -118,7 +118,6 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
       dsl: dslData,
       page: pageId,
     });
-    addMaterialsData();
     if (res.code === 0) {
       // message.success('保存成功');
       onPreview(res.data.url);

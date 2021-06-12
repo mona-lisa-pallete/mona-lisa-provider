@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Query, MaterialManageList, MaterialManageMenuBtn } from '../../index.style';
-import { Tooltip, Dropdown, Menu, Image, Modal, Pagination, notification, Form, Empty } from 'antd';
+import { Tooltip, Dropdown, Menu, Image, Modal, Pagination, Form, Empty } from 'antd';
 import { EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { getMaterials } from '@/services/material/';
 import { IGetMaterialsResponseList } from '@/services/material/schema';
@@ -130,12 +130,6 @@ const MaterialManage = (props: PictureMaterialProps, ref: React.Ref<PictureRef>)
         <Menu.Item
           key="copy"
           onClick={() => {
-            const isBig = item.contentLength / 1024 / 1024 > 5;
-            if (isBig) {
-              notification.info({
-                message: '下载较大视频文件时需要等待',
-              });
-            }
             downloadFile(item.ossUrl, item.materialType as MaterialType, item.materialName);
           }}
         >

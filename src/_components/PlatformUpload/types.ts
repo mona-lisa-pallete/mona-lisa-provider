@@ -8,4 +8,5 @@ export interface PlatformUploadProps {
   value?: any;
   onChange?: (data: any) => any;
   multiple?: boolean;
+  name: string;
 }

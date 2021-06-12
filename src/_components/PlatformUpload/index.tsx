@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import UploadTool from '@/_components/UploadTool/';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { PlatformUploadFile, PlatformUploadProps } from './types';
 import { useModel } from 'umi';
 import { MaterialType } from '@/pages/material-manage/types';
@@ -46,10 +46,11 @@ const UploadContentProps = new Map<PlatformUploadFile, DraggerProps>([
 
 const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
   const { setMaterialVisible, setMaterialType } = useModel('useMaterialModel');
-  const { type = PlatformUploadFile.Image, multiple = false, onChange, value } = props;
+  const { type = PlatformUploadFile.Image, multiple = false, onChange, value, name } = props;
   const [uploadVal, setUploadVal] = useState<any>(value);
   const { state, dispatch } = useContext(EditorContext);
   const { selectMaterial, isSuccess } = useSelectMaterial();
+  const nameRef = useRef<string>('');
 
   const changeImgSize = (height: number, width: number) => {
     return () => {
@@ -71,6 +72,9 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
 
   const setImgUrl = useCallback(() => {
     if (isSuccess && selectMaterial) {
+      if (nameRef.current !== name) {
+        return;
+      }
       const selectMaterialData = { ...selectMaterial };
 
       if (type === PlatformUploadFile.Image) {
@@ -91,6 +95,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
         default:
           break;
       }
+      nameRef.current = '';
     }
   }, [selectMaterial?.url, isSuccess]);
 
@@ -189,6 +194,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
   return (
     <UploadTool
       onSelectMaterial={() => {
+        nameRef.current = name;
         setMaterialType(materialType);
         setMaterialVisible(true);
       }}
