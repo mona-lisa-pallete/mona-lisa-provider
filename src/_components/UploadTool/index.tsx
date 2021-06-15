@@ -87,8 +87,9 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
             `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`,
         };
         onOriginChange && onOriginChange({ ...params, fileList: [_file] });
-
-        onChange(_file);
+        if (file.status === 'done') {
+          onChange(_file);
+        }
       }
     }
   };
@@ -106,9 +107,9 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
       <Upload.Dragger
         action={ossPath}
         data={getData}
-        beforeUpload={handleBeforeUpload}
         {...extraProps}
         onChange={handleChange}
+        beforeUpload={handleBeforeUpload}
       >
         {props.children}
       </Upload.Dragger>

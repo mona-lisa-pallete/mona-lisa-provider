@@ -8,13 +8,23 @@ import ImageContent from './ImageContent';
 import VideoContent from './VideoContent';
 import { UploadButton } from '../UploadTool/index.style';
 import { PlusOutlined } from '@ant-design/icons';
-import { UploadFile } from 'antd/lib/upload/interface';
-import { convertFileToMaterial, getFileType, getImageSize } from '@/utils/common';
+import { RcFile, UploadFile } from 'antd/lib/upload/interface';
+import {
+  convertFileToMaterial,
+  getFileType,
+  getImageSize,
+  isImgSize,
+  isMp4,
+  isPic,
+  isVideoSize,
+} from '@/utils/common';
 import EditorContext from '@/pages/editor/context';
 import { ActionType } from '@/pages/editor/types';
 import { DraggerProps } from 'antd/lib/upload';
 import { useSelectMaterial } from '@/hooks/material';
 import FileContent from './FileContent';
+import { MIME } from '@/pages/material-manage/components/File/types';
+import { message } from 'antd';
 
 const UploadContentRenderMap = new Map<PlatformUploadFile, React.FC>([
   [PlatformUploadFile.Image, ImageContent],
@@ -31,7 +41,7 @@ const UploadContentProps = new Map<PlatformUploadFile, DraggerProps>([
   [
     PlatformUploadFile.Image,
     {
-      showUploadList: true,
+      showUploadList: false,
       multiple: false,
       accept: 'image/png,image/jpeg,image/gif',
     },
@@ -39,7 +49,7 @@ const UploadContentProps = new Map<PlatformUploadFile, DraggerProps>([
   [
     PlatformUploadFile.Video,
     {
-      showUploadList: true,
+      showUploadList: false,
       multiple: false,
       accept: 'video/mp4',
     },
@@ -227,6 +237,76 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
     }
   };
 
+  const validateImg = async (file: RcFile, gifCheck?: boolean) => {
+    const types = ['image/png', 'image/jpeg'];
+    if (gifCheck) {
+      types.push('image/gif');
+    }
+    if (!isPic(file.name)) {
+      message.error({
+        content: '图片格式支持jpg、png',
+        style: {
+          marginTop: '210px',
+        },
+      });
+      return Promise.reject();
+    }
+    if (!isImgSize(file.size)) {
+      message.error({
+        content: '图片最大为1m',
+        style: {
+          marginTop: '210px',
+        },
+      });
+      return Promise.reject();
+    }
+    return Promise.resolve();
+  };
+
+  const validateVideo = async (file: RcFile) => {
+    if (!isMp4(file.name)) {
+      message.error({
+        content: '视频格式支持mp4',
+        style: {
+          marginTop: '210px',
+        },
+      });
+      return Promise.reject();
+    }
+    if (!isVideoSize(file.size)) {
+      message.error({
+        content: '视频最大为1024m',
+        style: {
+          marginTop: '210px',
+        },
+      });
+      return Promise.reject();
+    }
+    return Promise.resolve();
+  };
+
+  const handleBeforeUpload = async (file: RcFile) => {
+    const imgTypes = ['.png', '.jpeg', '.jpg'];
+    const videoTypes = ['.mp4'];
+    const fileTypes = Object.keys(MIME).map((i) => `.${i}`);
+    if (imgTypes.includes(getFileType(file.name))) {
+      await validateImg(file);
+    } else if (videoTypes.includes(getFileType(file.name))) {
+      await validateVideo(file);
+    } else if (fileTypes.includes(getFileType(file.name))) {
+      //
+    } else {
+      message.warning({
+        content: '只支持.jpg / .png / .mp4 / 文档类型',
+        style: {
+          marginTop: '210px',
+        },
+      });
+      return Promise.reject();
+    }
+    return Promise.resolve();
+  };
+
   return (
     <UploadTool
       fileList={fileList}
@@ -241,6 +321,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
       }}
       onChange={handleChange}
       {...extraProps}
+      beforeUpload={handleBeforeUpload}
     >
       {!uploadVal && (
         <UploadButton>

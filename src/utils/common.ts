@@ -89,7 +89,7 @@ function isVideoSize(size: number) {
 }
 
 function isImgSize(size: number) {
-  return size / 1024 / 1024 <= 20;
+  return size / 1024 / 1024 <= 1;
 }
 
 function getImageSize(img: HTMLImageElement) {

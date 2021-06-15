@@ -102,7 +102,7 @@ const MaterialManageUpload: React.FC = () => {
     }
     if (!isImgSize(file.size)) {
       message.error({
-        content: '图片最大为20m',
+        content: '图片最大为1m',
         style: {
           marginTop: '210px',
         },
