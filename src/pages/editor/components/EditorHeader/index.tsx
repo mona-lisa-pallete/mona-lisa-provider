@@ -145,6 +145,9 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
     setSaveLoading(false);
     if (res.code === 0) {
       setPageId(res.data.page);
+      if (query.type === 'add') {
+        setSettingVisible(true);
+      }
       dispatch({
         type: ActionType.SetOldDslStr,
         payload: {
