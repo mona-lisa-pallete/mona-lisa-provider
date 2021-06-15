@@ -12,7 +12,7 @@ import { Progress, Button, message, Input, Modal } from 'antd';
 import editIcon from '@/assets/img/common/edit.png';
 import { addMaterials } from '@/services/material';
 import { MaterialType } from '../types';
-import { getFileName, getFileType, isImgSize, isPic, isVideoSize, isMp4 } from '@/utils/common';
+import { getFileName, getFileType, isImgSize, isVideoSize, isMp4, isPicGif } from '@/utils/common';
 import type { RcFile } from 'antd/lib/upload';
 import './index.less';
 import { MessageType } from '@/utils/message';
@@ -91,7 +91,7 @@ const MaterialManageUpload: React.FC = () => {
     if (gifCheck) {
       types.push('image/gif');
     }
-    if (!isPic(file.name)) {
+    if (!isPicGif(file.name)) {
       message.error({
         content: '图片格式支持jpg、png',
         style: {
@@ -143,18 +143,18 @@ const MaterialManageUpload: React.FC = () => {
         type="imgVideoFile"
         multiple
         beforeUpload={async (file) => {
-          const imgTypes = ['.png', '.jpeg', '.jpg'];
+          const imgTypes = ['.png', '.jpeg', '.jpg', '.gif'];
           const videoTypes = ['.mp4'];
           const fileTypes = Object.keys(MIME).map((i) => `.${i}`);
           if (imgTypes.includes(getFileType(file.name))) {
-            await validateImg(file);
+            await validateImg(file, true);
           } else if (videoTypes.includes(getFileType(file.name))) {
             await validateVideo(file);
           } else if (fileTypes.includes(getFileType(file.name))) {
             //
           } else {
             message.warning({
-              content: '只支持.jpg / .png / .mp4 / 文档类型',
+              content: '只支持.jpg / .png / .gif / .mp4 / 文档类型',
               style: {
                 marginTop: '210px',
               },

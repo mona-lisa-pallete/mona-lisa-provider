@@ -15,7 +15,7 @@ import {
   getImageSize,
   isImgSize,
   isMp4,
-  isPic,
+  isPicGif,
   isVideoSize,
 } from '@/utils/common';
 import EditorContext from '@/pages/editor/context';
@@ -242,7 +242,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
     if (gifCheck) {
       types.push('image/gif');
     }
-    if (!isPic(file.name)) {
+    if (!isPicGif(file.name)) {
       message.error({
         content: '图片格式支持jpg、png',
         style: {
@@ -286,11 +286,11 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
   };
 
   const handleBeforeUpload = async (file: RcFile) => {
-    const imgTypes = ['.png', '.jpeg', '.jpg'];
+    const imgTypes = ['.png', '.jpeg', '.jpg', '.gif'];
     const videoTypes = ['.mp4'];
     const fileTypes = Object.keys(MIME).map((i) => `.${i}`);
     if (imgTypes.includes(getFileType(file.name))) {
-      await validateImg(file);
+      await validateImg(file, true);
     } else if (videoTypes.includes(getFileType(file.name))) {
       await validateVideo(file);
     } else if (fileTypes.includes(getFileType(file.name))) {
