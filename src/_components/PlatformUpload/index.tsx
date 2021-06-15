@@ -14,10 +14,12 @@ import EditorContext from '@/pages/editor/context';
 import { ActionType } from '@/pages/editor/types';
 import { DraggerProps } from 'antd/lib/upload';
 import { useSelectMaterial } from '@/hooks/material';
+import FileContent from './FileContent';
 
 const UploadContentRenderMap = new Map<PlatformUploadFile, React.FC>([
   [PlatformUploadFile.Image, ImageContent],
   [PlatformUploadFile.Video, VideoContent],
+  [PlatformUploadFile.File, FileContent],
 ]);
 
 const UploadContentRenderText = new Map<PlatformUploadFile, string>([
@@ -29,7 +31,7 @@ const UploadContentProps = new Map<PlatformUploadFile, DraggerProps>([
   [
     PlatformUploadFile.Image,
     {
-      showUploadList: false,
+      showUploadList: true,
       multiple: false,
       accept: 'image/png,image/jpeg,image/gif',
     },
@@ -37,21 +39,43 @@ const UploadContentProps = new Map<PlatformUploadFile, DraggerProps>([
   [
     PlatformUploadFile.Video,
     {
-      showUploadList: false,
+      showUploadList: true,
       multiple: false,
       accept: 'video/mp4',
+    },
+  ],
+  [
+    PlatformUploadFile.File,
+    {
+      showUploadList: true,
+      multiple: true,
+      accept: '.pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx',
     },
   ],
 ]);
 
 const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
   const { setMaterialVisible, setMaterialType } = useModel('useMaterialModel');
-  const { type = PlatformUploadFile.Image, multiple = false, onChange, value, name } = props;
+  const { type = PlatformUploadFile.Image, onChange, value, name, ...extraProps } = props;
   const [uploadVal, setUploadVal] = useState<any>(value);
   const { state, dispatch } = useContext(EditorContext);
   const { selectMaterial, isSuccess } = useSelectMaterial();
   const nameRef = useRef<string>('');
 
+  const UploadText = UploadContentRenderText.get(type);
+  const UploadProps = UploadContentProps.get(type);
+  const { multiple } = UploadProps || {};
+  const [fileList, setFileList] = useState<UploadFile[]>(() => {
+    return multiple
+      ? value
+      : value && [
+          {
+            name: '',
+            uid: 1,
+            url: value,
+          },
+        ];
+  }); // 为了接入素材库，变非受控为受控组件
   const changeImgSize = (height: number, width: number) => {
     return () => {
       let imgWidth: any;
@@ -91,6 +115,17 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
         case PlatformUploadFile.Image:
         case PlatformUploadFile.Video:
           onChange && onChange(selectMaterialData.url);
+          break;
+        case PlatformUploadFile.File:
+          const newItem = {
+            url: selectMaterialData.url,
+            name: selectMaterialData.name,
+            size: selectMaterialData.size,
+            uid: selectMaterialData.url.match(/assets\/(.*)\..*/)?.[1],
+          };
+          const list = [...(value || []), newItem];
+          onChange && onChange(list);
+          setFileList(list);
           break;
         default:
           break;
@@ -165,9 +200,15 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
           materials: [...state.materials, ...materials],
         },
       });
+      onChange && onChange(file);
+      setUploadVal(file);
     } else {
-      const url = (file as UploadFile<any>).url!;
-      const fileType = getFileType(url);
+      const { url, status } = file as UploadFile<any>;
+      if (status !== 'done') {
+        // 上传完成前，视频首帧或图片实际还未有对应资源
+        return;
+      }
+      const fileType = getFileType(url!);
       const materialTypeName = convertFileToMaterial(fileType) as MaterialType;
       dispatch({
         type: ActionType.SetMaterials,
@@ -181,25 +222,25 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
           ],
         },
       });
-      setTimeout(() => {
-        onChange && onChange(url);
-        setUploadVal(url);
-      }, 200);
+      onChange && onChange(url);
+      setUploadVal(url);
     }
   };
 
-  const UploadProps = UploadContentProps.get(type);
-  const UploadText = UploadContentRenderText.get(type);
-
   return (
     <UploadTool
+      fileList={fileList}
       onSelectMaterial={() => {
         nameRef.current = name;
         setMaterialType(materialType);
         setMaterialVisible(true);
       }}
       {...UploadProps}
+      onOriginChange={({ fileList: list }) => {
+        setFileList(list);
+      }}
       onChange={handleChange}
+      {...extraProps}
     >
       {!uploadVal && (
         <UploadButton>

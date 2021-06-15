@@ -121,7 +121,8 @@ const convertFileToMaterial = (fileType: string) => {
     case 'ppt':
     case 'pptx':
     case 'pdf':
-    case 'word':
+    case 'doc':
+    case 'docx':
     case 'xls':
     case 'xlsx':
       materialType = MaterialType.File;

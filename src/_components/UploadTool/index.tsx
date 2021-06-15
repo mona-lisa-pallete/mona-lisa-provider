@@ -14,14 +14,14 @@ const getFileName = (fileName: string, uid: string) => {
 
 const UploadTool: React.FC<UploadToolProps> = (props) => {
   const {
-    value,
     onChange,
+    onOriginChange,
     onSelectMaterial,
-    multiple = false,
     onProgress,
     beforeUpload,
     ...extraProps
   } = props;
+  const { multiple = false } = extraProps;
   const [policy, setPolicy] = useState<any>({});
 
   const getData = (file: UploadFile<any>) => {
@@ -58,55 +58,57 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     //         : '',
     //   };
     // });
-    const files = fileList.map((e) => {
-      return {
-        ...e,
-        url:
-          e.status === 'done'
-            ? `https://static.guorou.net/${DIR_PATH}/${getFileName(e.name, e.uid)}`
-            : '',
-      };
-    });
 
     if (multiple) {
-      if (files) {
-        onProgress && onProgress(files);
-      }
-      if (files && !files.some((i) => i.status !== 'done')) {
-        // @ts-ignore
-        onChange(files);
-        // onChangeFile && onChangeFile(file);
-      }
+      const files = fileList.map((e) => {
+        return {
+          ...e,
+          url:
+            e.name &&
+            e.uid &&
+            `https://static.guorou.net/${DIR_PATH}/${getFileName(e.name, e.uid)}`,
+        };
+      });
+      onOriginChange && onOriginChange(params);
+      onProgress && onProgress(files);
+      // @ts-ignore
+      onChange(files);
     } else {
       if (file) {
         // @ts-ignore
         onProgress && onProgress(file);
       }
-      if (file.status === 'done') {
-        if (file && onChange) {
-          file.url = `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`;
-          onChange(file);
-        }
+      if (file && onChange) {
+        const _file = {
+          ...file,
+          url:
+            file.name &&
+            file.uid &&
+            `https://static.guorou.net/${DIR_PATH}/${getFileName(file.name, file.uid)}`,
+        };
+        onOriginChange && onOriginChange({ ...params, fileList: [_file] });
+
+        onChange(_file);
       }
     }
   };
 
-  let imgUrl;
-  if (!multiple) {
-    imgUrl = value;
-  } else {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    imgUrl === (value as any)?.[0]?.url;
-  }
+  // let imgUrl;
+  // if (!multiple) {
+  //   imgUrl = value;
+  // } else {
+  //   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  //   imgUrl === (value as any)?.[0]?.url;
+  // }
 
   return (
     <div>
       <Upload.Dragger
-        onChange={handleChange}
         action={ossPath}
         data={getData}
         beforeUpload={handleBeforeUpload}
         {...extraProps}
+        onChange={handleChange}
       >
         {props.children}
       </Upload.Dragger>
