@@ -110,8 +110,8 @@ const File = (props: FileMaterialProps, ref: React.Ref<FileRef>) => {
         colon: false,
       },
       valueType: 'dateRange',
-      renderText(text) {
-        return moment(text).format('YYYY-MM-DD HH:mm:ss');
+      render(_, item) {
+        return moment(item.createTime).format('YYYY-MM-DD HH:mm:ss');
       },
     },
     {
