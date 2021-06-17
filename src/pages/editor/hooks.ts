@@ -1,4 +1,4 @@
-import { getAllActions } from '@/services/action';
+import { ActionType, getAllActions } from '@/services/action';
 import { getCompMeta } from '@/services/editor';
 import { getDllApi } from '@/utils/host';
 import { useEffect, useState } from 'react';
@@ -86,17 +86,12 @@ const useWidgetMeta = (() => {
 })();
 
 const useActions = () => {
-  const [actions, setActions] = useState<any>([]);
+  const [actions, setActions] = useState<ActionType[]>([]);
   useEffect(() => {
     async function request() {
       const { code, data } = await getAllActions();
       if (code === 0) {
-        setActions(
-          data.map((v) => ({
-            label: v.label,
-            value: v.type,
-          })),
-        );
+        setActions(data);
       }
     }
     request();
@@ -110,7 +105,7 @@ const useActions = () => {
 const useActionMeta = (() => {
   const metaCache: Record<string, any> = {}; // meta 缓存
 
-  return (elementRef: string) => {
+  return (elementRef: string, formUrl: string) => {
     const [metaState, setMetaState] = useState<{ fetching: boolean; metadata?: any }>({
       fetching: false,
       metadata: metaCache[elementRef],
@@ -119,12 +114,9 @@ const useActionMeta = (() => {
       async function request() {
         // getActionsByTypes // 简单版本管理，没有调用此接口
         setMetaState({ fetching: true });
-        const host = isLocal
-          ? getDllApi()
-          : `https://static.guorou.net/davinci/action/${elementRef}`;
+        const path = isLocal ? `${getDllApi()}/${elementRef}.js` : formUrl;
+        await LoadScript({ src: path });
 
-        const path = isLocal ? elementRef : 'form';
-        await LoadScript({ src: `${host}/${path}.js` });
         metaCache[elementRef] = true; // TODO 简化为 true，没有从json中获取实际meta数据
         setMetaState({
           fetching: false,
@@ -137,7 +129,7 @@ const useActionMeta = (() => {
       } else {
         request();
       }
-    }, [elementRef]);
+    }, [elementRef, formUrl]);
 
     return metaState;
   };

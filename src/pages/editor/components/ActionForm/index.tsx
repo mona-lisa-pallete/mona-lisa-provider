@@ -7,10 +7,9 @@ import { FormSubTitle } from '../../index.style';
 import nzh from 'nzh';
 import { useActionMeta, useActions } from '../../hooks';
 
-function WithActionForm(props: { actionType: string; index: number }) {
-  const { actionType, index } = props;
-
-  const { fetching } = useActionMeta(actionType);
+function WithActionForm(props: { actionType: string; index: number; formUrl: string }) {
+  const { actionType, index, formUrl } = props;
+  const { fetching } = useActionMeta(actionType, formUrl);
   const UI_DLL = (window as any)[actionType]?.default;
 
   if (fetching) {
@@ -29,6 +28,10 @@ function WithActionForm(props: { actionType: string; index: number }) {
 
 const ActionForm: React.FC<ActionFormProps> = () => {
   const actions = useActions();
+  const actionOptions = actions.map((v) => ({
+    label: v.label,
+    value: v.type,
+  }));
   return (
     <>
       {/* <FormSubTitle>组件布局</FormSubTitle> */}
@@ -73,7 +76,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                     />
                   </div>
                   <Form.Item name={[index, 'actionType']}>
-                    <Select options={actions} />
+                    <Select options={actionOptions} />
                   </Form.Item>
                   <Form.Item
                     shouldUpdate={(prevValues, curValues) => {
@@ -89,7 +92,14 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                       if (!actionType) {
                         return;
                       }
-                      return <WithActionForm index={index} actionType={actionType} />;
+                      const _index = actions.findIndex((v) => v.type === actionType);
+                      return (
+                        <WithActionForm
+                          index={index}
+                          formUrl={actions[_index]?.formUrl}
+                          actionType={actionType}
+                        />
+                      );
                     }}
                   </Form.Item>
                 </div>
