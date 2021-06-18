@@ -46,6 +46,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
   const [pageId, setPageId] = useState(query.pageId);
   const [saveLoading, setSaveLoading] = useState(false);
   const { onPreview } = props;
+  const [inputVisible, setInputVisible] = useState(false);
 
   const { confirm } = Modal;
 
@@ -285,24 +286,43 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
         </Popover>
       </PageHeaderCol>
       <PageNameBox>
-        <Input
-          bordered={false}
-          value={state.pageName}
-          style={{
-            width: '200px',
-            textAlign: 'center',
-          }}
-          maxLength={30}
-          onChange={(e) => {
-            dispatch({
-              type: ActionType.SetPageName,
-              payload: {
-                name: e.target.value,
-              },
-            });
-          }}
-        />
-        <i className="icon-edit iconfont" />
+        {inputVisible && (
+          <Input
+            bordered={false}
+            value={state.pageName}
+            style={{
+              width: '200px',
+              textAlign: 'center',
+            }}
+            onBlur={() => {
+              setInputVisible(false);
+            }}
+            maxLength={30}
+            onChange={(e) => {
+              dispatch({
+                type: ActionType.SetPageName,
+                payload: {
+                  name: e.target.value,
+                },
+              });
+            }}
+          />
+        )}
+        {!inputVisible && (
+          <div>
+            {state.pageName}
+            <i
+              onClick={() => {
+                setInputVisible(true);
+              }}
+              style={{
+                marginLeft: '10px',
+                cursor: 'pointer',
+              }}
+              className="icon-edit iconfont"
+            />
+          </div>
+        )}
       </PageNameBox>
       <ActionBox>
         {query.dev && (
@@ -333,9 +353,14 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
           }}
           loading={saveLoading}
         >
-          保存 |
+          保存&nbsp;&nbsp;|
           <Popover overlayClassName="table-action-menu" content={menu}>
-            <i className="icon-more iconfont" />
+            <i
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="icon-more iconfont"
+            />
           </Popover>
         </SaveBtn>
         <Button

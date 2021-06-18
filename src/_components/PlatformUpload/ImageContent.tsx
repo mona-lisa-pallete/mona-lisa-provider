@@ -13,7 +13,12 @@ const ImageContent: React.FC<ImageContentProps> = (props) => {
   // }, [value]);
 
   return (
-    <div>
+    <div
+      style={{
+        maxHeight: '180px',
+        overflowY: 'scroll',
+      }}
+    >
       <img
         style={{
           margin: '0 auto',

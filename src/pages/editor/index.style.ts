@@ -14,7 +14,11 @@ export const EditorConfig = styled.div`
     margin-bottom: 20px;
   }
   .del-btn {
+    position: fixed;
+    right: 16px;
+    bottom: 10px;
     width: 100%;
+    width: 288px;
   }
 `;
 
