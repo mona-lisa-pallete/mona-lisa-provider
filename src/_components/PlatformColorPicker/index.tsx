@@ -14,6 +14,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange }) => {
     <div className="color-picker">
       <i className="icon-Typographycolor iconfont" />
       <Popover
+        trigger="click"
         content={
           <SketchPicker
             color={color}
