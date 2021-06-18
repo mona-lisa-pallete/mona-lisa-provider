@@ -9,6 +9,9 @@ export const ProjectContainer = styled.div`
 export const ProjectMain = styled.div`
   margin-top: 16px;
   padding: 0 16px;
+  .ant-form-item {
+    margin-bottom: 16px;
+  }
 `;
 
 export const ProjectListContainer = styled.div`

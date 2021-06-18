@@ -63,15 +63,6 @@ const Project: React.FC = () => {
     return (
       <MenuBtn>
         <Menu.Item
-          key="del"
-          onClick={(e) => {
-            e.domEvent.stopPropagation();
-            handleDelProject(item.id);
-          }}
-        >
-          删除项目
-        </Menu.Item>
-        <Menu.Item
           key="edit"
           onClick={(e) => {
             e.domEvent.stopPropagation();
@@ -79,6 +70,18 @@ const Project: React.FC = () => {
           }}
         >
           编辑项目
+        </Menu.Item>
+        <Menu.Item
+          key="del"
+          onClick={(e) => {
+            e.domEvent.stopPropagation();
+            handleDelProject(item.id);
+          }}
+          style={{
+            color: '#F5222D',
+          }}
+        >
+          删除项目
         </Menu.Item>
       </MenuBtn>
     );

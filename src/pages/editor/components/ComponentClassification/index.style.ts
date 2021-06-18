@@ -22,7 +22,7 @@ export const ComponentClassificationList = styled.div`
 `;
 
 export const ComponentClassificationItem = styled.div`
-  height: 68px;
+  height: 64px;
   width: 64px;
   font-size: 12px;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -41,6 +41,7 @@ export const ComponentClassificationItem = styled.div`
     margin-bottom: 5px;
     color: rgba(5, 12, 50, 0.7);
     font-size: 24px;
+    line-height: 28px;
   }
   &:hover {
     &:after {

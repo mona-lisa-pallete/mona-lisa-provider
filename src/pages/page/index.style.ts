@@ -9,6 +9,9 @@ export const PageContainer = styled.div`
 export const PageMain = styled.div`
   margin-top: 16px;
   padding: 0 16px;
+  .ant-form-item {
+    margin-bottom: 16px;
+  }
 `;
 
 export const PageInfo = styled.div`

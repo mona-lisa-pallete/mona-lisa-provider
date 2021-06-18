@@ -89,3 +89,36 @@ taro-image-core {
   width: auto;
   height: auto;
 }
+
+aside.ant-layout-sider-has-trigger {
+  background: #FEFEFE;
+  .ant-menu {
+    background: #FEFEFE !important;
+  }
+  .ant-menu-item {
+    color: #050C32;
+  }
+  .ant-menu-item-selected {
+    background: #EAF4FF !important;
+    color: #1980FF !important;
+    position: relative;
+    &:after {
+      content: '';
+      width: 4px;
+      height: 22px;
+      background: #1980FF;
+      border-radius: 0px 100px 100px 0px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+  }
+  .ant-menu-item-active {
+    color: #1980FF !important;
+  }
+}
+.ant-layout-sider-trigger {
+  background: #FEFEFE !important;
+  color: #50546F !important;
+}

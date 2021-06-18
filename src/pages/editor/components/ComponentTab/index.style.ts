@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const TabBox = styled.div`
-  padding: 16px;
+  padding: 16px 16px 0 16px;
 `;
 
 export const TabItemName = styled.div`
