@@ -326,7 +326,7 @@ const Page: React.FC = () => {
       title: '操作',
       valueType: 'option',
       hideInSearch: true,
-      width: 260,
+      width: 220,
       fixed: 'right',
       render(_, item) {
         const menu = (
@@ -369,31 +369,30 @@ const Page: React.FC = () => {
             >
               编辑
             </Button>
-            {item.releaseBatch && (
-              <Button
-                type="link"
-                onClick={() => {
-                  const isBoth =
-                    item.platform.includes(PlatformType.MINIAPP) &&
-                    item.platform.includes(PlatformType.WEB);
-                  // const isMini = item.platform.includes(PlatformType.MINIAPP);
-                  const isH5 = item.platform.includes(PlatformType.WEB);
-                  if (isBoth) {
-                    setPreviewType('h5mini');
-                  } else if (isH5) {
-                    setPreviewType('h5');
-                  } else {
-                    setPreviewType('mini');
-                  }
-                  setH5Url(item.webUrl);
-                  setMiniappUrl(item.miniappUrl);
-                  setMiniappCodeUrl(item.miniappCodeUrl);
-                  setPreviewVisible(true);
-                }}
-              >
-                预览
-              </Button>
-            )}
+            <Button
+              type="link"
+              disabled={!item.releaseBatch}
+              onClick={() => {
+                const isBoth =
+                  item.platform.includes(PlatformType.MINIAPP) &&
+                  item.platform.includes(PlatformType.WEB);
+                // const isMini = item.platform.includes(PlatformType.MINIAPP);
+                const isH5 = item.platform.includes(PlatformType.WEB);
+                if (isBoth) {
+                  setPreviewType('h5mini');
+                } else if (isH5) {
+                  setPreviewType('h5');
+                } else {
+                  setPreviewType('mini');
+                }
+                setH5Url(item.webUrl);
+                setMiniappUrl(item.miniappUrl);
+                setMiniappCodeUrl(item.miniappCodeUrl);
+                setPreviewVisible(true);
+              }}
+            >
+              预览
+            </Button>
             {item.status === 0 && (
               <Button
                 type="link"

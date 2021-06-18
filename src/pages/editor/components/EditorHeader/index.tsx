@@ -1,5 +1,5 @@
 import { Button, Popover, Modal, Input, message } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   ActionBox,
   BackBtn,
@@ -47,6 +47,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
   const [saveLoading, setSaveLoading] = useState(false);
   const { onPreview } = props;
   const [inputVisible, setInputVisible] = useState(false);
+  const InputRef = useRef<any>(null);
 
   const { confirm } = Modal;
 
@@ -286,34 +287,42 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
         </Popover>
       </PageHeaderCol>
       <PageNameBox>
-        {inputVisible && (
-          <Input
-            bordered={false}
-            value={state.pageName}
-            style={{
-              width: '200px',
-              textAlign: 'center',
-            }}
-            onBlur={() => {
-              setInputVisible(false);
-            }}
-            maxLength={30}
-            onChange={(e) => {
-              dispatch({
-                type: ActionType.SetPageName,
-                payload: {
-                  name: e.target.value,
-                },
-              });
-            }}
-          />
-        )}
+        <Input
+          bordered={false}
+          value={state.pageName}
+          style={{
+            width: '200px',
+            textAlign: 'center',
+            display: inputVisible ? 'inline-block' : 'none',
+          }}
+          ref={InputRef}
+          onBlur={(e) => {
+            if (!e.target.value.trim()) {
+              message.warning('请输入页面名称');
+            }
+            setInputVisible(false);
+          }}
+          maxLength={30}
+          onChange={(e) => {
+            dispatch({
+              type: ActionType.SetPageName,
+              payload: {
+                name: e.target.value,
+              },
+            });
+          }}
+        />
         {!inputVisible && (
           <div>
             {state.pageName}
             <i
               onClick={() => {
                 setInputVisible(true);
+                setTimeout(() => {
+                  InputRef.current!.focus({
+                    cursor: 'start',
+                  });
+                }, 200);
               }}
               style={{
                 marginLeft: '10px',
