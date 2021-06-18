@@ -24,7 +24,7 @@ import { delPage, getPages, getPageUsers, updatePage } from '@/services/page';
 import { useLocation } from 'umi';
 import { PageActionType, PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
-import { ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { PageEdit } from './types';
 import PageSettingModal from './components/PageSettingModal/';
 import { useHideHeader } from '../editor/hooks';
@@ -525,7 +525,14 @@ const Page: React.FC = () => {
       <PagePopoverStyle />
       <StatusTagStyle />
       <PageHeader title="页面列表">
-        <Button type="primary" onClick={addPage}>
+        <Button
+          type="primary"
+          style={{
+            padding: '0 10px',
+          }}
+          onClick={addPage}
+        >
+          <PlusOutlined />
           创建页面
         </Button>
       </PageHeader>

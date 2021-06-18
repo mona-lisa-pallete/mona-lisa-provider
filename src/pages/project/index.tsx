@@ -15,7 +15,7 @@ import {
 } from '@/services/project';
 import { ProjectItem as ProjectItemType } from '@/services/project/schema';
 import moment from 'moment';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { confirm } = Modal;
 
@@ -171,7 +171,14 @@ const Project: React.FC = () => {
   return (
     <ProjectContainer>
       <PageHeader title="项目列表">
-        <Button type="primary" onClick={handleModalVisible}>
+        <Button
+          style={{
+            padding: '0 10px',
+          }}
+          type="primary"
+          onClick={handleModalVisible}
+        >
+          <PlusOutlined />
           创建项目
         </Button>
       </PageHeader>

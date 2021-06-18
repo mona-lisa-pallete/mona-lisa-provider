@@ -6,6 +6,11 @@ export const ProjectItem = styled.div`
   border-radius: 4px;
   border: 1px solid #dadbe2;
   display: inline-block;
+  cursor: pointer;
+  transition: all 0.5s;
+  &:hover {
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 export const ProjectItemName = styled.div`
@@ -59,4 +64,7 @@ export const ProjectItemInfoItem = styled.div`
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: rgba(5, 12, 50, 0.45);
+  &:first-child {
+    margin-bottom: 10px;
+  }
 `;
