@@ -1,13 +1,32 @@
 .viewport-item--active {
   position: relative;
-  &:before {
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    bottom: -1px;
-    left: -1px;
-    z-index: 0;
-    border: 2px solid #187ffe;
-    content: '';
+  // &:before {
+  //   position: absolute;
+  //   top: -1px;
+  //   right: -1px;
+  //   bottom: -1px;
+  //   left: -1px;
+  //   z-index: 0;
+  //   border: 2px solid #187ffe;
+  //   content: '';
+  // }
+  .indicator {
+    display: block;
   }
 }
+
+.indicator {
+  pointer-events: none;
+  display: none;
+  border: 2px solid #187ffe;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 11;
+}
+
+// [taro-*] {
+//   display: block;
+// }
