@@ -103,7 +103,7 @@ const ViewportItem: React.FC<CardProps> = (props) => {
       style={{
         position: 'relative',
         width: '100%',
-        fontSize: '0',
+        // fontSize: '0',
       }}
       className={`${active ? 'viewport-item--active' : ''}`}
       onClick={onClick}
@@ -141,6 +141,7 @@ const ViewportItem: React.FC<CardProps> = (props) => {
           <i className="icon-delete iconfont" onClick={handleDel} />
         </ActionBar>
       )}
+      <div className="indicator"></div>
     </ViewportItemContainer>
   );
 };
