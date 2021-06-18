@@ -13,7 +13,7 @@ export const ConfirmModalGlobalStyle = createGlobalStyle`
       line-height: 48px;
     }
     .ant-modal-body {
-      padding: 20px;
+      padding: 20px 8px 20px 20px;
     }
     .ant-modal-footer {
       padding: 0;

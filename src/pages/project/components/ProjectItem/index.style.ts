@@ -51,6 +51,7 @@ export const ProjectItemIcon = styled.div`
 export const ProjectItemInfo = styled.div`
   background: #fefefe;
   padding: 12px 0 12px 16px;
+  border-radius: 4px;
 `;
 
 export const ProjectItemInfoItem = styled.div`

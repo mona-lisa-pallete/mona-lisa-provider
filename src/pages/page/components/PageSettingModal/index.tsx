@@ -3,16 +3,109 @@ import { ConfirmModalFooter } from '@/components/ConfirmModal/index.style';
 import UploadTool from '@/components/UploadTool';
 import { FormSubTitle } from '@/pages/editor/index.style';
 import { MiniPageStyle, PlatformType } from '@/services/page/schema';
-import { Button, Form, Input, Radio } from 'antd';
+import { Button, Form, Input, Radio, Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { ShareFormContainer, ShareFormItem } from './index.style';
+import { PageTypeTipsContainer, ShareFormContainer, ShareFormItem } from './index.style';
 import { PageSettingModalProps } from './types';
 import { useModel } from 'umi';
 import { useSelectMaterial } from '@/hooks/material';
 import { updatePage } from '@/services/page';
 import { getPage } from '@/services/editor';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
+
+const PageTypeTips = (
+  <div>
+    页面类型
+    <Popover
+      placement="bottom"
+      content={
+        <PageTypeTipsContainer>
+          <div className="title">页面标题包含了H5标题和小程序标题</div>
+          <div>H5样式</div>
+          <img
+            className="tips-img tips-img--first"
+            src="https://static.guorou.net/course-static/56ebb00ede1a476fa1c036cd960f1d3b.png"
+          />
+          <div>小程序样式</div>
+          <img
+            className="tips-img"
+            src="https://static.guorou.net/course-static/11cc92b6eeb14d118c1cd644070ce68c.png"
+          />
+        </PageTypeTipsContainer>
+      }
+    >
+      <QuestionCircleOutlined
+        style={{
+          marginLeft: '9px',
+        }}
+      />
+    </Popover>
+  </div>
+);
+
+const MiniTips = (
+  <div>
+    小程序页面样式设置
+    <Popover
+      placement="bottom"
+      content={
+        <PageTypeTipsContainer>
+          <div className="title">小程序可以设置样式展示</div>
+          <div>默认形式：将保留小程序顶部信息栏和状态栏</div>
+          <img
+            className="tips-img tips-img--first"
+            src="https://static.guorou.net/course-static/9f78c4aeea684959b337f771f13d9461.png"
+          />
+          <div>半沉浸式：将隐藏小程序状态栏，显示信息栏</div>
+          <img
+            className="tips-img tips-img--first"
+            src="https://static.guorou.net/course-static/ba7e4ddb62e54bf29fe0ebbab8bb639e.png"
+          />
+          <div>全沉浸式：将隐藏小程序状态栏和信息栏</div>
+          <img
+            className="tips-img"
+            src="https://static.guorou.net/course-static/9ff4fc183b73451aba70ea4b96cd4b23.png"
+          />
+        </PageTypeTipsContainer>
+      }
+    >
+      <QuestionCircleOutlined
+        style={{
+          marginLeft: '9px',
+        }}
+      />
+    </Popover>
+  </div>
+);
+
+const PageShareTips = (
+  <Popover
+    placement="bottom"
+    content={
+      <PageTypeTipsContainer>
+        <div className="title">页面分享包括H5分享和小程序分享</div>
+        <div>H5</div>
+        <img
+          className="tips-img tips-img--first"
+          src="https://static.guorou.net/course-static/20d438a0cdd148f188df8669e1d69a1a.png"
+        />
+        <div>小程序</div>
+        <img
+          className="tips-img"
+          src="https://static.guorou.net/course-static/1fe1e3fc959f4a75b91647b7a025c951.png"
+        />
+      </PageTypeTipsContainer>
+    }
+  >
+    <QuestionCircleOutlined
+      style={{
+        marginLeft: '9px',
+      }}
+    />
+  </Popover>
+);
 
 const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
   const { visible, onChangeVisible, id, beforeSave, onlineVal = true } = props;
@@ -175,6 +268,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
         style={{
           maxHeight: 'calc(100vh - 250px)',
           overflow: 'auto',
+          paddingRight: '12px',
         }}
         form={form}
         onFinish={submit}
@@ -188,7 +282,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
         <Form.Item label="页面名称" name="name">
           <Input maxLength={30} />
         </Form.Item>
-        <Form.Item label="页面类型" name="platform">
+        <Form.Item label={PageTypeTips} name="platform">
           <Radio.Group>
             <Radio value={PlatformType.WEB}>H5</Radio>
             <Radio value={PlatformType.MINIAPP}>小程序</Radio>
@@ -202,7 +296,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
               return null;
             }
             return (
-              <Form.Item label="小程序页面样式设置" name="miniappImmersion">
+              <Form.Item label={MiniTips} name="miniappImmersion">
                 <Radio.Group>
                   <Radio value={MiniPageStyle.Default}>默认样式</Radio>
                   <Radio value={MiniPageStyle.SemiImmersion}>半沉浸式</Radio>
@@ -212,7 +306,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
             );
           }}
         </Form.Item>
-        <FormSubTitle>页面分享配置</FormSubTitle>
+        <FormSubTitle>页面分享配置 {PageShareTips}</FormSubTitle>
         <Form.Item noStyle shouldUpdate>
           {() => {
             const platform = form.getFieldValue('platform');
@@ -253,7 +347,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
                     >
                       <TextArea />
                     </Form.Item>
-                    <Form.Item name={['attributes', 'miniappShareImage']}>
+                    <Form.Item label="小程序分享图片" name={['attributes', 'miniappShareImage']}>
                       <UploadTool
                         onSelectMaterial={() => {
                           setImgField('miniappShareImage');
