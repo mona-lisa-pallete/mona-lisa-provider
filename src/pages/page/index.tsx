@@ -217,10 +217,10 @@ const Page: React.FC = () => {
       },
       valueType: 'select',
       valueEnum: {
-        0: {
+        offline: {
           text: '未上线',
         },
-        1: {
+        online: {
           text: '已上线',
         },
       },
