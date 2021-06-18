@@ -154,10 +154,10 @@ const Page: React.FC = () => {
           text: '小程序',
         },
       },
-      fieldProps: {
-        mode: 'multiple',
-        maxTagCount: 'responsive',
-      },
+      // fieldProps: {
+      //   mode: 'multiple',
+      //   maxTagCount: 'responsive',
+      // },
       render(_, item) {
         const isEdit =
           item.miniappReleaseState !== PageStatusType.Offline &&
