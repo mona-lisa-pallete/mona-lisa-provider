@@ -16,6 +16,8 @@ import {
 import { ProjectItem as ProjectItemType } from '@/services/project/schema';
 import moment from 'moment';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { useHideHeader } from '../editor/hooks';
+import { useLocation } from 'umi';
 
 const { confirm } = Modal;
 
@@ -27,6 +29,9 @@ const Project: React.FC = () => {
     name: '',
     createUserName: '',
   });
+  const location: any = useLocation();
+  useHideHeader(location);
+
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [user, setUsers] = useState<Array<{ label: string; value: string }>>([]);
@@ -132,12 +137,13 @@ const Project: React.FC = () => {
     }
   };
 
-  const goToPage = (projectRouteId: number) => {
+  const goToPage = (projectRouteId: number, title: string) => {
     // @ts-ignore 是有query这个参数的，但是umi没有声明
     history.push({
       pathname: `/page`,
       query: {
         projectId: `${projectRouteId}`,
+        projectTitle: title,
       },
     });
   };
@@ -217,7 +223,7 @@ const Project: React.FC = () => {
                 createTime={moment(i.createTime).format('YYYY-MM-DD HH:mm:ss')}
                 createUserName={i.createUserName}
                 onClick={() => {
-                  goToPage(i.id);
+                  goToPage(i.id, i.name);
                 }}
                 actionRender={menu(i)}
               />

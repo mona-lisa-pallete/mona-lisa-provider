@@ -63,6 +63,15 @@ section {
   }
 }
 
+._page main,
+._project main,
+._material-manage main {
+  margin: 0!important;
+  padding: 16px;
+  max-height: calc(100vh - 60px);
+  overflow-y: scroll;
+}
+
 .reset-antd {
   height: 48px !important;
 }
@@ -91,23 +100,23 @@ taro-image-core {
 }
 
 aside.ant-layout-sider-has-trigger {
-  background: #FEFEFE;
+  background: #fefefe;
   .ant-menu {
-    background: #FEFEFE !important;
+    background: #fefefe !important;
   }
   .ant-menu-item {
-    color: #050C32;
+    color: #050c32;
   }
   .ant-menu-item-selected {
-    background: #EAF4FF !important;
-    color: #1980FF !important;
+    background: #eaf4ff !important;
+    color: #1980ff !important;
     position: relative;
     &:after {
       content: '';
       width: 4px;
       height: 22px;
-      background: #1980FF;
-      border-radius: 0px 100px 100px 0px;
+      background: #1980ff;
+      border-radius: 0 100px 100px 0;
       position: absolute;
       top: 50%;
       left: 0;
@@ -115,10 +124,10 @@ aside.ant-layout-sider-has-trigger {
     }
   }
   .ant-menu-item-active {
-    color: #1980FF !important;
+    color: #1980ff !important;
   }
 }
 .ant-layout-sider-trigger {
-  background: #FEFEFE !important;
-  color: #50546F !important;
+  background: #fefefe !important;
+  color: #50546f !important;
 }

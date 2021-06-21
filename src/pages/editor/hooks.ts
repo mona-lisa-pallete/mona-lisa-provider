@@ -13,6 +13,7 @@ const useHideHeader = (location: any) => {
     (document.querySelector('.reset-antd') as HTMLElement).style.display = style;
     (document.querySelector('.site-layout-background') as HTMLElement).style.margin =
       location.pathname === '/editor' ? '0px' : '16px';
+    document.body.className = location.pathname.replace(/\//g, '_');
   }, [location]);
 };
 

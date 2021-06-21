@@ -1,5 +1,5 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Image, message, Modal, Popover, Tag, Tooltip } from 'antd';
+import { Button, Image, message, Modal, Popover, Tag, Tooltip, Breadcrumb } from 'antd';
 import React, { useRef, useState } from 'react';
 import {
   PageAction,
@@ -424,7 +424,7 @@ const Page: React.FC = () => {
                 下线
               </Button>
             )}
-            <Popover overlayClassName="table-action-menu" content={menu}>
+            <Popover overlayClassName="table-action-menu" content={menu} placement="bottom">
               <Button type="link">
                 <i
                   style={{
@@ -520,81 +520,89 @@ const Page: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-      <PagePopoverStyle />
-      <StatusTagStyle />
-      <PageHeader title="页面列表">
-        <Button
-          type="primary"
-          style={{
-            padding: '0 10px',
+    <>
+      <Breadcrumb>
+        <Breadcrumb.Item>
+          <a href="/davinciprovider/project">项目列表</a>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>{query.projectTitle || '项目名称'}</Breadcrumb.Item>
+      </Breadcrumb>
+      <PageContainer>
+        <PagePopoverStyle />
+        <StatusTagStyle />
+        <PageHeader title="页面列表">
+          <Button
+            type="primary"
+            style={{
+              padding: '0 10px',
+            }}
+            onClick={addPage}
+          >
+            <PlusOutlined />
+            创建页面
+          </Button>
+        </PageHeader>
+        <PageMain>
+          <ProTable<PageItem>
+            bordered
+            polling={5000}
+            actionRef={tableRef}
+            columns={columns}
+            rowKey="id"
+            search={{
+              labelWidth: 'auto',
+            }}
+            scroll={{ x: 'max-content' }}
+            request={getData}
+            form={{
+              labelAlign: 'left',
+            }}
+            pagination={{
+              pageSize: 10,
+            }}
+            options={false}
+          />
+        </PageMain>
+        <PreviewModal
+          h5Url={h5Url}
+          onChange={() => {
+            setPreviewVisible(false);
           }}
-          onClick={addPage}
-        >
-          <PlusOutlined />
-          创建页面
-        </Button>
-      </PageHeader>
-      <PageMain>
-        <ProTable<PageItem>
-          bordered
-          polling={5000}
-          actionRef={tableRef}
-          columns={columns}
-          rowKey="id"
-          search={{
-            labelWidth: 'auto',
-          }}
-          scroll={{ x: 'max-content', y: '600px' }}
-          request={getData}
-          form={{
-            labelAlign: 'left',
-          }}
-          pagination={{
-            pageSize: 10,
-          }}
-          options={false}
+          type={previewType as 'h5' | 'mini' | 'h5mini'}
+          miniappCodeUrl={miniappCodeUrl}
+          miniappUrl={miniappUrl}
+          visible={previewVisible}
         />
-      </PageMain>
-      <PreviewModal
-        h5Url={h5Url}
-        onChange={() => {
-          setPreviewVisible(false);
-        }}
-        type={previewType}
-        miniappCodeUrl={miniappCodeUrl}
-        miniappUrl={miniappUrl}
-        visible={previewVisible}
-      />
-      <PageSettingModal
-        id={pageId}
-        onChangeVisible={(val) => {
-          setSettingVisible(val);
-        }}
-        visible={settingVisible}
-      />
-      {/* <FreedomDrag /> */}
-      {/* <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
-        <CopyForm colon layout="vertical">
-          <Form.Item label="页面类型">
-            <Radio.Group>
-              <Radio value={1}>当前项目</Radio>
-              <Radio value={2}>其他项目</Radio>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item>
-            <Select />
-          </Form.Item>
-          <Form.Item>
-            <Radio.Group>
-              <Radio value={1}>H5</Radio>
-              <Radio value={2}>小程序</Radio>
-              <Radio value={3}>H5&小程序</Radio>
-            </Radio.Group>
-          </Form.Item>
-        </CopyForm>
-      </ConfirmModal> */}
-    </PageContainer>
+        <PageSettingModal
+          id={pageId}
+          onChangeVisible={(val) => {
+            setSettingVisible(val);
+          }}
+          visible={settingVisible}
+        />
+        {/* <FreedomDrag /> */}
+        {/* <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
+          <CopyForm colon layout="vertical">
+            <Form.Item label="页面类型">
+              <Radio.Group>
+                <Radio value={1}>当前项目</Radio>
+                <Radio value={2}>其他项目</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item>
+              <Select />
+            </Form.Item>
+            <Form.Item>
+              <Radio.Group>
+                <Radio value={1}>H5</Radio>
+                <Radio value={2}>小程序</Radio>
+                <Radio value={3}>H5&小程序</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </CopyForm>
+        </ConfirmModal> */}
+      </PageContainer>
+    </>
   );
 };
 

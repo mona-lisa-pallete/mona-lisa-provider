@@ -8,8 +8,6 @@ export const Query = styled(QueryFilter)`
 
 export const MaterialManageContainer = styled.div`
   background-color: #fff;
-  max-height: calc(100vh - 100px);
-  overflow: auto;
   .ant-tabs-nav {
     padding-left: 16px;
   }

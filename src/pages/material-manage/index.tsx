@@ -8,7 +8,7 @@ import { ViewerItem } from '@/components/Viewer/types';
 import { MaterialType } from './types';
 // import { getUser } from '@/services/common';
 // import { UserRequestType } from '@/services/common/schema';
-import { useModel } from 'umi';
+import { useModel, useLocation } from 'umi';
 import { MessageType } from '@/utils/message';
 import Picture from './components/Picture/';
 import Video from './components/Video/';
@@ -16,6 +16,7 @@ import { PictureRef as PictureRefType } from './components/picture/types';
 import { VideoRef as VideoRefType } from './components/Video/types';
 import { FileRef as FileRefType } from './components/File/types';
 import File from './components/File/';
+import { useHideHeader } from '../editor/hooks';
 
 const { TabPane } = Tabs;
 
@@ -37,6 +38,9 @@ const MaterialManage: React.FC = () => {
   const PictureRef = useRef<PictureRefType>(null);
   const VideoRef = useRef<VideoRefType>(null);
   const FileRef = useRef<FileRefType>(null);
+
+  const location: any = useLocation();
+  useHideHeader(location);
   // const [userOption, setUserOption] = useState<Array<{ label: string; value: string | number }>>(
   //   [],
   // );

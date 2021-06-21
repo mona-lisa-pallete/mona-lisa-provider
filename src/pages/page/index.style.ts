@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 export const PageContainer = styled.div`
   background: #ffffff;
   border-radius: 4px;
+  margin-top: 15px;
 `;
 
 export const PageMain = styled.div`
