@@ -288,7 +288,7 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
         >
           {data.map((i, index) => {
             return (
-              <div className="material-library__item">
+              <div className="material-library__item" key={index}>
                 <div className="material-library-item__main">
                   {type === 'image' && (
                     <img src={`${i.ossUrl}?x-oss-process=image/format,jpg/interlace,1`} alt="" />
@@ -347,7 +347,7 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
                   </div>
                 </div>
                 <div className="material-name">
-                  <Tooltip title={i.materialName}>
+                  <Tooltip title={i.materialName} placement="bottom">
                     <div>{i.materialName}</div>
                   </Tooltip>
                 </div>
