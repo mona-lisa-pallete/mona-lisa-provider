@@ -16,13 +16,17 @@ export const useSelectMaterial = () => {
       setSelectMaterial(selectedData);
       setIsSuccess(true);
     }
-  }, [materialVisible, selectedData]);
+  }, [materialVisible, selectedData, setMaterialVisible, setSelectData]);
 
   useEffect(() => {
     if (!materialVisible) {
-      setTimeout(() => {
+      let timeoutKey: any = setTimeout(() => {
         setIsSuccess(false);
+        timeoutKey = null;
       }, 100);
+      return () => {
+        if (timeoutKey) clearTimeout(timeoutKey);
+      };
     }
   }, [materialVisible]);
 

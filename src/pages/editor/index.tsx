@@ -67,7 +67,7 @@ const PlatformContext = {
 const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValues, id }: any) => {
   const hasMeta = !!widgetMeta;
   const FormComp = hasMeta
-    ? window[widgetMeta.propFormConfig.customFormRef]?.default || 'div'
+    ? (window[widgetMeta.propFormConfig.customFormRef] as any)?.default || 'div'
     : 'div';
   return hasMeta ? (
     <FormComp
@@ -235,9 +235,11 @@ const Editor: React.FC = () => {
   };
 
   useEffect(() => {
+    let componentIsActive = true;
     const getData = async () => {
       const compData = await getComponentsData();
       const res = await getPage(query.pageId);
+      if (!componentIsActive) return;
       oldPageName.current = res.data.name;
       dispatch({
         type: ReducerActionType.SetOldDslStr,
@@ -306,6 +308,9 @@ const Editor: React.FC = () => {
     } else {
       getComponentsData();
     }
+    return () => {
+      componentIsActive = false;
+    };
   }, []);
 
   const getComponentsData = useCallback(async () => {
@@ -481,7 +486,6 @@ const Editor: React.FC = () => {
         }
         // const { action } = state.dsl.action;
       });
-
       setActionData({
         action: actionArr,
       });
@@ -490,7 +494,7 @@ const Editor: React.FC = () => {
         action: [],
       });
     }
-  }, [state.selectedElementId]);
+  }, [state.selectedElementId, state.dsl]);
 
   const handleDelElement = () => {
     confirm({
@@ -604,17 +608,21 @@ const Editor: React.FC = () => {
                     PlatformContext={PlatformContext}
                   />
                 )}
-                {state.selectedElementRef && widgetMeta?.propFormConfig?.useActionForm && (
-                  <Form
-                    layout="vertical"
-                    form={actionForm}
-                    onValuesChange={(changedValues: any, values: any) => {
-                      handleActionData(values);
-                    }}
-                  >
-                    <ActionForm pageData={[]} modalData={[]} />
-                  </Form>
-                )}
+                <Form
+                  style={{
+                    display:
+                      state.selectedElementRef && (widgetMeta as any)?.propFormConfig?.useActionForm
+                        ? 'block'
+                        : 'none',
+                  }}
+                  layout="vertical"
+                  form={actionForm}
+                  onValuesChange={(changedValues: any, values: any) => {
+                    handleActionData(values);
+                  }}
+                >
+                  <ActionForm pageData={[]} modalData={[]} />
+                </Form>
                 {state.selectedElementRef && (
                   <Button className="del-btn" onClick={handleDelElement}>
                     <DelText>删除组件</DelText>

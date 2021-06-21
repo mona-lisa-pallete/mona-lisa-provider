@@ -34,8 +34,7 @@ const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
     // const mousedown = (e: MouseEvent) => {
     //   onSelect(e);
     // };
-    console.log(ref.current?.firstChild?.id, 'dddddddd');
-    if (ref.current?.firstChild?.id === activeRef) {
+    if ((ref.current?.firstChild as any)?.id === activeRef) {
       // if (!mouseRef.current) {
       //   ref.current.addEventListener('mousedown', mousedown);
       //   mouseRef.current = true;
@@ -61,9 +60,7 @@ const FreedomDrag: React.FC<FreedomDragProps> = (props) => {
         position: isDrag ? 'absolute' : 'static',
         zIndex,
       }}
-      onMouseDown={() => {
-        console.log(1111);
-      }}
+      onMouseDown={() => {}}
       ref={ref}
       onClick={onSelect}
     >

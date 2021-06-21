@@ -182,7 +182,6 @@ const Page: React.FC = () => {
                 <StatusTag
                   edit={isEdit}
                   onChangeStatus={(status) => {
-                    console.log(status);
                     handlePageAuditStatus(item.page, status);
                   }}
                   type={item.miniappReleaseState}

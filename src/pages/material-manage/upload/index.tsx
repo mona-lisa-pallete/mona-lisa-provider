@@ -75,7 +75,7 @@ const MaterialManageUpload: React.FC = () => {
         },
       });
       setFileList([]);
-      window.opener.postMessage(MessageType.UploadSuccess, '*');
+      (window.opener as any).postMessage(MessageType.UploadSuccess, '*');
     }
   };
 

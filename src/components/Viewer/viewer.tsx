@@ -35,7 +35,7 @@ import download from 'downloadjs';
 
 const level = 5;
 
-const Viewer: React.FC<ViewerProps> = (props) => {
+const Viewer: React.FC<ViewerProps> = (props, ref) => {
   const {
     data = [],
     selected = 0,
@@ -486,5 +486,4 @@ const Viewer: React.FC<ViewerProps> = (props) => {
   );
 };
 
-// @ts-ignore
 export default forwardRef(Viewer);

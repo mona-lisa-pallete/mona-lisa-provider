@@ -83,7 +83,7 @@ const Viewport: React.FC = () => {
         containerId,
       },
     });
-    console.log(data.contentProp, 'data.contentProp');
+    // console.log(data.contentProp, 'data.contentProp');
 
     dispatch({
       type: ActionType.SetFormData,
@@ -98,13 +98,13 @@ const Viewport: React.FC = () => {
   const handleItemEvent = (_: any, data: DraggableData, id: string) => {
     const parentRect = data.node.parentElement?.getBoundingClientRect();
     const rect = data.node.getBoundingClientRect();
-    const left = rect?.left - parentRect?.left;
-    const top = rect?.top - parentRect?.top;
+    const left = rect?.left - parentRect!.left;
+    const top = rect?.top - parentRect!.top;
     const content = changeElementStyleById(id, state.dsl.content, {
       left,
       top,
     });
-    console.log(left, top, 'data');
+    // console.log(left, top, 'data');
     data.node.parentElement?.getBoundingClientRect();
     dispatch({
       type: ActionType.UpdateComponent,
@@ -180,8 +180,6 @@ const Viewport: React.FC = () => {
                                 <DragItem
                                   id={`${childItem.elementId}2`}
                                   onSelect={(e) => {
-                                    console.log(e, 'eeee');
-
                                     e.stopPropagation();
                                     handleSelect(
                                       childItem.elementRef!,

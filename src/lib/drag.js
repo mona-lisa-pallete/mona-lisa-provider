@@ -54,7 +54,7 @@ function Dragdrop(opt) {
   const bodyHeight = opt.target.parentNode.offsetHeight;
   const maxX = bodyWidth - opt.target.offsetWidth;
   const maxY = bodyHeight - opt.target.offsetHeight;
-  console.log([0, maxX, 0, maxY], '[0, maxX, 0, maxY]');
+  // console.log([0, maxX, 0, maxY], '[0, maxX, 0, maxY]');
   opt.area = [0, maxX, 0, maxY];
   conf = new Config(opt);
   defaultConf = new Config(opt);
@@ -81,7 +81,7 @@ Dragdrop.prototype = {
     const maxX = bodyWidth - target.offsetWidth;
     const maxY = bodyHeight - target.offsetHeight;
     conf.area = [0, maxX, 0, maxY];
-    console.log(conf.area, 'conf.area');
+    // console.log(conf.area, 'conf.area');
   },
   setBridge(b) {
     conf.bridge = b;

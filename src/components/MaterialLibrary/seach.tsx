@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, forwardRef, useImperativeHandle, ForwardedRef } from 'react';
 import { Input, Switch, Button } from 'antd';
 import { useDebounce } from 'react-use';
 import {
@@ -17,7 +17,7 @@ interface SeachProps {
   onClickBtn?: () => void;
 }
 
-const Seach = (props: SeachProps, ref = React.createRef()) => {
+const Seach = (props: SeachProps, ref: ForwardedRef<unknown>) => {
   const [value, setValue] = useState('');
   const [mine, setMine] = useState(false);
   const { onChange, placeholder = '', btnName = '上传素材', onClickBtn } = props;
@@ -85,5 +85,4 @@ const Seach = (props: SeachProps, ref = React.createRef()) => {
   );
 };
 
-// @ts-ignore
 export default forwardRef(Seach);

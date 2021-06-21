@@ -145,8 +145,7 @@ const MaterialManage: React.FC = () => {
         cancelText: '取消',
         centered: true,
         async onOk() {
-          const res = await delMaterial(id);
-          console.log(res);
+          await delMaterial(id);
         },
       });
     });

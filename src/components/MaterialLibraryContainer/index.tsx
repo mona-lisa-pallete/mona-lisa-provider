@@ -11,8 +11,6 @@ const MaterialLibraryContainer: React.FC = () => {
 
   // useHideHeader(location);
 
-  console.log(materialType);
-
   return (
     <MaterialLibrary
       visible={materialVisible}

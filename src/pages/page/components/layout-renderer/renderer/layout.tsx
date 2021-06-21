@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import { LayoutNodeItem, TreeNodePath } from '../types';
 
 /**
@@ -24,7 +24,7 @@ export interface LayoutParserWrapper {
 
 export interface LayoutRendererProps extends LayoutParserWrapper {
   dsl: any;
-  layoutNode: LayoutNodeItem[];
+  layoutNode?: LayoutNodeItem[];
   RootRender?: (renderRes: React.ElementType[]) => JSX.Element;
 }
 
@@ -82,6 +82,7 @@ const renderLayout = (
           child = childOfContainer;
         }
 
+        // @ts-ignore
         res.push(child);
         // res.push(<Elem id={id} key={id}>{child}</Elem>);
       } else {

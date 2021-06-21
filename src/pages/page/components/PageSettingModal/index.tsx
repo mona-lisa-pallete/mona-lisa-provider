@@ -114,16 +114,17 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
   const [imgField, setImgField] = useState('');
   const [status, setStatus] = useState(false);
   const [online, setOline] = useState(false);
-
   const { selectMaterial, isSuccess } = useSelectMaterial();
 
-  if (isSuccess && selectMaterial) {
-    form.setFieldsValue({
-      attributes: {
-        [imgField]: selectMaterial.url,
-      },
-    });
-  }
+  useEffect(() => {
+    if (isSuccess && selectMaterial) {
+      form.setFieldsValue({
+        attributes: {
+          [imgField]: selectMaterial.url,
+        },
+      });
+    }
+  }, []);
 
   //  miniappImmersion: string;
   //   shareTitle: string;
@@ -180,7 +181,6 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
       onChangeVisible(false);
     }
   };
-
   useEffect(() => {
     if (!visible) {
       form.resetFields();
@@ -220,7 +220,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
       };
       getData();
     }
-  }, [visible]);
+  }, [form, visible, id]);
 
   return (
     <ConfirmModal
@@ -231,6 +231,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
       }}
       title={'页面设置'}
       width={656}
+      forceRender
       footerRender={
         <ConfirmModalFooter>
           <Button
@@ -365,4 +366,4 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
     </ConfirmModal>
   );
 };
-export default PageSettingModal;
+export default React.memo(PageSettingModal);

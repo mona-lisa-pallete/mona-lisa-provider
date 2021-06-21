@@ -50,8 +50,6 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
   const [materialId, setMaterialId] = useState<number>();
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  console.log(type, 'typetypetypetype');
-
   const getMaterialsData = (reset?: boolean) => {
     if (!visible || loading) {
       return;

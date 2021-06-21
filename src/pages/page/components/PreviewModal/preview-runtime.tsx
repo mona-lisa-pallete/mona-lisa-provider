@@ -1,8 +1,8 @@
 import React from 'react';
 import { LayoutRenderer } from '../layout-renderer';
 
-const eventHandler = (eventConfig) => {
-  const eventRes = {};
+const eventHandler = (eventConfig: { [key: string]: any }) => {
+  const eventRes: { [key: string]: any } = {};
   if (!eventConfig) return eventRes;
   Object.keys(eventConfig).forEach((eventKey) => {
     eventRes[eventKey] = () => {
@@ -12,15 +12,11 @@ const eventHandler = (eventConfig) => {
   return eventRes;
 };
 
-const componentRenderer = (dslState: any) => (item: any) => {
-  const {
-    dsl: { action },
-  } = dslState;
-  console.log(action);
+const componentRenderer = () => (item: any) => {
   const { layoutNodeItem, contentChild } = item;
   const { contentProp, style, elementRef } = layoutNodeItem;
   const { event } = contentProp;
-  const W = window?.[elementRef]?.default || 'div';
+  const W = (window?.[elementRef] as any)?.default || 'div';
   // console.log(item);
   return (
     <W style={style} key={item.treeNodePath.join('_')} {...contentProp} {...eventHandler(event)}>
@@ -29,11 +25,11 @@ const componentRenderer = (dslState: any) => (item: any) => {
   );
 };
 
-export const PreviewRuntime = ({ dslState }) => {
+export const PreviewRuntime = ({ dslState }: { dslState: any }) => {
   return (
     <LayoutRenderer
       dsl={dslState?.dsl}
-      componentRenderer={componentRenderer(dslState)}
+      componentRenderer={componentRenderer()}
       // RootRender={(child) => (
       //   <DropStageContainer onStageClick={onStageClick} style={pageStyle}>
       //     {hasNode ? child : <div>请从左边拖入组件</div>}

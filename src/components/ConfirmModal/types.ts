@@ -8,4 +8,5 @@ export interface ConfirmModalProps {
   width?: number;
   confirmLoading?: boolean;
   title: string;
+  forceRender?: boolean;
 }
