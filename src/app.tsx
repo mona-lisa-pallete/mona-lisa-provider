@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, message } from 'antd';
 
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
@@ -27,6 +27,7 @@ if (!isLocal) {
   });
 }
 moment.locale('zh-cn');
+message.config({ duration: 1.5 });
 
 if (taroVendor.applyPolyfills) {
   taroVendor.applyPolyfills().then(function () {
