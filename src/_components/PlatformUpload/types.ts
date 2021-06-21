@@ -1,3 +1,5 @@
+import { UploadFile } from 'antd/lib/upload/interface';
+
 export enum PlatformUploadFile {
   Image = 'image',
   File = 'file',
@@ -8,5 +10,6 @@ export interface PlatformUploadProps {
   value?: any;
   onChange?: (data: any) => any;
   multiple?: boolean;
+  onProgress?: (progressInfo: UploadFile) => void;
   name: string;
 }

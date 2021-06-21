@@ -24,7 +24,7 @@ import { DraggerProps } from 'antd/lib/upload';
 import { useSelectMaterial } from '@/hooks/material';
 import FileContent from './FileContent';
 import { MIME } from '@/pages/material-manage/components/File/types';
-import { message } from 'antd';
+import { message, Progress } from 'antd';
 
 const UploadContentRenderMap = new Map<PlatformUploadFile, React.FC>([
   [PlatformUploadFile.Image, ImageContent],
@@ -71,7 +71,8 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
   const { state, dispatch } = useContext(EditorContext);
   const { selectMaterial, isSuccess } = useSelectMaterial();
   const nameRef = useRef<string>('');
-
+  const [percent, setPercent] = useState(0);
+  const [uploading, setUploading] = useState(false);
   const UploadText = UploadContentRenderText.get(type);
   const UploadProps = UploadContentProps.get(type);
   const { multiple } = UploadProps || {};
@@ -211,6 +212,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
         },
       });
       onChange && onChange(file);
+      setUploading(false);
       setUploadVal(file);
     } else {
       const { url, status } = file as UploadFile<any>;
@@ -226,13 +228,14 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
           materials: [
             ...state.materials,
             {
-              ossUrl: url,
+              ossUrl: url!,
               materialType: materialTypeName,
             },
           ],
         },
       });
       onChange && onChange(url);
+      setUploading(false);
       setUploadVal(url);
     }
   };
@@ -289,6 +292,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
     const imgTypes = ['.png', '.jpeg', '.jpg', '.gif'];
     const videoTypes = ['.mp4'];
     const fileTypes = Object.keys(MIME).map((i) => `.${i}`);
+    setPercent(0);
     if (imgTypes.includes(getFileType(file.name))) {
       await validateImg(file, true);
     } else if (videoTypes.includes(getFileType(file.name))) {
@@ -304,7 +308,13 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
       });
       return Promise.reject();
     }
+    setUploading(true);
     return Promise.resolve();
+  };
+
+  const onProgress = (progressInfo: UploadFile) => {
+    setPercent(Math.floor(progressInfo.percent!));
+    (extraProps as any).onProgress && (extraProps as any).onProgress(progressInfo);
   };
 
   return (
@@ -321,13 +331,19 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
       }}
       onChange={handleChange}
       {...extraProps}
+      onProgress={onProgress}
       beforeUpload={handleBeforeUpload}
     >
-      {!uploadVal && (
+      {!uploadVal && !uploading && (
         <UploadButton>
           <PlusOutlined style={{ color: '#8E91A3', fontSize: '20px', marginBottom: '6px' }} />
           {UploadText}
         </UploadButton>
+      )}
+      {!uploadVal && uploading && (
+        <div style={{ padding: 10 }}>
+          <Progress percent={percent} size="small" />
+        </div>
       )}
       {uploadVal && (
         <UploadContent

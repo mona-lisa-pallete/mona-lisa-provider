@@ -58,7 +58,6 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
     //         : '',
     //   };
     // });
-
     if (multiple) {
       const files = fileList.map((e) => {
         return {
@@ -70,6 +69,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
         };
       });
       onOriginChange && onOriginChange(params);
+      // @ts-ignore
       onProgress && onProgress(files);
       // @ts-ignore
       onChange(files);

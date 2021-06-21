@@ -23,7 +23,7 @@ const ImageContent: React.FC<ImageContentProps> = (props) => {
         style={{
           margin: '0 auto',
           display: 'block',
-          maxWidth: '287px',
+          maxWidth: '100%',
         }}
         src={value}
       />
