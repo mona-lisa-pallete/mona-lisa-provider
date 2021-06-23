@@ -35,6 +35,8 @@ import PreviewModal from '../page/components/PreviewModal/';
 const { TabPane } = Tabs;
 const { confirm } = Modal;
 
+const isDevEnv = process.env.NODE_ENV === 'development';
+
 export const initState: IState = {
   dsl: {
     content: [],
@@ -594,11 +596,10 @@ const Editor: React.FC = () => {
                   height: 'calc(100vh - 120px)',
                   overflow: 'auto',
                 }}
-                tab="组件配置"
+                tab={<div style={{ padding: '0 20px' }}>组件配置</div>}
                 key="2"
               >
-                {state.selectedElementId && '组件ID：'}
-                {state.selectedElementId}
+                {isDevEnv && state.selectedElementId && `组件ID：${state.selectedElementId}`}
                 {widgetMeta && state.selectedContainerId && state.selectedElementId && (
                   <ComponentForm
                     initialValues={state.formData}
@@ -641,7 +642,9 @@ const Editor: React.FC = () => {
                   </Form.Item>
                 </Form> */}
               </TabPane>
-              {/* <TabPane tab="页面交互" key="3" /> */}
+              <TabPane tab={<div style={{ padding: '0 20px' }}>页面交互</div>} key="3">
+                敬请期待
+              </TabPane>
             </Tabs>
           </EditorConfig>
           <PreviewModal

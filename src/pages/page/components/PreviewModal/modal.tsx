@@ -16,6 +16,9 @@ import { CloseOutlined } from '@ant-design/icons';
 import QRCode from 'qrcode';
 import copy from 'copy-to-clipboard';
 import downloadjs from 'downloadjs';
+import { PreviewRuntime } from './preview-runtime';
+
+import './index.less';
 
 interface PreviewModalProp {
   onChange: () => void;
@@ -23,10 +26,18 @@ interface PreviewModalProp {
   miniappCodeUrl: string;
   miniappUrl: string;
   type: 'h5' | 'mini' | 'h5mini';
+  editorState: any;
 }
 
 const PreviewModal: React.FC<PreviewModalProp> = (props) => {
-  const { onChange, h5Url = 'http://www.baidu.com', miniappCodeUrl, miniappUrl, type } = props;
+  const {
+    onChange,
+    h5Url = 'http://www.baidu.com',
+    miniappCodeUrl,
+    miniappUrl,
+    type,
+    editorState,
+  } = props;
   const [h5QRCode, setH5QRCode] = useState('');
 
   useEffect(() => {
@@ -44,6 +55,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
           <CloseOutlined className="preview-close" onClick={onChange} style={{ color: '#fff' }} />
           <PreviewPhoneContainer>
             <PreviewPhone src={phone} />
+            {/* <PreviewRuntime editorState={editorState?.state} /> */}
             <iframe frameBorder={0} src={h5Url} />
           </PreviewPhoneContainer>
           <PreviewQRContainer>
