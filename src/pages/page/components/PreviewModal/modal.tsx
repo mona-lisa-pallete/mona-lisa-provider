@@ -18,6 +18,8 @@ import copy from 'copy-to-clipboard';
 import downloadjs from 'downloadjs';
 import { PreviewRuntime } from './preview-runtime';
 
+import './index.less';
+
 interface PreviewModalProp {
   onChange: () => void;
   h5Url: string;
@@ -53,8 +55,8 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
           <CloseOutlined className="preview-close" onClick={onChange} style={{ color: '#fff' }} />
           <PreviewPhoneContainer>
             <PreviewPhone src={phone} />
-            <PreviewRuntime editorState={editorState?.state} />
-            {/* <iframe frameBorder={0} src={h5Url} /> */}
+            {/* <PreviewRuntime editorState={editorState?.state} /> */}
+            <iframe frameBorder={0} src={h5Url} />
           </PreviewPhoneContainer>
           <PreviewQRContainer>
             {(type === 'h5' || type === 'h5mini') && (
