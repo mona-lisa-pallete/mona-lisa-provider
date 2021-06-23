@@ -220,6 +220,7 @@ const Project: React.FC = () => {
             return (
               <ProjectItem
                 name={i.name}
+                key={i.id}
                 createTime={moment(i.createTime).format('YYYY-MM-DD HH:mm:ss')}
                 createUserName={i.createUserName}
                 onClick={() => {

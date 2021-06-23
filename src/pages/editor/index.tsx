@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ViewportBox from './components/Viewport';
@@ -19,11 +12,10 @@ import { ComponentData, ComponentType } from './data';
 import { DelText, EditorConfig, EditorMain } from './index.style';
 import { Button, Form, Modal, Tabs } from 'antd';
 import ActionForm from './components/ActionForm';
-import { DSL, DSLContent, IState, ActionType as ReducerActionType } from './types';
+import { IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
-import { groupBy, merge, mergeWith } from 'lodash';
-import { CSSProperties } from 'styled-components';
+import { groupBy, mergeWith } from 'lodash';
 import PlatformUploadTool from '@/_components/PlatformUploadTool';
 import PlatformColorPicker from '@/_components/PlatformColorPicker/';
 import { changeElementActionById, delElementById, findElementById, getWidgetData } from './utils';
@@ -66,22 +58,6 @@ const PlatformContext = {
   },
 };
 
-const CompPropEditorLoader = ({ widgetMeta, onChange, actionRender, initialValues, id }: any) => {
-  const hasMeta = !!widgetMeta;
-  const FormComp = hasMeta
-    ? (window[widgetMeta.propFormConfig.customFormRef] as any)?.default || 'div'
-    : 'div';
-  return hasMeta ? (
-    <FormComp
-      onChange={onChange}
-      initialValues={initialValues}
-      platformCtx={PlatformContext}
-      id={id}
-      actionRender={actionRender}
-    />
-  ) : null;
-};
-
 const Editor: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const [componentVal, setComponentVal] = useState(ComponentType.Picture);
@@ -104,7 +80,7 @@ const Editor: React.FC = () => {
 
   const seleComponent = allComponent.find((i) => i.ref === state.selectedElementRef);
 
-  const { fetching: fetchingMeta, metadata: widgetMeta } = useWidgetMeta(
+  const { metadata: widgetMeta } = useWidgetMeta(
     state.selectedElementRef!,
     seleComponent?.compMetaUrl,
     seleComponent?.compUrl,
@@ -113,61 +89,6 @@ const Editor: React.FC = () => {
 
   const handleComponentVal = (val: ComponentType) => {
     setComponentVal(val);
-  };
-
-  const changeElement = (
-    content: DSL['content'],
-    id: string,
-    data: any,
-  ): DSLContent[] | undefined => {
-    const contentData: DSL['content'] = JSON.parse(JSON.stringify(content));
-    const list = contentData.map((i) => {
-      if (i.contentChild && i.contentChild.length) {
-        i.contentChild.forEach((childItem, index) => {
-          if (id === childItem.elementId) {
-            // TODO 这里的merge方法建议使用 immutable 库。
-            // 这里对于数组会进行合并而不是替换，尝试 mergeWith API
-            i.contentChild![index].contentProp = mergeWith(
-              i.contentChild![index].contentProp,
-              data,
-              (a, b) => (Array.isArray(b) ? b : undefined),
-            );
-          }
-        });
-      }
-      return i!;
-    });
-    return list!;
-  };
-
-  const changeElementStyle = (
-    content: DSL['content'],
-    id: string,
-    style: CSSProperties,
-  ): DSLContent[] | undefined => {
-    const contentCopy: DSLContent[] = JSON.parse(JSON.stringify(content));
-    const list = contentCopy.map((i) => {
-      if (i.contentChild && i.contentChild.length) {
-        if (i.elementId === id) {
-          i.contentProp.style = merge(i.contentProp.style, style);
-          return i;
-        }
-        i.contentChild.forEach((childItem, index) => {
-          if (id === childItem.elementId) {
-            i.contentChild![index].contentProp.style = merge(
-              i.contentChild![index].contentProp.style,
-              style,
-            );
-            console.log(
-              i.contentChild![index].contentProp.style,
-              'i.contentChild![index].contentProp.style',
-            );
-          }
-        });
-      }
-      return i!;
-    });
-    return list!;
   };
 
   const handleData = useCallback(
@@ -221,19 +142,6 @@ const Editor: React.FC = () => {
         },
       });
     }
-  };
-
-  const handleElementStyle = (style: CSSProperties) => {
-    const content = changeElementStyle(state.dsl.content, state.selectedElementId!, style);
-    dispatch({
-      type: ReducerActionType.UpdateComponent,
-      payload: {
-        dsl: {
-          ...state.dsl,
-          content: content!,
-        },
-      },
-    });
   };
 
   useEffect(() => {
@@ -329,144 +237,9 @@ const Editor: React.FC = () => {
     return Promise.resolve(res.data);
   }, []);
 
-  // useDebounce(
-  //   () => {
-  //     console.log(observer, resizeRef.current);
-  //     if (!observer || !resizeRef.current) {
-  //       return;
-  //     }
-  //     console.log(2);
-  //     const isAddContainer = document.getElementById(dragContainerId.current);
-  //     if (isAddContainer) {
-  //       let height = 0;
-  //       const childDom: any[] = [];
-  //       let childNodes = isAddContainer.querySelectorAll('.drag-item-container');
-  //       childNodes = [...childNodes].map((i) => i.firstElementChild);
-
-  //       childNodes.forEach((childNode) => {
-  //         childDom.push({
-  //           top: (childNode as HTMLDivElement).getBoundingClientRect().top,
-  //           bottom: (childNode as HTMLDivElement).getBoundingClientRect().bottom,
-  //         });
-  //       });
-  //       const childDomTop = childDom.map((childNode) => childNode.top);
-  //       const childDomBottom = childDom.map((childNode) => childNode.bottom);
-  //       const minTop = Math.min(...childDomTop);
-  //       const maxBottom = Math.max(...childDomBottom);
-  //       height = evaluate(`${maxBottom}-${minTop}`);
-  //       console.log(3);
-
-  //       if (height) {
-  //         const list = changeElementStyle(state.dsl.content, state.selectedContainerId!, {
-  //           height,
-  //         });
-  //         dispatch({
-  //           type: ReducerActionType.UpdateComponent,
-  //           payload: {
-  //             dsl: {
-  //               content: list!,
-  //               action: state.dsl.action,
-  //             },
-  //           },
-  //         });
-  //         resizeRef.current = '';
-  //       }
-  //     }
-  //   },
-  //   200,
-  //   [observer],
-  // );
-
-  // // 监听dsl并改变当前容器高度
-  // useEffect(() => {
-  //   if (resizeRef.current) {
-  //     return;
-  //   }
-  //   if (state.selectedContainerId) {
-  //     const element: DSLContent = state.dsl?.content?.find(
-  //       (i: any) => i.elementId === state.selectedContainerId,
-  //     );
-  //     setTimeout(() => {
-  //       const containerDom = document.getElementById(state.selectedContainerId!);
-  //       const childDom = element?.contentChild.map((i) => {
-  //         const dom = document.getElementById(`${i.elementId}`);
-  //         return {
-  //           top: dom!.getBoundingClientRect().top,
-  //           bottom: dom!.getBoundingClientRect().bottom,
-  //         };
-  //       });
-  //       if (childDom?.length) {
-  //         const childDomTop = childDom.map((i) => i.top);
-  //         const childDomBottom = childDom.map((i) => i.bottom);
-  //         const minTop = Math.min(...childDomTop);
-  //         const maxBottom = Math.max(...childDomBottom);
-  //         const height = evaluate(`${maxBottom}-${minTop}`);
-  //         const containerDomH = containerDom.getBoundingClientRect().height;
-  //         if (containerDom && containerDomH === height) {
-  //           console.log('无需调整');
-  //           return;
-  //         }
-  //         const container = findElementById(state.selectedContainerId!, state.dsl.content);
-  //         const topStyle = container.contentChild?.map((i) => i.contentProp?.style?.top);
-  //         const minTopStyle = Math.min(...(topStyle as []));
-  //         console.log(minTopStyle, 'minTopStyleminTopStyle');
-
-  //         const content = reizeElementStyle(
-  //           state.dsl.content,
-  //           state.selectedContainerId!,
-  //           {
-  //             height,
-  //           },
-  //           0,
-  //         );
-  //         dispatch({
-  //           type: ReducerActionType.UpdateComponent,
-  //           payload: {
-  //             dsl: {
-  //               content: content!,
-  //               action: state.dsl.action,
-  //             },
-  //           },
-  //         });
-  //         resizeRef.current = true;
-  //       }
-  //     }, 500);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [state.resize, state.dsl.content]);
-
-  // const resizeContainer = useCallback(() => {
-  //   console.log('resizeContainer');
-
-  //   const targetNode = document.querySelector('.viewport-box');
-
-  //   const o = new MutationObserver((mutationsList) => {
-  //     mutationsList.forEach((i) => {
-  //       if (i.addedNodes?.[0]?.className?.includes('inset-box')) {
-  //         return;
-  //       }
-  //       if (i.removedNodes?.[0]?.className?.includes('inset-box')) {
-  //         return;
-  //       }
-  //       // console.log(i);
-  //       setObserver(i);
-  //     });
-  //   });
-
-  //   // if (state.selectedContainerId && state.resize) {
-  //   const config = { childList: true, subtree: true };
-  //   o.observe(targetNode!, config);
-  //   // }
-  //   return () => {
-  //     setObserver(null);
-  //     o.disconnect();
-  //     resizeRef.current = '';
-  //   };
-  // }, [resizeVal]);
-
-  // useLayoutEffect(() => {
-  //   resizeContainer();
-  // }, [resizeContainer]);
+  const setActionData = useCallback((data: any) => {
+    actionForm.setFieldsValue(data);
+  }, []);
 
   // 根据当前的elementId来动态修改action表单
   useEffect(() => {
@@ -496,7 +269,7 @@ const Editor: React.FC = () => {
         action: [],
       });
     }
-  }, [state.selectedElementId, state.dsl]);
+  }, [state.selectedElementId, state.dsl, setActionData]);
 
   const handleDelElement = () => {
     confirm({
@@ -533,10 +306,6 @@ const Editor: React.FC = () => {
         resizeContainerFn();
       },
     });
-  };
-
-  const setActionData = (data: any) => {
-    actionForm.setFieldsValue(data);
   };
 
   const setDragContainerId = (id: string) => {
@@ -629,18 +398,6 @@ const Editor: React.FC = () => {
                     <DelText>删除组件</DelText>
                   </Button>
                 )}
-                {/* <Form
-                  onValuesChange={(a, b) => {
-                    console.log(a, b);
-                  }}
-                  initialValues={{
-                    file: 'https://t7.baidu.com/it/u=4036010509,3445021118&fm=193&f=GIF',
-                  }}
-                >
-                  <Form.Item name="file">
-                    <PlatformUpload />
-                  </Form.Item>
-                </Form> */}
               </TabPane>
               <TabPane tab={<div style={{ padding: '0 20px' }}>页面交互</div>} key="3">
                 敬请期待

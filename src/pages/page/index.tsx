@@ -101,6 +101,9 @@ const Page: React.FC = () => {
                 preview={false}
                 className="page-img"
                 placeholder={<PlaceholderImg />}
+                fallback={
+                  'https://static-zy-com.oss-cn-hangzhou.aliyuncs.com/kbase/portallandingpage/assets/rc-upload-1624438481409-2.png'
+                }
               />
             </PageImg>
             <PageDetail>
@@ -549,7 +552,7 @@ const Page: React.FC = () => {
             columns={columns}
             rowKey="id"
             search={{
-              labelWidth: 'auto',
+              labelWidth: 70,
             }}
             scroll={{ x: 'max-content' }}
             request={getData}
