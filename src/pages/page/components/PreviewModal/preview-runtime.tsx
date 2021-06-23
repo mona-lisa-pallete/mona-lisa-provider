@@ -28,7 +28,7 @@ const componentRenderer = (editorState: any) => (item: any) => {
   );
 };
 
-export const PreviewRuntime = ({ editorState }) => {
+export const PreviewRuntime = ({ editorState }: any) => {
   return (
     <LayoutRenderer
       dsl={editorState?.dsl}
