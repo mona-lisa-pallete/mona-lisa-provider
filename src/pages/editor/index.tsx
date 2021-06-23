@@ -23,6 +23,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ComponentForm from './components/ComponentForm';
 import PlatformUpload from '@/_components/PlatformUpload';
 import PreviewModal from '../page/components/PreviewModal/';
+import getPlatform from '@/utils/getPlaform';
 
 const { TabPane } = Tabs;
 const { confirm } = Modal;
@@ -75,6 +76,8 @@ const Editor: React.FC = () => {
   const oldPageName = useRef(JSON.stringify(state.pageName));
   const [previewVisible, setPreviewVisible] = useState(false);
   const [h5Url, setH5Url] = useState('');
+  const [miniappUrl, setMiniappUrl] = useState('');
+  const [previewType, setPreviewType] = useState('');
 
   useHideHeader(location);
 
@@ -151,6 +154,10 @@ const Editor: React.FC = () => {
       const res = await getPage(query.pageId);
       if (!componentIsActive) return;
       oldPageName.current = res.data.name;
+      if (res.data.miniappUrl) {
+        setMiniappUrl(res.data.miniappUrl);
+      }
+      setPreviewType(getPlatform(res.data.platform));
       dispatch({
         type: ReducerActionType.SetOldDslStr,
         payload: {
@@ -409,8 +416,10 @@ const Editor: React.FC = () => {
             onChange={() => {
               setPreviewVisible(false);
             }}
-            type="h5"
+            type={previewType as 'h5' | 'h5mini' | 'mini'}
             h5Url={h5Url}
+            miniappUrl={miniappUrl}
+            miniappCodeUrl={''}
           />
         </EditorMain>
       </DndProvider>

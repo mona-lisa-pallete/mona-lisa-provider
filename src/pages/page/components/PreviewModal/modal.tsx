@@ -16,7 +16,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import QRCode from 'qrcode';
 import copy from 'copy-to-clipboard';
 import downloadjs from 'downloadjs';
-import { PreviewRuntime } from './preview-runtime';
+// import { PreviewRuntime } from './preview-runtime';
 
 import './index.less';
 
@@ -33,12 +33,13 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
   const {
     onChange,
     h5Url = 'http://www.baidu.com',
-    miniappCodeUrl,
+    // miniappCodeUrl,
     miniappUrl,
     type,
-    editorState,
+    // editorState,
   } = props;
   const [h5QRCode, setH5QRCode] = useState('');
+  const [miniAppQRCode, setMiniAppQRCode] = useState('');
 
   useEffect(() => {
     QRCode.toDataURL(h5Url, {
@@ -47,6 +48,16 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
       setH5QRCode(url);
     });
   }, [h5Url]);
+
+  useEffect(() => {
+    if (miniappUrl) {
+      QRCode.toDataURL(miniappUrl, {
+        width: 128,
+      }).then((url) => {
+        setMiniAppQRCode(url);
+      });
+    }
+  }, [miniappUrl]);
 
   return (
     <>
@@ -87,7 +98,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
             )}
             {(type === 'mini' || type === 'h5mini') && (
               <PreviewQRItem>
-                <img src={miniappCodeUrl} />
+                <img src={miniAppQRCode} />
                 <PreviewQRInfo>
                   <PreviewQRName>小程序链接</PreviewQRName>
                   <PreviewQRLink>{miniappUrl}</PreviewQRLink>
@@ -102,7 +113,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
                     </Button>
                     <Button
                       onClick={() => {
-                        downloadjs(miniappCodeUrl);
+                        downloadjs(miniAppQRCode);
                       }}
                     >
                       下载二维码

@@ -70,4 +70,5 @@ export interface IGetPageReponse {
     miniappShareDescription: string;
     miniappShareImage: string;
   };
+  miniappUrl: string;
 }

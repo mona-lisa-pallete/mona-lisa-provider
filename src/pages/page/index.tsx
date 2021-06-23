@@ -32,6 +32,7 @@ import copy from 'copy-to-clipboard';
 import StatusTag from './components/StatusTag';
 import { PageStatusType } from './components/StatusTag/types';
 import { StatusTagStyle } from './components/StatusTag/index.style';
+import getPlatform from '@/utils/getPlaform';
 
 const { confirm } = Modal;
 
@@ -375,18 +376,7 @@ const Page: React.FC = () => {
               type="link"
               disabled={!item.releaseBatch}
               onClick={() => {
-                const isBoth =
-                  item.platform.includes(PlatformType.MINIAPP) &&
-                  item.platform.includes(PlatformType.WEB);
-                // const isMini = item.platform.includes(PlatformType.MINIAPP);
-                const isH5 = item.platform.includes(PlatformType.WEB);
-                if (isBoth) {
-                  setPreviewType('h5mini');
-                } else if (isH5) {
-                  setPreviewType('h5');
-                } else {
-                  setPreviewType('mini');
-                }
+                setPreviewType(getPlatform(item.platform));
                 setH5Url(item.webUrl);
                 setMiniappUrl(item.miniappUrl);
                 setMiniappCodeUrl(item.miniappCodeUrl);
