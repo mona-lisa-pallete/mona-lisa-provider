@@ -1,5 +1,6 @@
 import React from 'react';
 import { LayoutRenderer } from '../layout-renderer';
+import './index.less';
 
 const eventHandler = (eventConfig: { [key: string]: any }) => {
   const eventRes: { [key: string]: any } = {};
@@ -12,7 +13,9 @@ const eventHandler = (eventConfig: { [key: string]: any }) => {
   return eventRes;
 };
 
-const componentRenderer = () => (item: any) => {
+const componentRenderer = (editorState: any) => (item: any) => {
+  const { dsl } = editorState;
+  console.log(dsl);
   const { layoutNodeItem, contentChild } = item;
   const { contentProp, style, elementRef } = layoutNodeItem;
   const { event } = contentProp;
@@ -25,11 +28,11 @@ const componentRenderer = () => (item: any) => {
   );
 };
 
-export const PreviewRuntime = ({ dslState }: { dslState: any }) => {
+export const PreviewRuntime = ({ editorState }) => {
   return (
     <LayoutRenderer
-      dsl={dslState?.dsl}
-      componentRenderer={componentRenderer()}
+      dsl={editorState?.dsl}
+      componentRenderer={componentRenderer(editorState)}
       // RootRender={(child) => (
       //   <DropStageContainer onStageClick={onStageClick} style={pageStyle}>
       //     {hasNode ? child : <div>请从左边拖入组件</div>}

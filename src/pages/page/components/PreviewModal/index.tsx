@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from './modal';
 import { getScrollWidth } from '@/utils/common';
+import EditorContext from '@/pages/editor/context';
 
 interface PreviewModalProp {
   onChange: () => void;
@@ -14,6 +15,7 @@ interface PreviewModalProp {
 const PreviewModal: React.FC<PreviewModalProp> = (props) => {
   const { visible } = props;
   const dom = useRef<any>();
+  const editorState = useContext(EditorContext);
 
   useEffect(() => {
     if (visible) {
@@ -23,7 +25,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
       document.body.style.height = '100vh';
       document.body.style.width = `calc(100vw - ${getScrollWidth()}px)`;
       document.body.style.overflow = 'hidden';
-      ReactDOM.render(<Modal {...props} />, div);
+      ReactDOM.render(<Modal {...props} editorState={editorState} />, div);
     } else if (dom.current && !visible) {
       document.body.style.height = '';
       document.body.style.overflow = '';

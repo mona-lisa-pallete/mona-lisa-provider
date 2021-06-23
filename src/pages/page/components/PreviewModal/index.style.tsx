@@ -35,6 +35,11 @@ export const PreviewPhone = styled.img`
 export const PreviewPhoneContainer = styled.div`
   position: relative;
   margin-right: 103px;
+  width: 20vw;
+  height: auto;
+  min-height: 548px;
+  min-width: 278px;
+  max-width: 360px;
   > iframe {
     position: absolute;
     top: 11%;
