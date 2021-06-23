@@ -69,6 +69,8 @@ const useWidgetMeta = (() => {
           LoadScript({ src: `${formUrl}` }),
         ]);
 
+        metaCache[elementRef] = metaFromRemote;
+
         setMetaState({
           fetching: false,
           metadata: metaFromRemote,
