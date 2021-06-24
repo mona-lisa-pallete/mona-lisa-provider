@@ -18,7 +18,6 @@ function WithActionForm(props: { actionType: string; index: number; formUrl: str
   if (!UI_DLL) {
     return null;
   }
-
   return (
     <Form.Item key={index} name={[index, 'data']}>
       <UI_DLL />
@@ -34,94 +33,84 @@ const ActionForm: React.FC<ActionFormProps> = () => {
   }));
   return (
     <>
-      {/* <FormSubTitle>组件布局</FormSubTitle> */}
-      {/* <Form.Item label="所处位置">
-        <Form.Item noStyle name={['style', 'left']}>
-          <Input
-            style={{
-              width: '135px',
-              marginRight: '16px',
-            }}
-            type="number"
-            suffix="X"
-          />
-        </Form.Item>
-        <Form.Item noStyle name={['style', 'top']}>
-          <Input
-            style={{
-              width: '135px',
-            }}
-            type="number"
-            suffix="Y"
-          />
-        </Form.Item>
-      </Form.Item> */}
       <FormSubTitle>交互配置</FormSubTitle>
       <Form.List name="action">
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map((field, index) => (
-              <ActionFormBox key={field.name}>
-                <div className="dv-action-item">
-                  <div className="dv-action-name">
-                    <div>
-                      <i className="iconicon_drag iconfont" />
-                      交互{nzh.cn.encodeS(index + 1)}
+        {(fields, { add, remove }, { errors }) => {
+          return (
+            <>
+              {fields.map((field, index) => (
+                <ActionFormBox key={field.name}>
+                  <div className="dv-action-item">
+                    <div className="dv-action-name">
+                      <div>
+                        <i className="iconicon_drag iconfont" />
+                        交互{nzh.cn.encodeS(index + 1)}
+                      </div>
+                      <i
+                        className="icon-delete iconfont"
+                        onClick={() => {
+                          remove(field.name);
+                        }}
+                      />
                     </div>
-                    <i
-                      className="icon-delete iconfont"
-                      onClick={() => {
-                        remove(field.name);
+                    <Form.Item name={[index, 'actionType']}>
+                      <Select options={actionOptions} />
+                    </Form.Item>
+                    <Form.Item
+                      shouldUpdate={(prevValues, curValues) => {
+                        const sameType =
+                          prevValues?.action[index]?.actionType ===
+                          curValues?.action[index]?.actionType;
+                        const preVal = prevValues?.action[index]?.data || {};
+                        const nxtVal = curValues?.action[index]?.data || {};
+                        const sameValue =
+                          preVal.msg === nxtVal.msg &&
+                          preVal.navigateType === nxtVal.navigateType &&
+                          preVal.url === nxtVal.url;
+                        // TODO: 这块后面需要抽象出来，不能每写一个动作都要加逻辑
+                        return !sameType || !sameValue;
                       }}
-                    />
+                      noStyle
+                    >
+                      {({ getFieldValue }) => {
+                        const actionType = getFieldValue(['action', index, 'actionType']);
+                        if (!actionType) {
+                          return;
+                        }
+                        const _index = actions.findIndex((v) => v.type === actionType);
+                        return (
+                          <WithActionForm
+                            index={index}
+                            formUrl={actions[_index]?.formUrl}
+                            actionType={actionType}
+                          />
+                        );
+                      }}
+                    </Form.Item>
                   </div>
-                  <Form.Item name={[index, 'actionType']}>
-                    <Select options={actionOptions} />
-                  </Form.Item>
-                  <Form.Item
-                    shouldUpdate={(prevValues, curValues) => {
-                      return (
-                        prevValues?.action[index]?.actionType !==
-                        curValues?.action[index]?.actionType
-                      );
-                    }}
-                    noStyle
-                  >
-                    {({ getFieldValue }) => {
-                      const actionType = getFieldValue(['action', index, 'actionType']);
-                      if (!actionType) {
-                        return;
-                      }
-                      const _index = actions.findIndex((v) => v.type === actionType);
-                      return (
-                        <WithActionForm
-                          index={index}
-                          formUrl={actions[_index]?.formUrl}
-                          actionType={actionType}
-                        />
-                      );
-                    }}
-                  </Form.Item>
-                </div>
-              </ActionFormBox>
-            ))}
-            <Button
-              htmlType="button"
-              type="link"
-              onClick={() => {
-                add();
-              }}
-              style={{
-                padding: 0,
-                color: '#1980FF',
-                marginBottom: '50px',
-              }}
-            >
-              <PlusOutlined style={{ fontSize: '12px' }} />
-              新增交互配置
-            </Button>
-          </>
-        )}
+                </ActionFormBox>
+              ))}
+              <Form.Item>
+                <Button
+                  htmlType="button"
+                  type="link"
+                  onClick={() => {
+                    add();
+                  }}
+                  style={{
+                    padding: 0,
+                    color: '#1980FF',
+                    marginBottom: '50px',
+                  }}
+                >
+                  <PlusOutlined style={{ fontSize: '12px' }} />
+                  新增交互配置
+                </Button>
+                <Form.ErrorList errors={errors} />
+              </Form.Item>
+            </>
+          );
+        }}
       </Form.List>
     </>
   );

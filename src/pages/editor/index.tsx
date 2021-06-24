@@ -276,7 +276,7 @@ const Editor: React.FC = () => {
         action: [],
       });
     }
-  }, [state.selectedElementId, state.dsl, setActionData]);
+  }, [state.selectedElementId]);
 
   const handleDelElement = () => {
     confirm({
