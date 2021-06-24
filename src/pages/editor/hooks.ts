@@ -3,8 +3,7 @@ import { getCompMeta } from '@/services/editor';
 import { getDllApi } from '@/utils/host';
 import { useEffect, useState } from 'react';
 import { LoadScript } from './load-stuff';
-
-const isLocal = window.location.host.includes('localhost');
+import { isLocal } from '@/configs/dll';
 
 const useHideHeader = (location: any) => {
   useEffect(() => {

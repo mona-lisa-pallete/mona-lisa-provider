@@ -55,4 +55,8 @@
 
 - TODO: 待微前端 done 配置
 
+### 是否访问本地组件
+
+通过修改/configs/dll.ts 中的`isLocal`决定是否访问本地组件
+
 ### 总是哪里缺了都是 TODO

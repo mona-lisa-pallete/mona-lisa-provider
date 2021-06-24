@@ -3,6 +3,7 @@ import { CSSProperties } from 'styled-components';
 import { DSL, DSLAction, DSLContent } from './types';
 import { LoadScript } from './load-stuff';
 import { getDllApi } from '@/utils/host';
+import getDllComponentPath from '@/configs/dll';
 
 const conversionActionData = () => {};
 
@@ -82,7 +83,7 @@ const changeElementActionById = (id: string, content: DSLContent[], action: any)
     e.contentChild?.forEach((i, childItem) => {
       const event = contentData[index].contentChild?.[childItem].contentProp?.event;
       if (i.elementId === id && event) {
-        contentData[index].contentChild[childItem].contentProp.event = { ...action };
+        contentData[index].contentChild![childItem].contentProp.event = { ...action };
         // contentData[index].contentChild![childItem].contentProp.style = data;
       } else if (i.elementId === id && !event) {
         contentData[index].contentChild![childItem].contentProp = {
@@ -132,13 +133,9 @@ const getScript = (url: string) => {
 const getWidgetData = (
   refNames: Array<{ compUrl: string; formUrl: string; compMetaUrl: string; name: string }>,
 ) => {
-  const isLocal = window.location.host.includes('localhost');
-  const fetchData = [];
+  const fetchData: Array<Promise<unknown>> = [];
   refNames.forEach((i) => {
-    const compMetaUrl = isLocal ? `${getDllApi()}${i.name}.json` : i.compMetaUrl;
-    const formUrl = isLocal ? `${getDllApi() + i.name}.js` : i.formUrl;
-    const compUrl = isLocal ? `${getDllApi() + i.name}.js` : i.compUrl;
-
+    const [compMetaUrl, formUrl, compUrl] = getDllComponentPath(i);
     fetchData.push(getScript(compMetaUrl)());
     fetchData.push(getScript(formUrl)());
     fetchData.push(getScript(compUrl)());

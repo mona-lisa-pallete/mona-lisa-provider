@@ -7,18 +7,18 @@ interface CompLoaderProps {
 }
 
 export const CompLoader: React.FC<CompLoaderProps> = ({ elementRef, contentProps }) => {
-  // console.log(contentProps);
-
   const { fetching } = useWidgetMeta(elementRef);
-  // console.log(window[elementRef]);
-  // elementRef && React.createElement(elementRef, {})
-  const Comp = window?.[elementRef]?.default || 'div';
+  const Comp = (window as any)[elementRef]?.default || 'div';
   const elementRefFn = useCallback(() => {
-    if (!window?.[elementRef]?.default) {
+    if (!(window as any)[elementRef]?.default) {
       return null;
     }
     return <Comp class="dv-item" {...contentProps} edit />;
   }, [elementRef, Comp, contentProps]);
 
-  return fetching ? <div>loading</div> : <> {elementRefFn()}</> || '';
+  return fetching ? (
+    <div style={{ fontSize: 16, textAlign: 'center', padding: 10 }}>loading</div>
+  ) : (
+    <> {elementRefFn()}</> || ''
+  );
 };
