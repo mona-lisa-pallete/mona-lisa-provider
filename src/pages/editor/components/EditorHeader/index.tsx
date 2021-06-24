@@ -88,7 +88,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
     if (query.type === 'edit') {
       return Promise.resolve(query.pageId);
     } else {
-      const page = await save(state.dsl);
+      const { page } = await save(state.dsl);
       setPageId(page!);
       history.replace({
         pathname: '/editor',
@@ -377,7 +377,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
         <Button
           type="primary"
           onClick={async () => {
-            const page = await save();
+            const { page } = await save();
             setPageId(page!);
             await online(page);
           }}
