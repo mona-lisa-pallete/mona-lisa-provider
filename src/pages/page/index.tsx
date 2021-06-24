@@ -190,12 +190,6 @@ const Page: React.FC = () => {
               <PageTag>
                 <Tag className="h5">H5</Tag>
                 <StatusTag type={item.webReleaseState} />
-                <Tooltip
-                  overlayClassName="page-tag-tooltip"
-                  title="H5上线大概需要2分钟，请耐心等候"
-                >
-                  <QuestionCircleOutlined />
-                </Tooltip>
               </PageTag>
             )}
             {item.platform.includes('MINIAPP') && (
@@ -212,7 +206,7 @@ const Page: React.FC = () => {
                   overlayClassName="page-tag-tooltip"
                   title={
                     <Tips>
-                      小程序需要上
+                      小程序如果使用新组件需要上
                       <a href="https://mp.weixin.qq.com/" target="_blank" rel="noreferrer">
                         微信公众平台
                       </a>
