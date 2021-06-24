@@ -20,7 +20,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
 // import ConfirmModal from '@/components/ConfirmModal';
-import { delPage, getPages, getPageUsers, updatePage } from '@/services/page';
+import { delPage, getPages, getPageUsers, updatePage, getWxOnlineCode } from '@/services/page';
 import { useLocation } from 'umi';
 import { PageActionType, PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
@@ -73,6 +73,24 @@ const Page: React.FC = () => {
     });
     if (res.code === 0) {
       tableRef.current?.reload();
+    }
+  };
+
+  const getOnlineUrl = async (item: PageItem) => {
+    try {
+      const platform = getPlatform(item.platform);
+      setPreviewType(platform);
+      setH5Url(item.webUrl);
+      if (platform.includes('mini')) {
+        const {
+          data: { cdnUrl },
+        } = await getWxOnlineCode(item.page);
+        setMiniappUrl(`pages/index/index?id=${item.page}`);
+        setMiniappCodeUrl(cdnUrl);
+      }
+      setPreviewVisible(true);
+    } catch {
+      message.error('获取在线地址失败!');
     }
   };
 
@@ -376,11 +394,7 @@ const Page: React.FC = () => {
               type="link"
               disabled={!item.releaseBatch}
               onClick={() => {
-                setPreviewType(getPlatform(item.platform));
-                setH5Url(item.webUrl);
-                setMiniappUrl(item.miniappUrl);
-                setMiniappCodeUrl(item.miniappCodeUrl);
-                setPreviewVisible(true);
+                getOnlineUrl(item);
               }}
             >
               预览

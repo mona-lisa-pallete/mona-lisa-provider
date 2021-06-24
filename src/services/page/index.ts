@@ -28,4 +28,10 @@ const updatePage = async (id: string | number, data: IUpdatePageRequest) =>
     data,
   });
 
-export { getPages, getPageUsers, delPage, updatePage };
+const getWxOnlineCode = async (id: string) =>
+  instance.request<{ cdnUrl: string }, IResponse<{ cdnUrl: string }>>({
+    url: `/davinciapi/api/1/core/miniapp/qrcode?page=${id}`,
+    method: 'GET',
+  });
+
+export { getPages, getPageUsers, delPage, updatePage, getWxOnlineCode };

@@ -33,7 +33,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
   const {
     onChange,
     h5Url = 'http://www.baidu.com',
-    // miniappCodeUrl,
+    miniappCodeUrl,
     miniappUrl,
     type,
     // editorState,
@@ -51,11 +51,15 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
 
   useEffect(() => {
     if (miniappUrl) {
-      QRCode.toDataURL(miniappUrl, {
-        width: 128,
-      }).then((url) => {
-        setMiniAppQRCode(url);
-      });
+      if (miniappCodeUrl && miniappCodeUrl.includes('http')) {
+        setMiniAppQRCode(miniappCodeUrl);
+      } else {
+        QRCode.toDataURL(miniappUrl, {
+          width: 128,
+        }).then((url) => {
+          setMiniAppQRCode(url);
+        });
+      }
     }
   }, [miniappUrl]);
 
