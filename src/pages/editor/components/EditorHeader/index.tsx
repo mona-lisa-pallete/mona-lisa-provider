@@ -31,6 +31,7 @@ interface EditorHeaderProps {
 
 const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
   const [expendVal, setExpendVal] = useState(false);
+  const [pageNameTip, setPageNameTip] = useState(false);
   const location: any = useLocation();
   const { state, dispatch } = useContext(EditorContext);
   const [value, setValue] = useState('');
@@ -55,6 +56,12 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
     setValue(JSON.stringify(state.dsl));
   }, [state.dsl]);
 
+  useEffect(() => {
+    if (inputVisible && pageNameTip) {
+      setPageNameTip(false);
+    }
+  }, [inputVisible, pageNameTip]);
+
   const back = () => {
     if (state.oldDslStr !== JSON.stringify(state.dsl) || state.pageName !== state.oldPageName) {
       confirm({
@@ -66,6 +73,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
         cancelText: '取消',
         centered: true,
         async onOk() {
+          // @ts-ignore
           history.push({
             pathname: '/page',
             query: {
@@ -76,6 +84,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
       });
       return;
     }
+    // @ts-ignore
     history.push({
       pathname: '/page',
       query: {
@@ -90,6 +99,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
     } else {
       const { page } = await save(state.dsl);
       setPageId(page!);
+      // @ts-ignore
       history.replace({
         pathname: '/editor',
         query: {
@@ -131,6 +141,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
 
   const save = async (dsl: string | DSL = state.dsl) => {
     if (!state.pageName) {
+      setPageNameTip(true);
       message.warning({
         content: '请输入页面名称',
         className: 'page-message',
@@ -164,6 +175,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
           name: state.pageName,
         },
       });
+      // @ts-ignore
       history.replace({
         pathname: '/editor',
         query: {
@@ -301,6 +313,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
           onBlur={(e) => {
             if (!e.target.value.trim()) {
               message.warning('请输入页面名称');
+              setPageNameTip(true);
             }
             setInputVisible(false);
           }}
@@ -315,7 +328,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
           }}
         />
         {!inputVisible && (
-          <div>
+          <div className={pageNameTip ? 'tip-flush' : ''}>
             {state.pageName}
             <i
               onClick={() => {

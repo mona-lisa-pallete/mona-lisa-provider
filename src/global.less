@@ -131,3 +131,23 @@ aside.ant-layout-sider-has-trigger {
   background: #fefefe !important;
   color: #50546f !important;
 }
+
+
+.tip-flush {
+  border: 2px solid #f00;
+  animation: TipFlush 0.5s steps(1) infinite;
+}
+
+@keyframes TipFlush {
+  from {
+    border-color: #f00;
+  }
+
+  50% {
+    border-color: #fff;
+  }
+
+  to {
+    border-color: #fff;
+  }
+}
