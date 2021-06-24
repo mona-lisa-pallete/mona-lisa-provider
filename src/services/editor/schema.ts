@@ -19,6 +19,7 @@ export interface IAddPageRequest {
 
 export interface IAddPageReponse {
   page: string;
+  webUrl: string;
 }
 
 export interface IGetComponentsReponse {

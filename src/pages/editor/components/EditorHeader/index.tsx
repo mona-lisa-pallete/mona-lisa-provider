@@ -115,16 +115,18 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
   );
 
   const preview = async (dsl: any) => {
-    const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
-    const res = await addPreviewPage({
-      dsl: dslData,
-      page: pageId,
-    });
-    if (res.code === 0) {
-      // message.success('保存成功');
-      onPreview(res.data.url);
-      // window.open(res.data.url);
-    }
+    // const dslData = typeof dsl === 'string' ? JSON.parse(dsl) : dsl;
+    // const res = await addPreviewPage({
+    //   dsl: dslData,
+    //   page: pageId,
+    // });
+    // if (res.code === 0) {
+    //   // message.success('保存成功');
+    //   onPreview(res.data.url);
+    //   // window.open(res.data.url);
+    // }
+    const { webUrl } = await save();
+    onPreview(webUrl);
   };
 
   const save = async (dsl: string | DSL = state.dsl) => {
@@ -174,7 +176,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
         content: `${state.pageName}保存成功`,
         className: 'page-message',
       });
-      return Promise.resolve(res.data.page);
+      return Promise.resolve(res.data);
     } else {
       return Promise.reject();
     }
