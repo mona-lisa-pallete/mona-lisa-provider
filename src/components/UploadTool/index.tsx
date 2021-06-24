@@ -123,7 +123,7 @@ const UploadTool: React.FC<UploadToolProps> = (props) => {
             style={{
               margin: '0 auto',
               display: 'block',
-              maxWidth: '287px',
+              maxWidth: '100%',
             }}
             src={imgUrl}
           />

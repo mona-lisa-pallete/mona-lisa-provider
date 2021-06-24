@@ -124,7 +124,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
         },
       });
     }
-  }, []);
+  }, [form, imgField, selectMaterial, isSuccess]);
 
   //  miniappImmersion: string;
   //   shareTitle: string;
