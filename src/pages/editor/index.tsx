@@ -400,6 +400,7 @@ const Editor: React.FC = () => {
                 >
                   <ActionForm pageData={[]} modalData={[]} />
                 </Form>
+                <div style={{ height: 50 }} />
                 {state.selectedElementRef && (
                   <Button className="del-btn" onClick={handleDelElement}>
                     <DelText>删除组件</DelText>

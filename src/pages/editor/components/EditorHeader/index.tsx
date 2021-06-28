@@ -93,11 +93,27 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
     });
   };
 
-  const handleAddPage = async () => {
+  const handleAddPage = async (title?: string) => {
+    if (!title) {
+      setPageNameTip(true);
+      message.warning({
+        content: '请输入页面名称',
+        className: 'page-message',
+      });
+      return Promise.reject();
+    } else if (title !== state.pageName) {
+      dispatch({
+        type: ActionType.SetPageName,
+        payload: {
+          name: title,
+        },
+      });
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
     if (query.type === 'edit') {
       return Promise.resolve(query.pageId);
     } else {
-      const { page } = await save(state.dsl);
+      const { page } = await save(state.dsl, title);
       setPageId(page!);
       // @ts-ignore
       history.replace({
@@ -139,8 +155,8 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
     onPreview(webUrl);
   };
 
-  const save = async (dsl: string | DSL = state.dsl) => {
-    if (!state.pageName) {
+  const save = async (dsl: string | DSL = state.dsl, pageName?: string) => {
+    if (!state.pageName && !pageName) {
       setPageNameTip(true);
       message.warning({
         content: '请输入页面名称',
@@ -153,7 +169,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
     const res = await addPage({
       dsl: dslData,
       page: query.type === 'edit' ? pageId : '',
-      name: state.pageName,
+      name: pageName || state.pageName,
       projectId: parseInt(query.projectId, 10),
     });
     addMaterialsData();
@@ -172,7 +188,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
       dispatch({
         type: ActionType.ChangeOldPageName,
         payload: {
-          name: state.pageName,
+          name: pageName || state.pageName,
         },
       });
       // @ts-ignore
@@ -185,7 +201,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
         },
       });
       message.success({
-        content: `${state.pageName}保存成功`,
+        content: `${pageName || state.pageName}保存成功`,
         className: 'page-message',
       });
       return Promise.resolve(res.data);

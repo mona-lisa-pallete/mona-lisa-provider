@@ -135,9 +135,6 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
   //   miniappShareImage: string;
   const submit = async (values: any) => {
     let pageId = id;
-    if (beforeSave) {
-      pageId = await beforeSave();
-    }
     const {
       attributes: {
         shareTitle = '',
@@ -153,6 +150,9 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
       platform,
       name,
     } = values;
+    if (beforeSave) {
+      pageId = await beforeSave(name);
+    }
     const attributes: any = {
       shareTitle,
       shareDescription,
