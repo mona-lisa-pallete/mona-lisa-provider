@@ -196,10 +196,10 @@ const Page: React.FC = () => {
               <PageTag>
                 <Tag className="mini">小程序</Tag>
                 <StatusTag
-                  edit={isEdit}
-                  onChangeStatus={(status) => {
-                    handlePageAuditStatus(item.page, status);
-                  }}
+                  // edit={isEdit}
+                  // onChangeStatus={(status) => {
+                  //   handlePageAuditStatus(item.page, status);
+                  // }}
                   type={item.miniappReleaseState}
                 />
                 <Tooltip
