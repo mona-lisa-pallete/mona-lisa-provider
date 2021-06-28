@@ -35,7 +35,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
     h5Url = 'http://www.baidu.com',
     miniappCodeUrl,
     miniappUrl,
-    type,
+    type = 'h5',
     // editorState,
   } = props;
   const [h5QRCode, setH5QRCode] = useState('');
@@ -62,7 +62,6 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
       }
     }
   }, [miniappUrl]);
-
   return (
     <>
       <PreviewModalRoot>
@@ -74,7 +73,7 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
             <iframe frameBorder={0} src={h5Url} />
           </PreviewPhoneContainer>
           <PreviewQRContainer>
-            {(type === 'h5' || type === 'h5mini') && (
+            {(!type || type === 'h5' || type === 'h5mini') && (
               <PreviewQRItem>
                 <img src={h5QRCode} />
                 <PreviewQRInfo>
