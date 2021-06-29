@@ -112,32 +112,22 @@ const ViewportItem: React.FC<CardProps> = (props) => {
       {props.children}
       {actionVisible && (
         <ActionBar>
-          <i
-            className={`iconicon-arrow-up iconfont ${index === 0 ? 'action-bar__disabled' : ''}`}
-            style={{
-              cursor: index === 0 ? 'not-allowed' : 'pointer',
-            }}
-            onClick={() => {
-              if (index === 0) {
-                return;
-              }
-              handleMove(-1);
-            }}
-          />
-          <i
-            className={`iconicon-arrow-down iconfont ${
-              index === state.dsl.content.length - 1 ? 'action-bar__disabled' : ''
-            }`}
-            style={{
-              cursor: index === state.dsl.content.length - 1 ? 'not-allowed' : 'pointer',
-            }}
-            onClick={() => {
-              if (index === state.dsl.content.length - 1) {
-                return;
-              }
-              handleMove(1);
-            }}
-          />
+          {index !== 0 && (
+            <i
+              className={`iconicon-arrow-up iconfont`}
+              onClick={() => {
+                handleMove(-1);
+              }}
+            />
+          )}
+          {index !== state.dsl.content.length - 1 && (
+            <i
+              className={`iconicon-arrow-down iconfont`}
+              onClick={() => {
+                handleMove(1);
+              }}
+            />
+          )}
           <i className="icon-delete iconfont" onClick={handleDel} />
         </ActionBar>
       )}

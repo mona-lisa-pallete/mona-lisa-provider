@@ -2,20 +2,21 @@ import styled from 'styled-components';
 
 export const PageHeaderContainer = styled.div`
   height: 60px;
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  margin: 0 16px;
   justify-content: space-between;
   position: relative;
-  &::after {
+  border-bottom: 1px solid #eee;
+  /* &::after {
     position: absolute;
     bottom: 0;
     left: 16px;
     width: calc(100% - 38px);
     border-top: 1px solid #e8e9ed;
     content: '';
-  }
+  } */
 `;
 
 export const PageHeaderTitle = styled.div`

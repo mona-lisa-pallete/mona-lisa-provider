@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   PreviewModalRoot,
   PreviewPhone,
+  PreviewPhoneBG,
   PreviewPhoneContainer,
   PreviewQRAction,
   PreviewQRContainer,
@@ -13,6 +14,7 @@ import {
 import phone from '@/assets/img/common/phone.png';
 import { Button, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import PreviewHeader from '@/assets/img/common/preview-header.png';
 import QRCode from 'qrcode';
 import copy from 'copy-to-clipboard';
 import downloadjs from 'downloadjs';
@@ -68,7 +70,19 @@ const PreviewModal: React.FC<PreviewModalProp> = (props) => {
         <div className="preview-modal__mask">
           <CloseOutlined className="preview-close" onClick={onChange} style={{ color: '#fff' }} />
           <PreviewPhoneContainer>
-            <PreviewPhone src={phone} />
+            <PreviewPhone>
+              <img
+                style={{
+                  position: 'absolute',
+                  top: '80px',
+                  right: '20px',
+                  left: '20px',
+                  width: '320px',
+                }}
+                src={PreviewHeader}
+              />
+              <PreviewPhoneBG src={phone} style={{ width: '100%' }} />
+            </PreviewPhone>
             {/* <PreviewRuntime editorState={editorState?.state} /> */}
             <iframe frameBorder={0} src={h5Url} />
           </PreviewPhoneContainer>

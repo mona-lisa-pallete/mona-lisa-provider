@@ -29,9 +29,23 @@ interface EditorHeaderProps {
   onPreview: (url: string) => void;
 }
 
+const usePageNameTip = (defaultFlush = false): [boolean, (willFlush: boolean) => void] => {
+  const [pageNameTip, _setPageNameTip] = useState(defaultFlush);
+  const setPageNameTip = (willFlush: boolean) => {
+    _setPageNameTip(willFlush);
+    if (willFlush) {
+      setTimeout(() => {
+        // 应设计要求，3秒后自动消失
+        _setPageNameTip(false);
+      }, 3000);
+    }
+  };
+  return [pageNameTip, setPageNameTip];
+};
+
 const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
   const [expendVal, setExpendVal] = useState(false);
-  const [pageNameTip, setPageNameTip] = useState(false);
+  const [pageNameTip, setPageNameTip] = usePageNameTip(false);
   const location: any = useLocation();
   const { state, dispatch } = useContext(EditorContext);
   const [value, setValue] = useState('');
@@ -453,7 +467,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = (props) => {
       </Modal>
       <PagePopoverStyle />
       <PageSettingModal
-        onlineVal={false}
+        // onlineVal={false}
         visible={settingVisible}
         onChangeVisible={(val: boolean) => {
           setSettingVisible(val);

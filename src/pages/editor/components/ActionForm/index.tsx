@@ -4,8 +4,11 @@ import React from 'react';
 import { ActionFormBox } from './index.style';
 import { ActionFormProps } from './types';
 import { FormSubTitle } from '../../index.style';
-import nzh from 'nzh';
 import { useActionMeta, useActions } from '../../hooks';
+
+import './action-form.less';
+
+import nzh from 'nzh';
 
 function WithActionForm(props: { actionType: string; index: number; formUrl: string }) {
   const { actionType, index, formUrl } = props;
@@ -43,8 +46,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                   <div className="dv-action-item">
                     <div className="dv-action-name">
                       <div>
-                        <i className="iconicon_drag iconfont" />
-                        交互{nzh.cn.encodeS(index + 1)}
+                        <i className="iconicon_drag iconfont" /> 交互{nzh.cn.encodeS(index + 1)}
                       </div>
                       <i
                         className="icon-delete iconfont"

@@ -26,6 +26,8 @@ import FileContent from './FileContent';
 import { MIME } from '@/pages/material-manage/components/File/types';
 import { message, Progress } from 'antd';
 
+import './index.less';
+
 const UploadContentRenderMap = new Map<PlatformUploadFile, React.FC>([
   [PlatformUploadFile.Image, ImageContent],
   [PlatformUploadFile.Video, VideoContent],

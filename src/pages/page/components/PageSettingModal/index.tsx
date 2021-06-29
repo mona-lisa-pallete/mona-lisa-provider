@@ -250,7 +250,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
           >
             保存
           </Button>
-          {!status && id && onlineVal && (
+          {id && onlineVal && (
             <Button
               onClick={() => {
                 // onOk();

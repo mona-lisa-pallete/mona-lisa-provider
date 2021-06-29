@@ -24,8 +24,14 @@ export const PreviewModalRoot = styled.div`
   }
 `;
 
-export const PreviewPhone = styled.img`
-  width: 20vw;
+export const PreviewPhone = styled.div`
+  position: relative;
+  width: 375px;
+  height: 710px;
+`;
+
+export const PreviewPhoneBG = styled.img`
+  width: 100%;
   height: auto;
   min-height: 548px;
   min-width: 278px;
@@ -34,18 +40,16 @@ export const PreviewPhone = styled.img`
 
 export const PreviewPhoneContainer = styled.div`
   position: relative;
-  margin-right: 103px;
-  width: 20vw;
-  height: auto;
-  min-height: 548px;
-  min-width: 278px;
-  max-width: 360px;
+  width: 375px;
+  height: 710px;
   > iframe {
     position: absolute;
-    top: 11%;
-    left: 6%;
-    width: 89%;
-    height: 80%;
+    top: 110px;
+    left: 20px;
+    width: 330px;
+    height: 530px;
+    /* width: 89%; */
+    /* height: 80%; */
   }
 `;
 
@@ -93,6 +97,7 @@ export const PreviewQRLink = styled.div`
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.7);
+  max-width: 120px;
   margin-bottom: 23px;
 `;
 

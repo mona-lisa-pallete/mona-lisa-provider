@@ -9,6 +9,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-unused-vars': 1,
     'import/no-cycle': 'off',
+    'react/self-closing-comp': 'off',
     'prettier/prettier': 'error',
     'react/prop-types': 0,
   },

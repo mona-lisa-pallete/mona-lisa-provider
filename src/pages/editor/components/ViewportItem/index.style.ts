@@ -20,9 +20,6 @@ export const ActionBar = styled.div`
     &:last-child {
       margin-bottom: 0;
     }
-    &:hover {
-      color: #1980ff;
-    }
   }
   .action-bar__disabled {
     &:hover {

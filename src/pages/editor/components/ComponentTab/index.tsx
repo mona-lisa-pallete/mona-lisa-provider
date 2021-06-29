@@ -18,6 +18,7 @@ const ComponentTab: React.FC<PictureTabProps> = (props) => {
       <ComponentDragItem type={type} name={name}>
         <img
           src={img}
+          className="dv-drag-logo"
           style={{
             width: '168px',
           }}

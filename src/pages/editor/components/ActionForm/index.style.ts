@@ -12,8 +12,8 @@ export const ActionFormBox = styled.div`
     margin-bottom: 8px;
   }
   .icon-delete {
-    &:hover {
+    /* &:hover {
       color: #1980ff;
-    }
+    } */
   }
 `;
