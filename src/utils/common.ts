@@ -85,11 +85,13 @@ function isPicGif(name: string) {
 }
 
 function isVideoSize(size: number) {
-  return size / 1024 / 1024 <= 1024;
+  // 限制 1G
+  return size / (1024 * 1024 * 1024) <= 1;
 }
 
 function isImgSize(size: number) {
-  return size / 1024 / 1024 <= 1;
+  // 限制 5M
+  return size / (5 * 1024 * 1024) <= 1;
 }
 
 function getImageSize(img: HTMLImageElement) {

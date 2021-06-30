@@ -258,7 +258,7 @@ const PlatformUpload: React.FC<PlatformUploadProps> = (props) => {
     }
     if (!isImgSize(file.size)) {
       message.error({
-        content: '图片最大为1m',
+        content: '图片最大为5m',
         style: {
           marginTop: '210px',
         },
