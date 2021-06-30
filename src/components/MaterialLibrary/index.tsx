@@ -8,7 +8,7 @@ import Viewer from '@/components/Viewer/';
 import InfiniteScroll from 'react-infinite-scroller';
 import Macy from 'macy';
 import TableTitle from '@/components/TableTitle';
-import Seach from './seach';
+import Search from './search';
 import { useModel } from 'umi';
 import { MessageType } from '@/utils/message';
 import { ViewerItem } from '@/components/Viewer/types';
@@ -94,6 +94,17 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
       }
     });
   };
+
+  // useEffect(() => {
+  //   if (!(window as any).NProgress) return;
+  //   if (loading) {
+  //     (window as any).NProgress.start();
+  //   } else {
+  //     setTimeout(() => {
+  //       (window as any).NProgress.done();
+  //     }, 600);
+  //   }
+  // }, [loading]);
 
   const handleSelect = (i: IGetMaterialsResponseList) => {
     onSelect(i);
@@ -219,7 +230,7 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
       }
       onClose={onClose}
     >
-      <Seach
+      <Search
         placeholder={placeholderData[type]}
         onChange={(seach, val) => {
           setSearch(seach);
@@ -271,7 +282,7 @@ const MaterialLibrary: React.FC<MaterialLibraryProp> = (props) => {
               top: 0,
               left: 0,
               width: '100%',
-              height: '100%',
+              height: '100px',
             }}
           />
         )}

@@ -23,13 +23,13 @@ const Seach = (props: SeachProps, ref: ForwardedRef<unknown>) => {
   const { onChange, placeholder = '', btnName = '上传素材', onClickBtn } = props;
   const { setUploadNewWindow } = useModel('useCommonModel');
 
-  useDebounce(
-    () => {
-      onChange(value, mine);
-    },
-    800,
-    [value, mine],
-  );
+  // useDebounce(
+  //   () => {
+  //     onChange(value, mine);
+  //   },
+  //   300,
+  //   [value, mine],
+  // );
 
   useImperativeHandle(ref, () => {
     return {
@@ -70,13 +70,18 @@ const Seach = (props: SeachProps, ref: ForwardedRef<unknown>) => {
         >
           {btnName}
         </Button>
-        <SeachSwitchContainer>
+        <SeachSwitchContainer
+          onClick={(e) => {
+            setMine(!mine);
+            onChange(value, mine);
+          }}
+        >
           <div className="switch-text">只看我创建的</div>
           <Switch
             checked={mine}
             size="small"
             onChange={(checked) => {
-              setMine(checked);
+              // setMine(checked);
             }}
           />
         </SeachSwitchContainer>

@@ -45,11 +45,18 @@ const useWidgetMeta = (() => {
     const [metaState, setMetaState] = useState(initState);
     useEffect(() => {
       if (!elementRef || !meta) {
-        setMetaState({
+        // 如果没有传入关键参数
+        return setMetaState({
           fetching: false,
           metadata: null,
         });
-        return;
+      }
+      if (metaCache[elementRef]) {
+        // 如果存在缓存
+        return setMetaState({
+          fetching: false,
+          metadata: metaCache[elementRef],
+        });
       }
       const metaUrl = isLocal ? `${getDllApi()}${elementRef}.json` : meta;
       getCompMeta(metaUrl).then(async (metaFromRemote) => {
