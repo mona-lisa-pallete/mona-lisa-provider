@@ -16,12 +16,12 @@ import { IState, ActionType as ReducerActionType } from './types';
 import { getComponents, getPage } from '@/services/editor';
 import { useLocation } from 'react-router-dom';
 import { groupBy, mergeWith } from 'lodash';
-import PlatformUploadTool from '@/_components/PlatformUploadTool';
-import PlatformColorPicker from '@/_components/PlatformColorPicker/';
+import PlatformUploadTool from '@/PlatformTools/PlatformUploadTool';
+import PlatformColorPicker from '@/PlatformTools/PlatformColorPicker/';
 import { changeElementActionById, delElementById, findElementById, getWidgetData } from './utils';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ComponentForm from './components/ComponentForm';
-import PlatformUpload from '@/_components/PlatformUpload';
+import PlatformUpload from '@/PlatformTools/PlatformUpload';
 import PreviewModal from '../page/components/PreviewModal/';
 import getPlatform from '@/utils/getPlaform';
 

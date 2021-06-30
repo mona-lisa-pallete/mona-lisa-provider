@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import UploadTool from '@/_components/UploadTool/';
+import UploadTool from '@/PlatformTools/UploadTool/';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { PlatformUploadFile, PlatformUploadProps } from './types';
 import { useModel } from 'umi';
