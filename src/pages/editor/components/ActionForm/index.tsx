@@ -13,17 +13,17 @@ import nzh from 'nzh';
 function WithActionForm(props: { actionType: string; index: number; formUrl: string }) {
   const { actionType, index, formUrl } = props;
   const { fetching } = useActionMeta(actionType, formUrl);
-  const UI_DLL = (window as any)[actionType]?.default;
+  const FormUIDll = (window as any)[`${actionType}Form`]?.default;
 
   if (fetching) {
     return <div>加载中..</div>;
   }
-  if (!UI_DLL) {
+  if (!FormUIDll) {
     return null;
   }
   return (
     <Form.Item key={index} name={[index, 'data']}>
-      <UI_DLL />
+      <FormUIDll />
     </Form.Item>
   );
 }
