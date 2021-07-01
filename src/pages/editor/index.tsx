@@ -119,32 +119,33 @@ const Editor: React.FC = () => {
       actionData?.action?.filter(
         (i: any) => !!i?.actionType && !!i.data && Object.keys(i.data).length,
       ) || undefined;
-    if (list.length) {
-      const onClickData: string[] = list.map((i: any, index: number) => {
-        return state.selectedElementId! + index;
-      });
-      const obj: any = {};
-      onClickData.forEach((i, index) => {
-        obj[i] = {
-          actionType: list[index]?.actionType,
-          actionProp: {
-            ...list[index].data,
-          },
-        };
-      });
-      const content = changeElementActionById(state.selectedElementId!, state.dsl.content, {
-        onClick: onClickData,
-      });
-      dispatch({
-        type: ReducerActionType.UpdateComponent,
-        payload: {
-          dsl: {
-            content,
-            action: mergeWith(state.dsl.action, obj),
-          },
+    // console.log(list);
+    // if (list.length) {
+    const onClickData: string[] = list.map((i: any, index: number) => {
+      return state.selectedElementId! + index;
+    });
+    const obj: any = {};
+    onClickData.forEach((i, index) => {
+      obj[i] = {
+        actionType: list[index]?.actionType,
+        actionProp: {
+          ...list[index].data,
         },
-      });
-    }
+      };
+    });
+    const content = changeElementActionById(state.selectedElementId!, state.dsl.content, {
+      onClick: onClickData,
+    });
+    dispatch({
+      type: ReducerActionType.UpdateComponent,
+      payload: {
+        dsl: {
+          content,
+          action: mergeWith(state.dsl.action, obj),
+        },
+      },
+    });
+    // }
   };
 
   useEffect(() => {
