@@ -82,6 +82,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                         const _index = actions.findIndex((v) => v.type === actionType);
                         return (
                           <WithActionForm
+                            key={actionType}
                             index={index}
                             formUrl={actions[_index]?.formUrl}
                             actionType={actionType}
