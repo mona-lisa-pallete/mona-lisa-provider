@@ -120,6 +120,7 @@ const useActionMeta = (() => {
       metadata: metaCache[elementRef],
     });
     useEffect(() => {
+      if (!formUrl || metaCache[elementRef]) return;
       async function request() {
         // getActionsByTypes // 简单版本管理，没有调用此接口
         setMetaState({ fetching: true });

@@ -10,8 +10,13 @@ import './action-form.less';
 
 import nzh from 'nzh';
 
-function WithActionForm(props: { actionType: string; index: number; formUrl: string }) {
-  const { actionType, index, formUrl } = props;
+function WithActionForm(props: {
+  actionType: string;
+  index: number;
+  formUrl: string;
+  onChange: any;
+}) {
+  const { actionType, index, formUrl, onChange } = props;
   const { fetching } = useActionMeta(actionType, formUrl);
   const FormUIDll = (window as any)[`${actionType}Form`]?.default;
 
@@ -23,12 +28,12 @@ function WithActionForm(props: { actionType: string; index: number; formUrl: str
   }
   return (
     <Form.Item key={index} name={[index, 'data']}>
-      <FormUIDll />
+      <FormUIDll onChange={onChange} />
     </Form.Item>
   );
 }
 
-const ActionForm: React.FC<ActionFormProps> = () => {
+const ActionForm: React.FC<ActionFormProps> = ({ onChange }) => {
   const actions = useActions();
   const actionOptions = actions.map((v) => ({
     label: v.label,
@@ -82,7 +87,7 @@ const ActionForm: React.FC<ActionFormProps> = () => {
                         const _index = actions.findIndex((v) => v.type === actionType);
                         return (
                           <WithActionForm
-                            key={actionType}
+                            onChange={onChange}
                             index={index}
                             formUrl={actions[_index]?.formUrl}
                             actionType={actionType}

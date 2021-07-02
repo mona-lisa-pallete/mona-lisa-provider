@@ -21,6 +21,7 @@ interface ModalItem {
 }
 
 export interface ActionFormProps {
+  onChange: any;
   pageData: PageItem[];
   modalData: ModalItem[];
 }

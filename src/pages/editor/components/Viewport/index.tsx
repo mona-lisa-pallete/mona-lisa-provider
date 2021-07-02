@@ -14,7 +14,11 @@ import { CompLoader } from './comp-loader';
 import { changeElementStyleById, isDragTarget } from '../../utils';
 import Draggable, { DraggableData } from 'react-draggable';
 
-const Viewport: React.FC = () => {
+interface ViewportProps {
+  onSelectEntity?: (payload: { ref: string; id: string; containerId: string }) => void;
+}
+
+const Viewport: React.FC<ViewportProps> = ({ onSelectEntity }) => {
   const { state, dispatch, setDragContainerId } = useContext(EditorContext);
   const [hasDropped, setHasDropped] = useState(false);
   const [, setDropName] = useState('');
@@ -82,6 +86,12 @@ const Viewport: React.FC = () => {
         id,
         containerId,
       },
+    });
+
+    onSelectEntity?.({
+      ref,
+      id,
+      containerId,
     });
     // console.log(data.contentProp, 'data.contentProp');
 

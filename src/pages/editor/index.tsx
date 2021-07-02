@@ -136,12 +136,17 @@ const Editor: React.FC = () => {
     const content = changeElementActionById(state.selectedElementId!, state.dsl.content, {
       onClick: onClickData,
     });
+    const nextAction = mergeWith(state.dsl.action, obj);
+
+    // 设置 action 表单
+    setActionData(nextAction);
+
     dispatch({
       type: ReducerActionType.UpdateComponent,
       payload: {
         dsl: {
           content,
-          action: mergeWith(state.dsl.action, obj),
+          action: nextAction,
         },
       },
     });
@@ -204,6 +209,7 @@ const Editor: React.FC = () => {
       });
       getWidgetData(elementRefList);
       const elementRefData = res.data?.dsl?.content?.[0]?.contentChild?.[0];
+
       if (elementRefData) {
         dispatch({
           type: ReducerActionType.SetSelectedRef,
@@ -213,6 +219,9 @@ const Editor: React.FC = () => {
             containerId: res.data?.dsl?.content?.[0]?.elementId,
           },
         });
+
+        setActionData(res.data.dsl.action, elementRefData.elementId, res.data.dsl.content);
+
         dispatch({
           type: ReducerActionType.SetFormData,
           payload: {
@@ -226,6 +235,7 @@ const Editor: React.FC = () => {
     } else {
       getComponentsData();
     }
+
     return () => {
       componentIsActive = false;
     };
@@ -245,39 +255,42 @@ const Editor: React.FC = () => {
     return Promise.resolve(res.data);
   }, []);
 
-  const setActionData = useCallback((data: any) => {
-    actionForm.setFieldsValue(data);
-  }, []);
-
-  // 根据当前的elementId来动态修改action表单
-  useEffect(() => {
-    if (!state.selectedElementId) {
+  const setActionData = (
+    actionData: any,
+    selectEntityID = state.selectedElementId,
+    dslContent = state.dsl.content,
+  ) => {
+    // const actionData = state.dsl.action?.[i];
+    if (!selectEntityID) {
       return;
     }
-    const element = findElementById(state.selectedElementId, state.dsl.content);
+    const element = findElementById(selectEntityID, dslContent);
     if (element?.contentProp?.event?.onClick) {
       const list = element?.contentProp?.event?.onClick.slice();
       const actionArr: any[] = [];
 
       list.forEach((i) => {
-        const actionData = state.dsl.action?.[i];
-        if (actionData) {
+        console.log(actionData);
+        const _actionData = actionData[i];
+        if (_actionData) {
           actionArr.push({
-            actionType: actionData.actionType,
-            data: actionData.actionProp,
+            actionType: _actionData.actionType,
+            data: _actionData.actionProp,
           });
         }
         // const { action } = state.dsl.action;
       });
-      setActionData({
+      console.log(actionArr);
+      actionForm.setFieldsValue({
         action: actionArr,
       });
     } else {
-      setActionData({
+      actionForm.setFieldsValue({
         action: [],
       });
     }
-  }, [state.selectedElementId]);
+    // actionForm.setFieldsValue(data);
+  };
 
   const handleDelElement = () => {
     confirm({
@@ -365,7 +378,11 @@ const Editor: React.FC = () => {
             value={componentVal}
             data={ComponentData}
           />
-          <ViewportBox />
+          <ViewportBox
+            onSelectEntity={(payload) => {
+              setActionData(state.dsl.action, payload.id);
+            }}
+          />
           <EditorConfig>
             <Tabs defaultActiveKey="2">
               <TabPane
@@ -387,6 +404,7 @@ const Editor: React.FC = () => {
                   />
                 )}
                 <Form
+                  key={state.selectedElementId}
                   style={{
                     display:
                       state.selectedElementRef && (widgetMeta as any)?.propFormConfig?.useActionForm
@@ -399,7 +417,7 @@ const Editor: React.FC = () => {
                     handleActionData(values);
                   }}
                 >
-                  <ActionForm pageData={[]} modalData={[]} />
+                  <ActionForm onChange={(nextValue: any) => {}} pageData={[]} modalData={[]} />
                 </Form>
                 <div style={{ height: 50 }} />
                 {state.selectedElementRef && (
