@@ -57,6 +57,8 @@
 
 ### 是否访问本地组件
 
-通过修改/configs/dll.ts 中的`isLocal`决定是否访问本地组件
+通过给 url 增加 dev_dll=1 的配置，获取本地组件开发服务的组件
+
+或者通过修改/src/configs/dll.ts 中的`isLocal`决定是否访问本地组件
 
 ### 总是哪里缺了都是 TODO

@@ -242,6 +242,7 @@ const PageSettingModal: React.FC<PageSettingModalProps> = (props) => {
             取消
           </Button>
           <Button
+            type="primary"
             onClick={() => {
               // onOk();
               setOline(false);

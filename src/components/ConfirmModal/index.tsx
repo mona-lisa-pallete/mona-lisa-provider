@@ -51,6 +51,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
       width={width}
       confirmLoading={confirmLoading}
       forceRender={forceRender}
+      maskClosable={false}
       title={
         <IconTitle
           iconStyle={{

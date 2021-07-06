@@ -19,7 +19,7 @@ import ProTable, { ActionType } from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
-// import ConfirmModal from '@/components/ConfirmModal';
+import ConfirmModal from '@/components/ConfirmModal';
 import { delPage, getPages, getPageUsers, updatePage, getWxOnlineCode } from '@/services/page';
 import { useLocation } from 'umi';
 import { PageActionType, PageItem, PlatformType } from '@/services/page/schema';
@@ -33,6 +33,7 @@ import StatusTag from './components/StatusTag';
 import { PageStatusType } from './components/StatusTag/types';
 import { StatusTagStyle } from './components/StatusTag/index.style';
 import getPlatform from '@/utils/getPlaform';
+import CopyPageModal from './components/copyPageModal';
 
 const { confirm } = Modal;
 
@@ -47,6 +48,7 @@ const Page: React.FC = () => {
   const [miniappCodeUrl, setMiniappCodeUrl] = useState('');
   const [miniappUrl, setMiniappUrl] = useState('');
   const [previewType, setPreviewType] = useState('h5');
+  const [copyModalVisible, setCopyModalVisible] = useState(false);
 
   useHideHeader(location);
 
@@ -349,8 +351,8 @@ const Page: React.FC = () => {
             <Button
               type="text"
               onClick={() => {
-                copyPage(item.page);
-                // setModelVisible(true);
+                // copyPage(item.page);
+                setCopyModalVisible(true);
               }}
             >
               复制
@@ -412,7 +414,7 @@ const Page: React.FC = () => {
                     icon: <ExclamationCircleOutlined />,
                     content: '页面下线后，线上页面将会失效，无法进入。请谨慎操作！',
                     okText: '确认',
-                    okType: 'danger',
+                    okType: 'primary',
                     cancelText: '取消',
                     centered: true,
                     async onOk() {
@@ -581,26 +583,11 @@ const Page: React.FC = () => {
           visible={settingVisible}
         />
         {/* <FreedomDrag /> */}
-        {/* <ConfirmModal onChangeVisible={setModelVisible} visible={modelVisible} onOk={copyPage}>
-          <CopyForm colon layout="vertical">
-            <Form.Item label="页面类型">
-              <Radio.Group>
-                <Radio value={1}>当前项目</Radio>
-                <Radio value={2}>其他项目</Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item>
-              <Select />
-            </Form.Item>
-            <Form.Item>
-              <Radio.Group>
-                <Radio value={1}>H5</Radio>
-                <Radio value={2}>小程序</Radio>
-                <Radio value={3}>H5&小程序</Radio>
-              </Radio.Group>
-            </Form.Item>
-          </CopyForm>
-        </ConfirmModal> */}
+        <CopyPageModal
+          projectId={query.projectId}
+          onChangeVisible={setCopyModalVisible}
+          visible={copyModalVisible}
+        ></CopyPageModal>
       </PageContainer>
     </>
   );

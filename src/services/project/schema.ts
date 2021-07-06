@@ -1,6 +1,7 @@
 export interface IGetProjectRequest {
   name: string;
   createUserName: string;
+  currentPage?: number;
 }
 
 export interface ProjectItem {

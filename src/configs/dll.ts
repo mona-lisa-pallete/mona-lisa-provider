@@ -8,7 +8,7 @@ interface IComponentData {
 }
 
 // 不访问本地组件工程
-export const isLocal = false;
+export const isLocal = !!/.*dev_dll=1.*/.test(window.location.search);
 
 // 通过域名判断是否访问本地组件工程
 // export const isLocal = window.location.host.includes('localhost');

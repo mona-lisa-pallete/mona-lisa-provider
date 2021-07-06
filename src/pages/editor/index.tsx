@@ -234,6 +234,12 @@ const Editor: React.FC = () => {
       getData();
     } else {
       getComponentsData();
+      dispatch({
+        type: ReducerActionType.SetPageName,
+        payload: {
+          name: '默认页面标题',
+        },
+      });
     }
 
     return () => {
