@@ -38,7 +38,7 @@ try {
 
 const target = ((env) => {
   const map = {
-    dev: 'http://portalhome.uae.shensz.local',
+    dev: 'http://127.0.0.1:5400', // 'http://portalhome.uae.shensz.local',
     test: 'http://portal.test.guorou.net',
     prod: 'https://portal.guorou.net',
   };

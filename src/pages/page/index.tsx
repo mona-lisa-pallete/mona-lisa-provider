@@ -1,5 +1,16 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Image, message, Modal, Popover, Tag, Tooltip, Breadcrumb } from 'antd';
+import {
+  Button,
+  Image,
+  message,
+  Modal,
+  Popover,
+  Tag,
+  Tooltip,
+  Breadcrumb,
+  PageHeader as AntdPageHeader,
+  Menu,
+} from 'antd';
 import React, { useRef, useState } from 'react';
 import {
   PageAction,
@@ -21,7 +32,7 @@ import PlaceholderImg from '@/components/PlaceholderImg';
 import PreviewModal from './components/PreviewModal/';
 import ConfirmModal from '@/components/ConfirmModal';
 import { delPage, getPages, getPageUsers, updatePage, getWxOnlineCode } from '@/services/page';
-import { useLocation } from 'umi';
+import { useLocation, Link } from 'umi';
 import { PageActionType, PageItem, PlatformType } from '@/services/page/schema';
 import moment from 'moment';
 import { ExclamationCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -34,6 +45,8 @@ import { PageStatusType } from './components/StatusTag/types';
 import { StatusTagStyle } from './components/StatusTag/index.style';
 import getPlatform from '@/utils/getPlaform';
 import CopyPageModal from './components/copyPageModal';
+
+import './index.less';
 
 const { confirm } = Modal;
 
@@ -523,72 +536,85 @@ const Page: React.FC = () => {
 
   return (
     <>
-      <Breadcrumb>
-        <Breadcrumb.Item>
-          <a href="/davinciprovider/project">项目列表</a>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{query.projectTitle || '项目名称'}</Breadcrumb.Item>
-      </Breadcrumb>
-      <PageContainer>
-        <PagePopoverStyle />
-        <StatusTagStyle />
-        <PageHeader title="页面列表">
-          <Button
-            type="primary"
-            style={{
-              padding: '0 10px',
-            }}
-            onClick={addPage}
-          >
-            <PlusOutlined />
-            创建页面
-          </Button>
-        </PageHeader>
-        <PageMain>
-          <ProTable<PageItem>
-            bordered
-            polling={5000}
-            actionRef={tableRef}
-            columns={columns}
-            rowKey="id"
-            search={{
-              labelWidth: 70,
-            }}
-            scroll={{ x: 'max-content' }}
-            request={getData}
-            form={{
-              labelAlign: 'left',
-            }}
-            pagination={{
-              pageSize: 10,
-            }}
-            options={false}
-          />
-        </PageMain>
-        <PreviewModal
-          h5Url={h5Url}
-          onChange={() => {
-            setPreviewVisible(false);
-          }}
-          type={previewType as 'h5' | 'mini' | 'h5mini'}
-          miniappCodeUrl={miniappCodeUrl}
-          miniappUrl={miniappUrl}
-          visible={previewVisible}
-        />
-        <PageSettingModal
-          id={pageId}
-          onChangeVisible={(val) => {
-            setSettingVisible(val);
-          }}
-          visible={settingVisible}
-        />
-        {/* <FreedomDrag /> */}
-        <CopyPageModal
-          projectId={query.projectId}
-          onChangeVisible={setCopyModalVisible}
-          visible={copyModalVisible}
-        ></CopyPageModal>
-      </PageContainer>
+      <AntdPageHeader title="达芬奇" className="page-header" />
+      <div className="projects-container">
+        <aside>
+          <Menu selectedKeys={['1']}>
+            <Menu.Item key={'1'}>落地页项目管理</Menu.Item>
+            <Menu.Item key={'2'}>
+              <Link to="/material-manage">素材管理</Link>
+            </Menu.Item>
+          </Menu>
+        </aside>
+        <div className="page-container">
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <a href="/davinciprovider/project">项目列表</a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>{query.projectTitle || '项目名称'}</Breadcrumb.Item>
+          </Breadcrumb>
+          <PageContainer>
+            <PagePopoverStyle />
+            <StatusTagStyle />
+            <PageHeader title="页面列表">
+              <Button
+                type="primary"
+                style={{
+                  padding: '0 10px',
+                }}
+                onClick={addPage}
+              >
+                <PlusOutlined />
+                创建页面
+              </Button>
+            </PageHeader>
+            <PageMain>
+              <ProTable<PageItem>
+                bordered
+                polling={5000}
+                actionRef={tableRef}
+                columns={columns}
+                rowKey="id"
+                search={{
+                  labelWidth: 70,
+                }}
+                scroll={{ x: 'max-content' }}
+                request={getData}
+                form={{
+                  labelAlign: 'left',
+                }}
+                pagination={{
+                  pageSize: 10,
+                }}
+                options={false}
+              />
+            </PageMain>
+            <PreviewModal
+              h5Url={h5Url}
+              onChange={() => {
+                setPreviewVisible(false);
+              }}
+              type={previewType as 'h5' | 'mini' | 'h5mini'}
+              miniappCodeUrl={miniappCodeUrl}
+              miniappUrl={miniappUrl}
+              visible={previewVisible}
+            />
+            <PageSettingModal
+              id={pageId}
+              onChangeVisible={(val) => {
+                setSettingVisible(val);
+              }}
+              visible={settingVisible}
+            />
+            {/* <FreedomDrag /> */}
+            <CopyPageModal
+              projectId={query.projectId}
+              onChangeVisible={setCopyModalVisible}
+              visible={copyModalVisible}
+            ></CopyPageModal>
+          </PageContainer>
+        </div>
+      </div>
     </>
   );
 };

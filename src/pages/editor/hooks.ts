@@ -7,12 +7,12 @@ import { isLocal } from '@/configs/dll';
 
 const useHideHeader = (location: any) => {
   useEffect(() => {
-    const style = location.pathname === '/editor' ? 'none' : 'block';
-    document.querySelector('aside')!.style.display = style;
-    (document.querySelector('.reset-antd') as HTMLElement).style.display = style;
-    (document.querySelector('.site-layout-background') as HTMLElement).style.margin =
-      location.pathname === '/editor' ? '0px' : '16px';
-    document.body.className = location.pathname.replace(/\//g, '_');
+    // const style = location.pathname === '/editor' ? 'none' : 'block';
+    // document.querySelector('aside').style.display = style;
+    // (document.querySelector('.reset-antd') as HTMLElement).style.display = style;
+    // (document.querySelector('.site-layout-background') as HTMLElement).style.margin =
+    //   location.pathname === '/editor' ? '0px' : '16px';
+    // document.body.className = location.pathname.replace(/\//g, '_');
   }, [location]);
 };
 

@@ -8,6 +8,7 @@ export const Query = styled(QueryFilter)`
 
 export const MaterialManageContainer = styled.div`
   background-color: #fff;
+  flex-grow: 1;
   .ant-tabs-nav {
     padding-left: 16px;
   }

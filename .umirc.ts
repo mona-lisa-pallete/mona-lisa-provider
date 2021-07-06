@@ -25,11 +25,12 @@ const config = defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  mlayout: {
-    headerTitle: '落地页配置后台',
-    menuConfig,
-    headerLogo: 'https://static.guorou.net/course-static/22a23e8987c449708948925fab439ad3.svg',
-  },
+  // mlayout: {
+  //   headerTitle: '落地页配置后台',
+  //   menuConfig,
+  //   headerLogo: 'https://static.guorou.net/course-static/22a23e8987c449708948925fab439ad3.svg',
+  //   // hideHeader: true
+  // },
   theme,
   headScripts: [
     'https://static.guorou.net/davinci/lib/reactVendor.dll.js',
@@ -57,7 +58,7 @@ const config = defineConfig({
   chainWebpack: (config, { webpack }) => {
     // config.plugin('worker-plugin').use(WorkerPlugin, [{ globalObject: 'this' }]);
   },
-  plugins: ['@grfe/micro-layout'],
+  // plugins: ['@grfe/micro-layout'],
   proxy: {
     ...devProxy,
   },

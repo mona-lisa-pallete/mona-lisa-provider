@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const ProjectContainer = styled.div`
   background: #ffffff;
   border-radius: 4px;
+  flex-grow: 1;
 `;
 
 export const ProjectMain = styled.div`

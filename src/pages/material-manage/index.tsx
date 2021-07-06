@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MaterialManageContainer } from './index.style';
-import { Tabs, Button, Input, Modal, message, Form } from 'antd';
+import {
+  Tabs,
+  Button,
+  Input,
+  Modal,
+  message,
+  Form,
+  PageHeader as AntdPageHeader,
+  Menu,
+} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { setMaterial, delMaterial } from '@/services/material/';
 import Viewer from '@/components/Viewer/';
@@ -8,7 +17,7 @@ import { ViewerItem } from '@/components/Viewer/types';
 import { MaterialType } from './types';
 // import { getUser } from '@/services/common';
 // import { UserRequestType } from '@/services/common/schema';
-import { useModel, useLocation } from 'umi';
+import { useModel, useLocation, Link } from 'umi';
 import { MessageType } from '@/utils/message';
 import Picture from './components/Picture/';
 import Video from './components/Video/';
@@ -164,136 +173,148 @@ const MaterialManage: React.FC = () => {
   };
 
   const handleDelMaterial = async (id: string | number) => {
-    const res = await delMaterial(id);
-    console.log(res);
+    await delMaterial(id);
   };
 
   return (
-    <MaterialManageContainer>
-      <div
-        style={{
-          position: 'relative',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            right: '16px',
-            top: '5px',
-            zIndex: 1,
-          }}
-        >
-          <Button
-            type="primary"
-            onClick={() => {
-              setUploadNewWindow();
+    <>
+      <AntdPageHeader title="达芬奇" className="page-header" />
+      <div className="projects-container">
+        <aside>
+          <Menu selectedKeys={['2']}>
+            <Menu.Item key={'1'}>
+              <Link to="/project">落地页项目管理</Link>
+            </Menu.Item>
+            <Menu.Item key={'2'}>素材管理</Menu.Item>
+          </Menu>
+        </aside>
+        <MaterialManageContainer>
+          <div
+            style={{
+              position: 'relative',
             }}
           >
-            素材上传
-          </Button>
-        </div>
-        <Tabs defaultActiveKey={MaterialType.Image}>
-          <TabPane tab="图片" key={MaterialType.Image}>
-            <Picture
-              onPreview={(
-                selectedIndex: number,
-                data: Array<{
-                  url: string;
-                  type: MaterialType;
-                  id: number;
-                }>,
-                visible: boolean,
-              ) => {
-                handleViewer(selectedIndex, data, visible, MaterialType.Image);
+            <div
+              style={{
+                position: 'absolute',
+                right: '16px',
+                top: '5px',
+                zIndex: 1,
               }}
-              onChangeName={(name: string, id: number) => {
-                handleChangeName(name, id, MaterialType.Image);
+            >
+              <Button
+                type="primary"
+                onClick={() => {
+                  setUploadNewWindow();
+                }}
+              >
+                素材上传
+              </Button>
+            </div>
+            <Tabs defaultActiveKey={MaterialType.Image}>
+              <TabPane tab="图片" key={MaterialType.Image}>
+                <Picture
+                  onPreview={(
+                    selectedIndex: number,
+                    data: Array<{
+                      url: string;
+                      type: MaterialType;
+                      id: number;
+                    }>,
+                    visible: boolean,
+                  ) => {
+                    handleViewer(selectedIndex, data, visible, MaterialType.Image);
+                  }}
+                  onChangeName={(name: string, id: number) => {
+                    handleChangeName(name, id, MaterialType.Image);
+                  }}
+                  ref={PictureRef}
+                  onDelMaterial={handleDelMaterial}
+                />
+              </TabPane>
+              <TabPane tab="视频" key={MaterialType.Video}>
+                <Video
+                  onPreview={(
+                    selectedIndex: number,
+                    data: Array<{
+                      url: string;
+                      type: MaterialType;
+                      id: number;
+                    }>,
+                    visible: boolean,
+                  ) => {
+                    handleViewer(selectedIndex, data, visible, MaterialType.Image);
+                  }}
+                  onChangeName={(name: string, id: number) => {
+                    handleChangeName(name, id, MaterialType.Video);
+                  }}
+                  onDelMaterial={handleDelMaterial}
+                  ref={VideoRef}
+                />
+              </TabPane>
+              <TabPane tab="文档" key={MaterialType.File}>
+                <File
+                  onPreview={(
+                    selectedIndex: number,
+                    data: Array<{
+                      url: string;
+                      type: MaterialType;
+                      id: number;
+                    }>,
+                    visible: boolean,
+                  ) => {
+                    handleViewer(selectedIndex, data, visible, MaterialType.File);
+                  }}
+                  onChangeName={(name: string, id: number) => {
+                    handleChangeName(name, id, MaterialType.File);
+                  }}
+                  onDelMaterial={handleDelMaterial}
+                  ref={FileRef}
+                />
+              </TabPane>
+            </Tabs>
+          </div>
+          <Viewer
+            onClose={() => {
+              setViewerVisible(false);
+            }}
+            onChangeName={(name: string, id: number) => {
+              handleChangeName(name, id, editMaterialType);
+            }}
+            viewerRef={viewerRef}
+            selected={viewerSelected}
+            visible={viewerVisible}
+            data={viewData}
+            onRemove={async (id) => {
+              await handleRemove(id);
+              setViewerVisible(false);
+            }}
+          />
+          <Modal
+            title="修改素材名称"
+            visible={materialModelVisible}
+            mask={!viewerVisible}
+            onOk={handleOk}
+            confirmLoading={confirmLoading}
+            onCancel={handleCancel}
+            centered
+          >
+            <Input
+              onChange={(e) => {
+                setMaterialName(e.target.value);
               }}
-              ref={PictureRef}
-              onDelMaterial={handleDelMaterial}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                  handleOk();
+                }
+              }}
+              maxLength={150}
+              value={materialName}
             />
-          </TabPane>
-          <TabPane tab="视频" key={MaterialType.Video}>
-            <Video
-              onPreview={(
-                selectedIndex: number,
-                data: Array<{
-                  url: string;
-                  type: MaterialType;
-                  id: number;
-                }>,
-                visible: boolean,
-              ) => {
-                handleViewer(selectedIndex, data, visible, MaterialType.Image);
-              }}
-              onChangeName={(name: string, id: number) => {
-                handleChangeName(name, id, MaterialType.Video);
-              }}
-              onDelMaterial={handleDelMaterial}
-              ref={VideoRef}
-            />
-          </TabPane>
-          <TabPane tab="文档" key={MaterialType.File}>
-            <File
-              onPreview={(
-                selectedIndex: number,
-                data: Array<{
-                  url: string;
-                  type: MaterialType;
-                  id: number;
-                }>,
-                visible: boolean,
-              ) => {
-                handleViewer(selectedIndex, data, visible, MaterialType.File);
-              }}
-              onChangeName={(name: string, id: number) => {
-                handleChangeName(name, id, MaterialType.File);
-              }}
-              onDelMaterial={handleDelMaterial}
-              ref={FileRef}
-            />
-          </TabPane>
-        </Tabs>
+          </Modal>
+        </MaterialManageContainer>
       </div>
-      <Viewer
-        onClose={() => {
-          setViewerVisible(false);
-        }}
-        onChangeName={(name: string, id: number) => {
-          handleChangeName(name, id, editMaterialType);
-        }}
-        viewerRef={viewerRef}
-        selected={viewerSelected}
-        visible={viewerVisible}
-        data={viewData}
-        onRemove={async (id) => {
-          await handleRemove(id);
-          setViewerVisible(false);
-        }}
-      />
-      <Modal
-        title="修改素材名称"
-        visible={materialModelVisible}
-        mask={!viewerVisible}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
-        centered
-      >
-        <Input
-          onChange={(e) => {
-            setMaterialName(e.target.value);
-          }}
-          onKeyUp={(e) => {
-            if (e.key === 'Enter' || e.keyCode === 13) {
-              handleOk();
-            }
-          }}
-          maxLength={150}
-          value={materialName}
-        />
-      </Modal>
-    </MaterialManageContainer>
+    </>
   );
 };
 export default MaterialManage;

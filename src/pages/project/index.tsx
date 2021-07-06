@@ -1,5 +1,5 @@
 import PageHeader from '@/components/PageHeader';
-import { Button, Form, Input, Menu, message, Modal } from 'antd';
+import { Button, Form, Input, Menu, message, Modal, PageHeader as AntdPageHeader } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MenuBtn, ProjectContainer, ProjectListContainer, ProjectMain } from './index.style';
 import { QueryFilter, ProFormText, ProFormSelect } from '@ant-design/pro-form';
@@ -17,7 +17,9 @@ import { ProjectItem as ProjectItemType } from '@/services/project/schema';
 import moment from 'moment';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHideHeader } from '../editor/hooks';
-import { useLocation } from 'umi';
+import { useLocation, Link } from 'umi';
+
+import './index.less';
 
 const { confirm } = Modal;
 
@@ -150,6 +152,7 @@ const Project: React.FC = () => {
 
   const getData = useCallback(async () => {
     const res = await getProjects(query);
+    console.log('res?', res);
     setData(res.data.list);
   }, [query]);
 
@@ -175,86 +178,99 @@ const Project: React.FC = () => {
   }, []);
 
   return (
-    <ProjectContainer>
-      <PageHeader title="项目列表">
-        <Button
-          style={{
-            padding: '0 10px',
-          }}
-          type="primary"
-          onClick={handleModalVisible}
-        >
-          <PlusOutlined />
-          创建项目
-        </Button>
-      </PageHeader>
-      <ProjectMain>
-        <QueryFilter<{
-          name: string;
-          createUserName: string;
-        }>
-          onFinish={async (values) => {
-            setQuery(values);
-          }}
-          onReset={() => {
-            setQuery({
-              name: '',
-              createUserName: '',
-            });
-          }}
-          labelAlign="left"
-        >
-          <ProFormText name="name" label="项目名称" />
-          <ProFormSelect
-            fieldProps={{
-              filterOption: true,
-              showSearch: true,
-            }}
-            options={user}
-            name="creater"
-            label="创建人"
-          />
-        </QueryFilter>
-        <ProjectListContainer>
-          {data.map((i) => {
-            return (
-              <ProjectItem
-                name={i.name}
-                key={i.id}
-                createTime={moment(i.createTime).format('YYYY-MM-DD HH:mm:ss')}
-                createUserName={i.createUserName}
-                onClick={() => {
-                  goToPage(i.id, i.name);
+    <>
+      <AntdPageHeader title="达芬奇" className="page-header" />
+      <div className="projects-container">
+        <aside>
+          <Menu selectedKeys={['1']}>
+            <Menu.Item key={'1'}>落地页项目管理</Menu.Item>
+            <Menu.Item key={'2'}>
+              <Link to="/material-manage">素材管理</Link>
+            </Menu.Item>
+          </Menu>
+        </aside>
+        <ProjectContainer>
+          <PageHeader title="项目列表">
+            <Button
+              style={{
+                padding: '0 10px',
+              }}
+              type="primary"
+              onClick={handleModalVisible}
+            >
+              <PlusOutlined />
+              创建项目
+            </Button>
+          </PageHeader>
+          <ProjectMain>
+            <QueryFilter<{
+              name: string;
+              createUserName: string;
+            }>
+              onFinish={async (values) => {
+                setQuery(values);
+              }}
+              onReset={() => {
+                setQuery({
+                  name: '',
+                  createUserName: '',
+                });
+              }}
+              labelAlign="left"
+            >
+              <ProFormText name="name" label="项目名称" />
+              <ProFormSelect
+                fieldProps={{
+                  filterOption: true,
+                  showSearch: true,
                 }}
-                actionRender={menu(i)}
+                options={user}
+                name="creater"
+                label="创建人"
               />
-            );
-          })}
-        </ProjectListContainer>
-      </ProjectMain>
-      <ConfirmModal
-        onOk={submitProject}
-        visible={modalVisible}
-        confirmLoading={confirmLoading}
-        onChangeVisible={setModalVisible}
-        title={projectId ? '编辑项目' : '创建项目'}
-      >
-        <Form onFinish={handleProjectData} form={form} colon layout="vertical">
-          <Form.Item
-            rules={[
-              {
-                required: true,
-                message: '请输入项目名称',
-              },
-            ]}
-            label="项目名称:"
-            name="name"
+            </QueryFilter>
+            <ProjectListContainer>
+              {data?.map((i) => {
+                return (
+                  <ProjectItem
+                    name={i.name}
+                    key={i.id}
+                    createTime={moment(i.createTime).format('YYYY-MM-DD HH:mm:ss')}
+                    createUserName={i.createUserName}
+                    onClick={() => {
+                      goToPage(i.id, i.name);
+                    }}
+                    actionRender={menu(i)}
+                  />
+                );
+              })}
+            </ProjectListContainer>
+          </ProjectMain>
+          <ConfirmModal
+            onOk={submitProject}
+            visible={modalVisible}
+            confirmLoading={confirmLoading}
+            onChangeVisible={setModalVisible}
+            title={projectId ? '编辑项目' : '创建项目'}
           >
-            <Input maxLength={20} />
-          </Form.Item>
-        </Form>
-      </ConfirmModal>
-    </ProjectContainer>
+            <Form onFinish={handleProjectData} form={form} colon layout="vertical">
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入项目名称',
+                  },
+                ]}
+                label="项目名称:"
+                name="name"
+              >
+                <Input maxLength={20} />
+              </Form.Item>
+            </Form>
+          </ConfirmModal>
+        </ProjectContainer>
+      </div>
+    </>
   );
 };
 
